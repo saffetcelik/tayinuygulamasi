@@ -61,10 +61,31 @@ const TayinTalebiForm = () => {
   const handleTercihChange = (selectedOption, index) => {
     const newTercihler = [...talep.tercihler];
     newTercihler[index] = selectedOption ? selectedOption.value : null;
+    
+    // Eğer aynı adliye başka bir tercihte seçilmişse, onu sıfırla
+    if (selectedOption) {
+      newTercihler.forEach((tercih, idx) => {
+        if (idx !== index && tercih === selectedOption.value) {
+          newTercihler[idx] = null;
+        }
+      });
+    }
+    
     setTalep({
       ...talep,
       tercihler: newTercihler
     });
+  };
+  
+  // Belirli bir tercih sırası için kullanılabilir adliyeleri filtrele
+  const getFilteredAdliyeler = (currentIndex) => {
+    // Mevcut tercih hariç tüm tercihlerde seçilen adliyelerin ID'lerini al
+    const selectedAdliyeIds = talep.tercihler
+      .map((tercih, idx) => idx !== currentIndex ? tercih : null) // Mevcut tercih hariç tüm tercihleri al
+      .filter(id => id !== null); // Boş olanları filtrele
+    
+    // Diğer tercihlerde seçilen adliyeleri filtreleyerek çıkar
+    return adliyeler.filter(adliye => !selectedAdliyeIds.includes(adliye.value));
   };
 
   // Formu gönder
@@ -242,7 +263,7 @@ const TayinTalebiForm = () => {
                 <Select
                   value={adliyeler.find(option => option.value === talep.tercihler[index]) || null}
                   onChange={(selectedOption) => handleTercihChange(selectedOption, index)}
-                  options={adliyeler}
+                  options={getFilteredAdliyeler(index)}
                   isClearable
                   isSearchable
                   placeholder="Adliye seçiniz veya arayınız..."

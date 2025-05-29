@@ -45,14 +45,24 @@ api.interceptors.request.use(
 // Kimlik doğrulama servisleri
 const authService = {
   // Giriş işlemi
-  login: async (sicilNo, sifre) => {
+  login: async (sicilNo, sifre, beniHatirla = false) => {
     try {
       // Backend bağlantı hatası kontrolü
-      const response = await api.post('/Auth/login', { sicilNo, sifre });
+      const response = await api.post('/Auth/login', { sicilNo, sifre, beniHatirla });
       if (response.data.token) {
         localStorage.setItem('isAuthenticated', 'true');
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('userSicil', sicilNo);
+        
+        // Beni hatırla seçeneği işaretlendiyse sicil numarasını ayrıca sakla
+        // aksi takdirde temizle
+        if (beniHatirla) {
+          localStorage.setItem('lastLoginSicilNo', sicilNo);
+          console.log('Beni hatırla etkinleştirildi ve sicil no kaydedildi:', sicilNo);
+        } else {
+          localStorage.removeItem('lastLoginSicilNo');
+          console.log('Beni hatırla devre dışı, sicil no hafızadan silindi');
+        }
       }
       return response.data;
     } catch (error) {

@@ -10,6 +10,7 @@ using TayinAPI.Models;
 using Microsoft.IdentityModel.Tokens;
 using BCrypt.Net;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Http;
 
 namespace TayinAPI.Controllers
 {
@@ -29,7 +30,7 @@ namespace TayinAPI.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginModel login)
         {
-            Console.WriteLine($"Giriş denemesi: Sicil No: {login?.SicilNo}");
+            Console.WriteLine($"Giriş denemesi: Sicil No: {login?.SicilNo}, Beni Hatırla: {login?.BeniHatirla}");
             
             if (login == null || string.IsNullOrEmpty(login.SicilNo) || string.IsNullOrEmpty(login.Sifre))
             {
@@ -99,13 +100,20 @@ namespace TayinAPI.Controllers
             // JWT token oluşturma
             var token = GenerateJwtToken(personel);
 
+            // Eğer beni hatırla seçeneği işaretlendiyse
+            // Burada cookie ayarlamak yerine client tarafında localStorage kullanacağız
+            // Login yanıtında beniHatirla bayrağını döndürüyoruz
+            // Kullanıcı sicil numarası da localStorage'a kaydedilecek
+            Console.WriteLine($"Beni hatırla işaretlendi: {login.BeniHatirla}, Sicil No: {personel.SicilNo}");
+
             return Ok(new
             {
                 token = token,
                 personelId = personel.Id,
                 sicilNo = personel.SicilNo,
                 ad = personel.Ad,
-                soyad = personel.Soyad
+                soyad = personel.Soyad,
+                beniHatirla = login.BeniHatirla
             });
         }
 
@@ -214,6 +222,7 @@ namespace TayinAPI.Controllers
     {
         public string SicilNo { get; set; }
         public string Sifre { get; set; }
+        public bool BeniHatirla { get; set; }
     }
     
     public class ChangePasswordModel

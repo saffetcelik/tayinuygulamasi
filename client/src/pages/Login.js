@@ -6,17 +6,38 @@ import { toast } from 'react-toastify';
 const Login = () => {
   const [sicilNo, setSicilNo] = useState('');
   const [sifre, setSifre] = useState('');
+  const [beniHatirla, setBeniHatirla] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [animationComplete, setAnimationComplete] = useState(false);
   const navigate = useNavigate();
   
-  // Sayfa yüklendiğinde animasyon efekti
+  // Sayfa yüklendiğinde animasyon efekti ve cookie kontrolü
   useEffect(() => {
     const timer = setTimeout(() => {
       setAnimationComplete(true);
     }, 800);
     
+    // localStorage'dan son giriş yapan kullanıcıyı kontrol et
+    const checkLastLogin = () => {
+      try {
+        const lastSicilNo = localStorage.getItem('lastLoginSicilNo');
+        
+        console.log('localStorage\'dan alınan son giriş sicil no:', lastSicilNo);
+        
+        if (lastSicilNo && lastSicilNo.length > 0) {
+          setSicilNo(lastSicilNo);
+          setBeniHatirla(true);
+          console.log('Son giriş yapan kullanıcı sicil no bulundu:', lastSicilNo);
+        } else {
+          console.log('Kayıtlı son giriş yapan kullanıcı bulunamadı');
+        }
+      } catch (error) {
+        console.error('localStorage okuma hatası:', error);
+      }
+    };
+    
+    checkLastLogin();
     return () => clearTimeout(timer);
   }, []);
 
@@ -38,7 +59,7 @@ const Login = () => {
       document.querySelector('.login-btn').classList.add('animate-ripple');
       
       // Gerçek API isteği yapılıyor
-      const response = await authService.login(sicilNo, sifre);
+      const response = await authService.login(sicilNo, sifre, beniHatirla);
       
       // Başarılı giriş
       toast.success('Giriş başarılı! Yönlendiriliyorsunuz...');
@@ -194,6 +215,8 @@ const Login = () => {
                     id="remember-me"
                     name="remember-me"
                     type="checkbox"
+                    checked={beniHatirla}
+                    onChange={(e) => setBeniHatirla(e.target.checked)}
                     className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                   />
                   <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">

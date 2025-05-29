@@ -93,24 +93,35 @@ namespace TayinAPI.Data
 
         private static async Task InitializePersonellerAsync(TayinDbContext context)
         {
-            // Personeller var mı kontrol et, yoksa ekle
-            if (!context.Personeller.Any())
+            // Personelleri temizle ve yeniden oluştur (Doğum tarihi güncellemesi için)
+            context.Personeller.RemoveRange(await context.Personeller.ToListAsync());
+            await context.SaveChangesAsync();
+            Console.WriteLine("Personel tablosu temizlendi, yeniden oluşturulacak...");
+            
+            // Önce adliyeleri almamız gerekiyor
+            var adliyeler = await context.Adliyeler.ToListAsync();
+            if (adliyeler.Count == 0)
             {
-                // Önce adliyeleri almamız gerekiyor
-                var adliyeler = await context.Adliyeler.ToListAsync();
-                if (adliyeler.Count == 0)
-                {
-                    Console.WriteLine("Personel eklemek için önce adliyeler oluşturulmalıdır.");
-                    return;
-                }
+                Console.WriteLine("Personel eklemek için önce adliyeler oluşturulmalıdır.");
+                return;
+            }
 
-                // Rastgele adliyeler seçmek için
-                var random = new Random();
+            // Rastgele adliyeler ve doğum tarihleri seçmek için
+            var random = new Random();
 
-                // UTC zamanını burada da kullanalım
-                DateTime simdi = DateTime.UtcNow;
-                
-                var personeller = new List<Personel>
+            // UTC zamanını burada da kullanalım
+            DateTime simdi = DateTime.UtcNow;
+            
+            // Doğum tarihi oluşturmak için yardımcı fonksiyon
+            DateTime GenerateRandomBirthDate()
+            {
+                // En fazla 40 yaş, en az 23 yaş olacak şekilde rastgele doğum tarihi
+                int years = random.Next(23, 40);
+                int days = random.Next(1, 365);
+                return simdi.AddYears(-years).AddDays(-days);
+            }
+            
+            var personeller = new List<Personel>
                 {
                     new Personel
                     {
@@ -122,6 +133,7 @@ namespace TayinAPI.Data
                         MevcutAdliyeId = adliyeler[random.Next(adliyeler.Count)].Id,
                         Unvan = "Zabıt Katibi",
                         Telefon = GenerateRandomPhoneNumber(),
+                        DogumTarihi = GenerateRandomBirthDate(),
                         BaslamaTarihi = simdi.AddYears(-5),
                         CreatedAt = simdi,
                         UpdatedAt = simdi
@@ -136,9 +148,10 @@ namespace TayinAPI.Data
                         MevcutAdliyeId = adliyeler[random.Next(adliyeler.Count)].Id,
                         Unvan = "Mübaşir",
                         Telefon = GenerateRandomPhoneNumber(),
-                        BaslamaTarihi = DateTime.UtcNow.AddYears(-1),
-                        CreatedAt = DateTime.UtcNow,
-                        UpdatedAt = DateTime.UtcNow
+                        DogumTarihi = GenerateRandomBirthDate(),
+                        BaslamaTarihi = simdi.AddYears(-1),
+                        CreatedAt = simdi,
+                        UpdatedAt = simdi
                     },
                     new Personel
                     {
@@ -150,9 +163,10 @@ namespace TayinAPI.Data
                         MevcutAdliyeId = adliyeler[random.Next(adliyeler.Count)].Id,
                         Unvan = "Zabıt Katibi",
                         Telefon = GenerateRandomPhoneNumber(),
-                        BaslamaTarihi = DateTime.UtcNow.AddYears(-3),
-                        CreatedAt = DateTime.UtcNow,
-                        UpdatedAt = DateTime.UtcNow
+                        DogumTarihi = GenerateRandomBirthDate(),
+                        BaslamaTarihi = simdi.AddYears(-3),
+                        CreatedAt = simdi,
+                        UpdatedAt = simdi
                     },
                     new Personel
                     {
@@ -164,9 +178,10 @@ namespace TayinAPI.Data
                         MevcutAdliyeId = adliyeler[random.Next(adliyeler.Count)].Id,
                         Unvan = "Yazı İşleri Müdürü",
                         Telefon = GenerateRandomPhoneNumber(),
-                        BaslamaTarihi = DateTime.UtcNow.AddYears(-4),
-                        CreatedAt = DateTime.UtcNow,
-                        UpdatedAt = DateTime.UtcNow
+                        DogumTarihi = GenerateRandomBirthDate(),
+                        BaslamaTarihi = simdi.AddYears(-4),
+                        CreatedAt = simdi,
+                        UpdatedAt = simdi
                     },
                     new Personel
                     {
@@ -178,16 +193,16 @@ namespace TayinAPI.Data
                         MevcutAdliyeId = adliyeler[random.Next(adliyeler.Count)].Id,
                         Unvan = "Mübaşir",
                         Telefon = GenerateRandomPhoneNumber(),
+                        DogumTarihi = GenerateRandomBirthDate(),
                         BaslamaTarihi = simdi.AddYears(-5),
                         CreatedAt = simdi,
                         UpdatedAt = simdi
                     }
                 };
 
-                context.Personeller.AddRange(personeller);
-                await context.SaveChangesAsync();
-                Console.WriteLine("Varsayılan personeller oluşturuldu.");
-            }
+            context.Personeller.AddRange(personeller);
+            await context.SaveChangesAsync();
+            Console.WriteLine("Varsayılan personeller oluşturuldu.");
         }
 
         private static async Task InitializeSikcaSorulanSorularAsync(TayinDbContext context)

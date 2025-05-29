@@ -1,0 +1,29 @@
+# Backend Gereksinimleri
+.NET SDK 8.0+
+PostgreSQL 14+
+
+# Backend Paketleri (TayinAPI.csproj iu00e7inde tanu0131mlu0131du0131r)
+Microsoft.AspNetCore.Authentication.JwtBearer 8.0.0
+Microsoft.AspNetCore.OpenApi 8.0.16
+Microsoft.EntityFrameworkCore.Design 9.0.5
+Npgsql.EntityFrameworkCore.PostgreSQL 9.0.4
+BCrypt.Net-Next 4.0.3
+Swashbuckle.AspNetCore 6.6.2
+
+# Frontend Gereksinimleri
+Node.js 18+
+npm 9+
+
+# Frontend Paketleri (package.json iu00e7inde tanu0131mlu0131du0131r)
+react 18.2.0
+react-dom 18.2.0
+react-router-dom 6.21.0
+axios 1.6.2
+react-bootstrap 2.10.10
+react-icons 5.5.0
+react-toastify 11.0.5
+sweetalert2 11.22.0
+tailwindcss 3.3.5
+
+# Diu011fer Gereksinimler
+PowerShell 5.0+ (start.ps1 scriptini u00e7alu0131u015ftu0131rmak iu00e7in)

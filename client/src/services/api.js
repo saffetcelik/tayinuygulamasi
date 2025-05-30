@@ -368,6 +368,28 @@ const adminService = {
       throw error;
     }
   },
+  
+  // Personel detaylarını getir
+  getPersonelById: async (id) => {
+    try {
+      const response = await api.get(`/Admin/personel/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error(`Personel #${id} detayları alınamadı:`, error);
+      throw error;
+    }
+  },
+  
+  // Personel bilgilerini güncelle
+  updatePersonel: async (id, personelData) => {
+    try {
+      const response = await api.put(`/Admin/personel/${id}`, personelData);
+      return response.data;
+    } catch (error) {
+      console.error(`Personel #${id} güncellenirken hata:`, error);
+      throw error;
+    }
+  },
 };
 
 export { authService, personelService, tayinService, sssService, adminService };

@@ -334,41 +334,26 @@ const adminService = {
     }
   },
   
-  // Sistem loglarını getir
-  getSistemLoglari: async (filtreParams) => {
+  // Logları getir
+  getLoglar: async (queryParams) => {
     try {
-      const response = await api.get('/Log/sistem', { params: filtreParams });
+      const response = await api.get('/Log', { params: queryParams });
       const data = response.data;
       return Array.isArray(data) ? data : 
              (data && data.value && Array.isArray(data.value)) ? data.value : [];
     } catch (error) {
-      console.error('Sistem logları alınamadı:', error);
+      console.error('Loglar alınamadı:', error);
       throw error;
     }
   },
   
-  // Kullanıcı işlem kayıtlarını getir
-  getKullaniciIslemKayitlari: async (filtreParams) => {
+  // Log detayını getir
+  getLogDetay: async (logId) => {
     try {
-      const response = await api.get('/Log/kullanici-islemleri', { params: filtreParams });
-      const data = response.data;
-      return Array.isArray(data) ? data : 
-             (data && data.value && Array.isArray(data.value)) ? data.value : [];
+      const response = await api.get(`/Log/${logId}`);
+      return response.data;
     } catch (error) {
-      console.error('Kullanıcı işlem kayıtları alınamadı:', error);
-      throw error;
-    }
-  },
-  
-  // Tayin işlem kayıtlarını getir
-  getTayinIslemKayitlari: async (filtreParams) => {
-    try {
-      const response = await api.get('/Log/tayin-islemleri', { params: filtreParams });
-      const data = response.data;
-      return Array.isArray(data) ? data : 
-             (data && data.value && Array.isArray(data.value)) ? data.value : [];
-    } catch (error) {
-      console.error('Tayin işlem kayıtları alınamadı:', error);
+      console.error('Log detayı alınamadı:', error);
       throw error;
     }
   },

@@ -11,8 +11,10 @@ namespace TayinAPI.Data
     {
         public static async Task InitializeAsync(TayinDbContext context)
         {
-            // Veritabanını oluştur (eğer yoksa)
-            await context.Database.MigrateAsync();
+            // Veritabanı migration'larını uygula
+            // NOT: Migration'ları zaten komut satırından (dotnet ef database update) uyguluyorsak,
+            // aşağıdaki satırı yoruma alabilirsiniz.
+            // await context.Database.MigrateAsync();
 
             // İlk veriler veritabanında var mı kontrol et, yoksa ekle
             await InitializeAdminAsync(context);
@@ -93,10 +95,30 @@ namespace TayinAPI.Data
 
         private static async Task InitializePersonellerAsync(TayinDbContext context)
         {
-            // Personelleri temizle ve yeniden oluştur (Doğum tarihi güncellemesi için)
-            context.Personeller.RemoveRange(await context.Personeller.ToListAsync());
-            await context.SaveChangesAsync();
-            Console.WriteLine("Personel tablosu temizlendi, yeniden oluşturulacak...");
+            // Personel tablosunda veri var mı kontrol et
+            var personelCount = await context.Personeller.CountAsync();
+            
+            // Eğer personel tablosunda veri varsa ve doğum tarihi tanımlıysa, hiçbir şey yapma
+            if (personelCount > 0)
+            {
+                // Örnek olarak ilk kaydı kontrol edelim
+                var firstPersonel = await context.Personeller.FirstOrDefaultAsync();
+                if (firstPersonel != null && firstPersonel.DogumTarihi != null)
+                {
+                    // Doğum tarihi zaten tanımlı, hiçbir işlem yapma
+                    Console.WriteLine("Personel tablosu zaten mevcut ve doğum tarihleri tanımlı.");
+                    return;
+                }
+            }
+            
+            // Eğer buraya geldiysek ya tablo boş ya da doğum tarihleri tanımlı değil
+            // Bu durumda tabloyu temizleyip yeniden oluşturabiliriz
+            if (personelCount > 0)
+            {
+                context.Personeller.RemoveRange(await context.Personeller.ToListAsync());
+                await context.SaveChangesAsync();
+                Console.WriteLine("Personel tablosu temizlendi, yeniden oluşturulacak...");
+            }
             
             // Önce adliyeleri almamız gerekiyor
             var adliyeler = await context.Adliyeler.ToListAsync();

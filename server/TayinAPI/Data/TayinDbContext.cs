@@ -9,8 +9,7 @@ namespace TayinAPI.Data
         public TayinDbContext(DbContextOptions<TayinDbContext> options)
             : base(options)
         {
-            // Uyarıları devre dışı bırak
-            Database.EnsureCreated();
+            // Constructor'da herhangi bir veritabanı operasyonu yapmıyoruz
         }
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -25,6 +24,7 @@ namespace TayinAPI.Data
         public DbSet<TayinTercihi> TayinTercihleri { get; set; }
         public DbSet<SikcaSorulanSoru> SikcaSorulanSorular { get; set; }
         public DbSet<Admin> Adminler { get; set; }
+        public DbSet<Log> Loglar { get; set; }
         
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

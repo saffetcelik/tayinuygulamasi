@@ -23,6 +23,9 @@ builder.Services.AddDbContext<TayinDbContext>(options =>
 // HttpContext erişimi için
 builder.Services.AddHttpContextAccessor();
 
+// Log servisi ekliyoruz
+builder.Services.AddScoped<TayinAPI.Services.LogService>();
+
 // JSON döngüsel referansları işleme
 builder.Services.AddControllers().AddJsonOptions(options =>
 {

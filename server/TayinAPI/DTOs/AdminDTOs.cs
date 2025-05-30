@@ -35,4 +35,37 @@ namespace TayinAPI.DTOs
         [MinLength(6, ErrorMessage = "Şifre en az 6 karakter olmalıdır.")]
         public string YeniSifre { get; set; } = "";
     }
+
+    // Personel güncelleme DTO'su
+    public class PersonelGuncelleDTO
+    {
+        [Required(ErrorMessage = "Ad alanı zorunludur.")]
+        [MaxLength(50, ErrorMessage = "Ad alanı en fazla 50 karakter olabilir.")]
+        public string Ad { get; set; } = "";
+
+        [Required(ErrorMessage = "Soyad alanı zorunludur.")]
+        [MaxLength(50, ErrorMessage = "Soyad alanı en fazla 50 karakter olabilir.")]
+        public string Soyad { get; set; } = "";
+
+        [Required(ErrorMessage = "Unvan alanı zorunludur.")]
+        [MaxLength(50, ErrorMessage = "Unvan alanı en fazla 50 karakter olabilir.")]
+        public string Unvan { get; set; } = "";
+
+        [EmailAddress(ErrorMessage = "Geçerli bir e-posta adresi girin.")]
+        [MaxLength(100, ErrorMessage = "E-posta alanı en fazla 100 karakter olabilir.")]
+        public string Email { get; set; } = "";
+
+        [MaxLength(15, ErrorMessage = "Telefon alanı en fazla 15 karakter olabilir.")]
+        public string Telefon { get; set; } = "";
+
+        public int? MevcutAdliyeId { get; set; }
+
+        public DateTime? DogumTarihi { get; set; }
+
+        public DateTime? BaslamaTarihi { get; set; }
+
+        // Şifre güncellemek için (isteğe bağlı)
+        [MinLength(1, ErrorMessage = "Şifre en az 1 karakter olmalıdır.")]
+        public string YeniSifre { get; set; } = "";
+    }
 }

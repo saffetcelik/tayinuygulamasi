@@ -82,6 +82,63 @@ const adminService = {
     }
   },
   
+  // Personelleri getir
+  getPersoneller: async () => {
+    try {
+      const token = adminService.getToken();
+      
+      const response = await axios.get(`${API_URL}/Admin/personeller`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      
+      // ReferenceHandler.Preserve kullanıldığında value özelliğinde gelen veriyi kontrol et
+      const data = response.data;
+      return Array.isArray(data) ? data : 
+             (data && data.value && Array.isArray(data.value)) ? data.value : [];
+    } catch (error) {
+      console.error('Personeller alınamadı:', error);
+      throw error.response ? error.response.data : 'Bağlantı hatası';
+    }
+  },
+  
+  // Personel detaylarını getir
+  getPersonelById: async (id) => {
+    try {
+      const token = adminService.getToken();
+      
+      const response = await axios.get(`${API_URL}/Admin/personel/${id}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      
+      return response.data;
+    } catch (error) {
+      console.error(`Personel #${id} detayları alınamadı:`, error);
+      throw error.response ? error.response.data : 'Bağlantı hatası';
+    }
+  },
+  
+  // Personel bilgilerini güncelle
+  updatePersonel: async (id, personelData) => {
+    try {
+      const token = adminService.getToken();
+      
+      const response = await axios.put(`${API_URL}/Admin/personel/${id}`, personelData, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      
+      return response.data;
+    } catch (error) {
+      console.error(`Personel #${id} güncellenirken hata:`, error);
+      throw error.response ? error.response.data : 'Bağlantı hatası';
+    }
+  },
+  
 
 };
 

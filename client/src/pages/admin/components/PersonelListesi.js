@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { adminService } from '../../../services/api';
 import PersonelDuzenleModal from './PersonelDuzenleModal';
+import Swal from 'sweetalert2';
 
 const PersonelListesi = () => {
   const [personeller, setPersoneller] = useState([]);
@@ -33,9 +34,37 @@ const PersonelListesi = () => {
   }, []);
   
   // Personel düzenleme modalını aç
-  const handleEditPersonel = (personelId) => {
-    setSelectedPersonelId(personelId);
+  const handleEditPersonel = (id) => {
+    setSelectedPersonelId(id);
     setIsModalOpen(true);
+  };
+
+  const handleDeletePersonel = (id, adSoyad) => {
+    // Silme işlemi için onay iste
+    Swal.fire({
+      title: 'Emin misiniz?',
+      text: `${adSoyad} isimli personeli silmek istediğinize emin misiniz?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Evet, sil',
+      cancelButtonText: 'İptal'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Silme işlemini gerçekleştir
+        adminService.deletePersonel(id)
+          .then(response => {
+            toast.success('Personel başarıyla silindi');
+            // Personel listesini güncelle
+            fetchPersoneller();
+          })
+          .catch(error => {
+            console.error('Personel silinirken hata:', error);
+            toast.error('Personel silinirken bir hata oluştu');
+          });
+      }
+    });
   };
   
   // Modal kapandığında 
@@ -195,15 +224,26 @@ const PersonelListesi = () => {
                     {personel.baslamaTarihi ? new Date(personel.baslamaTarihi).toLocaleDateString('tr-TR') : '-'}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    <button
-                      onClick={() => handleEditPersonel(personel.id)}
-                      className="inline-flex items-center px-3 py-1 border border-blue-500 text-blue-500 rounded-md hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-300"
-                    >
-                      <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                      </svg>
-                      Düzenle
-                    </button>
+                    <div className="flex space-x-2">
+                      <button
+                        onClick={() => handleEditPersonel(personel.id)}
+                        className="inline-flex items-center px-3 py-1 border border-blue-500 text-blue-500 rounded-md hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                      >
+                        <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                        Düzenle
+                      </button>
+                      <button
+                        onClick={() => handleDeletePersonel(personel.id, `${personel.ad} ${personel.soyad}`)}
+                        className="inline-flex items-center px-3 py-1 border border-red-500 text-red-500 rounded-md hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-300"
+                      >
+                        <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                        Sil
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))

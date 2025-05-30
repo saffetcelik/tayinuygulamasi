@@ -310,6 +310,41 @@ namespace TayinAPI.Controllers
             }
         }
 
+        // Personel sil
+        [HttpDelete("personel/{id}")]
+        public async Task<IActionResult> DeletePersonel(int id)
+        {
+            try
+            {
+                var personel = await _context.Personeller.FindAsync(id);
+                if (personel == null)
+                {
+                    return NotFound("Personel bulunamadı.");
+                }
+
+                // Tayin taleplerini kontrol et
+                var tayinTalepleri = await _context.TayinTalepleri
+                    .Where(t => t.PersonelId == id)
+                    .ToListAsync();
+
+                // Tayin taleplerini sil
+                if (tayinTalepleri.Any())
+                {
+                    _context.TayinTalepleri.RemoveRange(tayinTalepleri);
+                }
+
+                // Personeli sil
+                _context.Personeller.Remove(personel);
+                await _context.SaveChangesAsync();
+                
+                return Ok(new { Mesaj = "Personel başarıyla silindi.", PersonelId = id });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Personel silinirken hata oluştu: {ex.Message}");
+            }
+        }
+
 
     }
 }

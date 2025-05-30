@@ -6,6 +6,7 @@ import AdminSidebar from './components/AdminSidebar';
 import AdminHeader from './components/AdminHeader';
 import TayinListesi from './components/TayinListesi';
 import LogPanel from './components/LogPanel';
+import PersonelListesi from './components/PersonelListesi';
 
 const AdminPanel = () => {
   const navigate = useNavigate();
@@ -114,6 +115,9 @@ const AdminPanel = () => {
             />
           )}
           
+          {activeTab === 'personeller' && (
+            <PersonelListesi />
+          )}
 
           {activeTab === 'istatistikler' && (
             <div className="bg-white rounded-lg shadow-md p-6">

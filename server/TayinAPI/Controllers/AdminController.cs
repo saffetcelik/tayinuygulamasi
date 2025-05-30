@@ -170,6 +170,146 @@ namespace TayinAPI.Controllers
             return Ok(new { Mesaj = "Tayin talebi durumu güncellendi.", TayinTalebi = tayinTalebi });
         }
 
+        // Tüm personelleri getir
+        [HttpGet("personeller")]
+        public async Task<IActionResult> GetPersoneller()
+        {
+            try
+            {
+                var personeller = await _context.Personeller
+                    .Include(p => p.MevcutAdliye)
+                    .OrderBy(p => p.Ad)
+                    .ThenBy(p => p.Soyad)
+                    .Select(p => new 
+                    {
+                        p.Id,
+                        p.SicilNo,
+                        p.Ad,
+                        p.Soyad,
+                        p.Unvan,
+                        p.Email,
+                        p.Telefon,
+                        DogumTarihi = p.DogumTarihi,
+                        BaslamaTarihi = p.BaslamaTarihi,
+                        MevcutAdliye = p.MevcutAdliye != null ? new {
+                            p.MevcutAdliye.Id,
+                            p.MevcutAdliye.AdliyeAdi
+                        } : null,
+                        p.CreatedAt,
+                        p.UpdatedAt
+                    })
+                    .ToListAsync();
+
+                return Ok(personeller);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Personeller getirilirken hata oluştu: {ex.Message}");
+            }
+        }
+
+        // Personel detaylarını getir
+        [HttpGet("personel/{id}")]
+        public async Task<IActionResult> GetPersonelById(int id)
+        {
+            try
+            {
+                var personel = await _context.Personeller
+                    .Include(p => p.MevcutAdliye)
+                    .FirstOrDefaultAsync(p => p.Id == id);
+
+                if (personel == null)
+                {
+                    return NotFound("Personel bulunamadı.");
+                }
+
+                // Adliyeleri de getir (seçim listesi için)
+                var adliyeler = await _context.Adliyeler
+                    .Where(a => a.Aktif)
+                    .OrderBy(a => a.AdliyeAdi)
+                    .Select(a => new { a.Id, a.AdliyeAdi })
+                    .ToListAsync();
+
+                return Ok(new
+                {
+                    Personel = new
+                    {
+                        personel.Id,
+                        personel.SicilNo,
+                        personel.Ad,
+                        personel.Soyad,
+                        personel.Unvan,
+                        personel.Email,
+                        personel.Telefon,
+                        DogumTarihi = personel.DogumTarihi,
+                        BaslamaTarihi = personel.BaslamaTarihi,
+                        MevcutAdliyeId = personel.MevcutAdliyeId,
+                        MevcutAdliye = personel.MevcutAdliye != null ? new
+                        {
+                            personel.MevcutAdliye.Id,
+                            personel.MevcutAdliye.AdliyeAdi
+                        } : null,
+                        personel.CreatedAt,
+                        personel.UpdatedAt
+                    },
+                    Adliyeler = adliyeler
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Personel detayları getirilirken hata oluştu: {ex.Message}");
+            }
+        }
+
+        // Personel bilgilerini güncelle
+        [HttpPut("personel/{id}")]
+        public async Task<IActionResult> UpdatePersonel(int id, [FromBody] PersonelGuncelleDTO personelDTO)
+        {
+            try
+            {
+                var personel = await _context.Personeller.FindAsync(id);
+                if (personel == null)
+                {
+                    return NotFound("Personel bulunamadı.");
+                }
+
+                // Temel bilgileri güncelle
+                personel.Ad = personelDTO.Ad;
+                personel.Soyad = personelDTO.Soyad;
+                personel.Unvan = personelDTO.Unvan;
+                personel.Email = personelDTO.Email;
+                personel.Telefon = personelDTO.Telefon;
+                personel.MevcutAdliyeId = personelDTO.MevcutAdliyeId;
+                
+                // Tarih bilgilerini güncelle
+                if (personelDTO.DogumTarihi.HasValue)
+                {
+                    personel.DogumTarihi = personelDTO.DogumTarihi.Value;
+                }
+                
+                if (personelDTO.BaslamaTarihi.HasValue)
+                {
+                    personel.BaslamaTarihi = personelDTO.BaslamaTarihi.Value;
+                }
+                
+                // Şifre güncellemesi istenmişse
+                if (!string.IsNullOrEmpty(personelDTO.YeniSifre))
+                {
+                    personel.Sifre = BCrypt.Net.BCrypt.HashPassword(personelDTO.YeniSifre);
+                }
+
+                personel.UpdatedAt = DateTime.UtcNow;
+                
+                await _context.SaveChangesAsync();
+                
+                return Ok(new { Mesaj = "Personel bilgileri başarıyla güncellendi.", PersonelId = personel.Id });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Personel güncellenirken hata oluştu: {ex.Message}");
+            }
+        }
+
 
     }
 }

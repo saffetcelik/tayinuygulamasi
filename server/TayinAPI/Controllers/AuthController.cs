@@ -20,11 +20,13 @@ namespace TayinAPI.Controllers
     {
         private readonly TayinDbContext _context;
         private readonly IConfiguration _configuration;
+        private readonly Services.LogService _logService;
 
-        public AuthController(TayinDbContext context, IConfiguration configuration)
+        public AuthController(TayinDbContext context, IConfiguration configuration, Services.LogService logService)
         {
             _context = context;
             _configuration = configuration;
+            _logService = logService;
         }
 
         [HttpPost("login")]
@@ -50,6 +52,16 @@ namespace TayinAPI.Controllers
                 if (personel == null)
                 {
                     Console.WriteLine($"Personel bulunamadı: {login.SicilNo}");
+                    
+                    // Bulunamayan sicil no ile giriş denemesini logla
+                    await _logService.KaydetAsync(
+                        "Giriş Denemesi", 
+                        $"Bulunamayan sicil no ile giriş denemesi: {login.SicilNo}", 
+                        login.SicilNo,
+                        basariliMi: false,
+                        hataBilgisi: "Sicil numarası bulunamadı"
+                    );
+                    
                     return Unauthorized("Sicil numarası bulunamadı");
                 }
                 
@@ -92,10 +104,30 @@ namespace TayinAPI.Controllers
             if (!isPasswordValid)
             {
                 Console.WriteLine("Hatalı şifre");
+                
+                // Başarısız giriş denemesini logla
+                await _logService.KaydetAsync(
+                    "Giriş Denemesi", 
+                    $"Hatalı şifre ile giriş denemesi", 
+                    login.SicilNo, 
+                    personel?.Ad + " " + personel?.Soyad,
+                    basariliMi: false,
+                    hataBilgisi: "Hatalı şifre"
+                );
+                
                 return Unauthorized("Hatalı şifre");
             }
             
             Console.WriteLine("Giriş başarılı!");
+            
+            // Başarılı girişi logla
+            await _logService.KaydetAsync(
+                "Giriş", 
+                $"{personel.Ad} {personel.Soyad} kullanıcısı sisteme giriş yaptı", 
+                login.SicilNo, 
+                personel.Ad + " " + personel.Soyad,
+                basariliMi: true
+            );
 
             // JWT token oluşturma
             var token = GenerateJwtToken(personel);
@@ -180,12 +212,32 @@ namespace TayinAPI.Controllers
                 await _context.SaveChangesAsync();
                 
                 Console.WriteLine($"Şifre başarıyla değiştirildi: {model.SicilNo}");
+
+                // Şifre değiştirme işlemini logla
+                await _logService.KaydetAsync(
+                    "Şifre Değiştirme", 
+                    $"{personel.Ad} {personel.Soyad} kullanıcısı şifresini değiştirdi", 
+                    model.SicilNo, 
+                    personel.Ad + " " + personel.Soyad,
+                    basariliMi: true
+                );
                 
                 return Ok(new { message = "Şifre başarıyla değiştirildi" });
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Şifre değiştirme hatası: {ex.Message}");
+                
+                // Hatalı şifre değiştirme işlemini logla
+                await _logService.KaydetAsync(
+                    "Şifre Değiştirme", 
+                    $"Şifre değiştirme sırasında hata", 
+                    model.SicilNo, 
+                    personel?.Ad + " " + personel?.Soyad,
+                    basariliMi: false,
+                    hataBilgisi: ex.Message
+                );
+                
                 return StatusCode(500, "Şifre değiştirme sırasında bir hata oluştu");
             }
         }

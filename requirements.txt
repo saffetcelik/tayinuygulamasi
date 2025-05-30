@@ -2,7 +2,7 @@
 .NET SDK 8.0+
 PostgreSQL 14+
 
-# Backend Paketleri (TayinAPI.csproj iu00e7inde tanu0131mlu0131du0131r)
+# Backend Paketleri (TayinAPI.csproj içinde tanımlıdır)
 Microsoft.AspNetCore.Authentication.JwtBearer 8.0.0
 Microsoft.AspNetCore.OpenApi 8.0.16
 Microsoft.EntityFrameworkCore.Design 9.0.5
@@ -14,7 +14,7 @@ Swashbuckle.AspNetCore 6.6.2
 Node.js 18+
 npm 9+
 
-# Frontend Paketleri (package.json iu00e7inde tanu0131mlu0131du0131r)
+# Frontend Paketleri (package.json içinde tanımlıdır)
 react 18.2.0
 react-dom 18.2.0
 react-router-dom 6.21.0
@@ -25,5 +25,3 @@ react-toastify 11.0.5
 sweetalert2 11.22.0
 tailwindcss 3.3.5
 
-# Diu011fer Gereksinimler
-PowerShell 5.0+ (start.ps1 scriptini u00e7alu0131u015ftu0131rmak iu00e7in)

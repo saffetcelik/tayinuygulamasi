@@ -145,7 +145,7 @@ const AdminPanel = () => {
             </div>
           )}
           
-          {activeTab === 'loglar' && (
+          {activeTab === 'logs' && (
             <LogPanel />
           )}
         </main>

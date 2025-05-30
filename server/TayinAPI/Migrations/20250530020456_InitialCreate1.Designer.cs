@@ -12,8 +12,8 @@ using TayinAPI.Data;
 namespace TayinAPI.Migrations
 {
     [DbContext(typeof(TayinDbContext))]
-    [Migration("20250529182048_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250530020456_InitialCreate1")]
+    partial class InitialCreate1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -41,7 +41,6 @@ namespace TayinAPI.Migrations
                         .HasColumnName("adliye_adi");
 
                     b.Property<string>("Adres")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("adres");
 
@@ -94,7 +93,6 @@ namespace TayinAPI.Migrations
                         .HasColumnType("character varying(255)");
 
                     b.Property<string>("Rol")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
@@ -116,6 +114,48 @@ namespace TayinAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Adminler");
+                });
+
+            modelBuilder.Entity("TayinAPI.Models.Log", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("BasariliMi")
+                        .HasColumnType("text");
+
+                    b.Property<string>("DetayBilgi")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("HataBilgisi")
+                        .HasColumnType("text");
+
+                    b.Property<string>("IpAdresi")
+                        .HasColumnType("text");
+
+                    b.Property<string>("IslemTuru")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("IslemZamani")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("KullaniciAdi")
+                        .HasColumnType("text");
+
+                    b.Property<string>("KullaniciSicilNo")
+                        .HasColumnType("text");
+
+                    b.Property<string>("TarayiciBilgisi")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Loglar");
                 });
 
             modelBuilder.Entity("TayinAPI.Models.Personel", b =>
@@ -146,7 +186,6 @@ namespace TayinAPI.Migrations
                         .HasColumnName("dogum_tarihi");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
                         .HasColumnName("email");
@@ -174,7 +213,6 @@ namespace TayinAPI.Migrations
                         .HasColumnName("soyad");
 
                     b.Property<string>("Telefon")
-                        .IsRequired()
                         .HasMaxLength(15)
                         .HasColumnType("character varying(15)")
                         .HasColumnName("telefon");
@@ -269,7 +307,6 @@ namespace TayinAPI.Migrations
                         .HasColumnName("personel_id");
 
                     b.Property<string>("TalepDurumu")
-                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)")
                         .HasColumnName("talep_durumu");

@@ -390,6 +390,17 @@ const adminService = {
       throw error;
     }
   },
+  
+  // Personel sil
+  deletePersonel: async (id) => {
+    try {
+      const response = await api.delete(`/Admin/personel/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error(`Personel #${id} silinirken hata:`, error);
+      throw error;
+    }
+  },
 };
 
 export { authService, personelService, tayinService, sssService, adminService };

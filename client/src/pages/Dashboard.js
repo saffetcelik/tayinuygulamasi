@@ -315,14 +315,8 @@ const Dashboard = () => {
               )}
             </div>
             
-            {/* Modern bildirim ve çıkış butonları */}
-            <div className="flex items-center space-x-3 w-full md:w-auto justify-center md:justify-start">
-              <button className="p-2 hover:bg-primary-800/80 backdrop-blur-sm rounded-lg relative transition-all duration-300 shadow-md hover:shadow-lg">
-                <svg className="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                </svg>
-                <span className="absolute top-0 right-0 bg-red-500 rounded-full w-3 h-3 ring-2 ring-primary-700 animate-pulse"></span>
-              </button>
+            {/* Çıkış butonu */}
+            <div className="flex items-center w-full md:w-auto justify-center md:justify-start">
               <button 
                 onClick={handleLogout} 
                 className="flex items-center space-x-2 bg-primary-800/90 hover:bg-primary-900 rounded-lg px-4 py-2 text-sm transition-all duration-300 shadow-md hover:shadow-lg hover:translate-y-[-1px]"

@@ -72,7 +72,7 @@ const TayinTalepleriList = () => {
     let tercihlerHtml = '';
     
     talep.tercihler.forEach((tercih, index) => {
-      tercihlerHtml += `<li>${index + 1}. Tercih: ${tercih.adliye_adi} (${tercih.il_adi})</li>`;
+      tercihlerHtml += `<li>${index + 1}. Tercih: ${tercih.adliye_adi}${tercih.il_adi ? ` (${tercih.il_adi})` : ''}</li>`;
     });
     
     Swal.fire({
@@ -184,7 +184,7 @@ const TayinTalepleriList = () => {
                 <ul className="list-disc list-inside">
                   {talep.tercihler.map((tercih) => (
                     <li key={tercih.id}>
-                      {tercih.adliye_adi} ({tercih.il_adi})
+                      {tercih.adliye_adi}{tercih.il_adi ? ` (${tercih.il_adi})` : ''}
                     </li>
                   ))}
                 </ul>

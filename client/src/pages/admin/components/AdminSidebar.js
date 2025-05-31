@@ -37,8 +37,13 @@ const AdminSidebar = ({ activeTab, setActiveTab, mobileMenuOpen, setMobileMenuOp
         mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
       } md:translate-x-0 z-20 overflow-y-auto pb-16 border-r border-gray-100`}
     >
-      <div className="p-4 bg-gradient-to-r from-indigo-500 to-blue-600 text-white border-b border-indigo-600">
-        <h2 className="text-base font-semibold tracking-wider">YÖNETİM PANELİ</h2>
+      <div className="p-4 bg-gradient-to-r from-indigo-900 via-blue-800 to-indigo-800 text-white border-b border-indigo-600 flex items-center">
+        <div className="bg-white/10 p-2 rounded-lg backdrop-blur-sm border border-white/10 mr-3">
+          <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6h16M4 12h16m-7 6h7" />
+          </svg>
+        </div>
+        <span className="text-sm font-medium">MENÜ</span>
       </div>
       
       <div className="px-4 py-3 border-b border-gray-100">

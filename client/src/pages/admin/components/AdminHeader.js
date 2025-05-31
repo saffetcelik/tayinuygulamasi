@@ -19,7 +19,7 @@ const AdminHeader = ({ adminInfo, onLogout, mobileMenuOpen, setMobileMenuOpen })
   }, [profilMenuRef]);
 
   return (
-    <header className="bg-gradient-to-r from-indigo-900 via-blue-800 to-indigo-800 text-white fixed w-full top-0 left-0 z-30 shadow-lg">
+    <header className="bg-gradient-to-r from-indigo-900 via-blue-800 to-indigo-800 text-white fixed w-full top-0 left-0 z-30 shadow-lg border-b border-indigo-600">
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
         {/* Logo ve hamburger menü */}
         <div className="flex items-center">

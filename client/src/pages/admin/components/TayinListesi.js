@@ -9,8 +9,13 @@ const TayinListesi = ({ tayinTalepleri, loading, updateTayinDurumu, onRefresh })
   const [searchText, setSearchText] = useState('');
   const [siralama, setSiralama] = useState('newest');
 
-  // Durum güncelleme modalını aç
-  const openDurumModal = (tayin, initialDurum) => {
+  // Durum güncelleme modalını aç (tıklama sorunlarını önlemek için event.preventDefault ve stopPropagation eklendi)
+  const openDurumModal = (event, tayin, initialDurum) => {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    console.log('Durumu Değiştir butonuna tıklandı, Tayin ID:', tayin.id);
     setSelectedTayin({...tayin, durum: initialDurum || tayin.durum});
     setDurumAciklamasi(tayin.durumAciklamasi || '');
     setDurumModalOpen(true);
@@ -230,8 +235,8 @@ const TayinListesi = ({ tayinTalepleri, loading, updateTayinDurumu, onRefresh })
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <button
-                          onClick={() => openDurumModal(tayin)}
-                          className="text-blue-600 hover:text-blue-900 mr-3"
+                          onClick={(e) => openDurumModal(e, tayin)}
+                          className="text-blue-600 hover:text-blue-900 mr-3 cursor-pointer"
                         >
                           Durumu Değiştir
                         </button>
@@ -268,7 +273,9 @@ const TayinListesi = ({ tayinTalepleri, loading, updateTayinDurumu, onRefresh })
       
       {/* Durum Güncelleme Modal */}
       {durumModalOpen && selectedTayin && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50" style={{ zIndex: 9999, overflow: 'hidden' }}>
+          {console.log('Durum güncelleme modalı açılıyor')}
+          <div className="relative w-full h-full max-w-lg mx-auto flex items-center justify-center py-6 px-4 sm:px-6 lg:px-8">
           <div className="bg-white rounded-lg shadow-xl w-full max-w-md overflow-hidden animate-fade-in-up">
             <div className="p-6">
               <h3 className="text-lg font-bold text-gray-900 mb-4">
@@ -328,6 +335,7 @@ const TayinListesi = ({ tayinTalepleri, loading, updateTayinDurumu, onRefresh })
                 </button>
               </div>
             </div>
+          </div>
           </div>
         </div>
       )}

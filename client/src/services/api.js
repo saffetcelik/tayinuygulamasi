@@ -295,6 +295,29 @@ const adminService = {
     }
   },
   
+  // İstatistikleri getir (Admin için)
+  getIstatistikler: async () => {
+    try {
+      const response = await api.get('/Admin/istatistikler');
+      const data = response.data;
+      return data || {
+        toplamKullanici: 0,
+        toplamTayinTalebi: 0,
+        kullaniciArtisYuzdesi: 0,
+        tayinArtisYuzdesi: 0
+      };
+    } catch (error) {
+      console.error('İstatistikler alınamadı:', error);
+      // Hata durumunda varsayılan boş istatistik dön
+      return {
+        toplamKullanici: 0,
+        toplamTayinTalebi: 0,
+        kullaniciArtisYuzdesi: 0,
+        tayinArtisYuzdesi: 0
+      };
+    }
+  },
+  
   // Tayin taleplerini getir (Admin için)
   getTayinTalepleri: async () => {
     try {

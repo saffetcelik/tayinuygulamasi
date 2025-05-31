@@ -80,7 +80,7 @@ namespace TayinAPI.Controllers
                         IslemTuru = g.Key,
                         ToplamSayi = g.Count(),
                         BasariliSayi = g.Count(l => l.BasariliMi == "Evet"),
-                        BasarisizSayi = g.Count(l => l.BasariliMi == "Hayu0131r")
+                        BasarisizSayi = g.Count(l => l.BasariliMi == "Hayır")
                     })
                     .ToListAsync();
 
@@ -89,7 +89,7 @@ namespace TayinAPI.Controllers
                     sonYirmiDortSaatOzeti = logOzeti,
                     toplamLogSayisi = await _context.Loglar.CountAsync(),
                     toplamBasariliSayisi = await _context.Loglar.CountAsync(l => l.BasariliMi == "Evet"),
-                    toplamBasarisizSayisi = await _context.Loglar.CountAsync(l => l.BasariliMi == "Hayu0131r"),
+                    toplamBasarisizSayisi = await _context.Loglar.CountAsync(l => l.BasariliMi == "Hayır"),
                     sonGuncellemeZamani = DateTime.UtcNow
                 });
             }

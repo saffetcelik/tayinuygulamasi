@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { Users, FileText, BarChart2, Activity, Shield, Settings, LogOut, Database, Home, Calendar, ChevronRight, LogIn } from 'lucide-react';
+import { Users, FileText, BarChart2, Activity, Shield, Settings, LogOut, Database, Home, Calendar, ChevronRight, LogIn, HelpCircle } from 'lucide-react';
 
 const AdminSidebar = ({ activeTab, setActiveTab, mobileMenuOpen, setMobileMenuOpen, istatistikler = {}, onLogout }) => {
   const sidebarRef = useRef(null);
@@ -131,6 +131,21 @@ const AdminSidebar = ({ activeTab, setActiveTab, mobileMenuOpen, setMobileMenuOp
               >
                 <BarChart2 size={18} className="mr-3" />
                 <span className="font-medium">İstatistikler</span>
+                <ChevronRight size={16} className="ml-auto" />
+              </button>
+            </li>
+            
+            <li>
+              <button
+                onClick={() => handleTabChange('sss')}
+                className={`flex items-center w-full px-3 py-2.5 rounded transition-all duration-200 ${
+                  activeTab === 'sss' 
+                  ? 'bg-blue-600 text-white' 
+                  : 'text-white hover:bg-blue-800/50 hover:text-white'
+                }`}
+              >
+                <HelpCircle size={18} className="mr-3" />
+                <span className="font-medium">Sık Sorulan Sorular</span>
                 <ChevronRight size={16} className="ml-auto" />
               </button>
             </li>

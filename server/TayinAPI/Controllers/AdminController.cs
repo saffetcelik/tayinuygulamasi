@@ -345,6 +345,207 @@ namespace TayinAPI.Controllers
             }
         }
 
+        #region Sık Sorulan Sorular Yönetimi
+        
+        // Tüm sık sorulan soruları getir (aktif/pasif hepsi)
+        [HttpGet("sss")]
+        public async Task<IActionResult> GetAllSikcaSorulanSorular()
+        {
+            try
+            {
+                var sorular = await _context.SikcaSorulanSorular
+                    .OrderBy(s => s.Kategori)
+                    .ThenBy(s => s.SiraNo)
+                    .Select(s => new
+                    {
+                        s.Id,
+                        s.Soru,
+                        s.Cevap,
+                        s.Kategori,
+                        s.SiraNo,
+                        s.EklenmeTarihi,
+                        s.GuncellenmeTarihi,
+                        s.AktifMi
+                    })
+                    .ToListAsync();
+
+                return Ok(sorular);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Sık sorulan sorular getirilirken hata oluştu: {ex.Message}");
+            }
+        }
+
+        // Sık sorulan soru kategorilerini getir
+        [HttpGet("sss/kategoriler")]
+        public async Task<IActionResult> GetSSSKategorileri()
+        {
+            try
+            {
+                var kategoriler = await _context.SikcaSorulanSorular
+                    .Select(s => s.Kategori)
+                    .Distinct()
+                    .OrderBy(k => k)
+                    .ToListAsync();
+
+                return Ok(kategoriler);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"SSS kategorileri getirilirken hata oluştu: {ex.Message}");
+            }
+        }
+
+        // Sık sorulan soru detayını getir
+        [HttpGet("sss/{id}")]
+        public async Task<IActionResult> GetSSSById(int id)
+        {
+            try
+            {
+                var sss = await _context.SikcaSorulanSorular.FindAsync(id);
+                if (sss == null)
+                {
+                    return NotFound("Sık sorulan soru bulunamadı.");
+                }
+
+                return Ok(sss);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Sık sorulan soru detayı getirilirken hata oluştu: {ex.Message}");
+            }
+        }
+
+        // Yeni sık sorulan soru ekle
+        [HttpPost("sss")]
+        public async Task<IActionResult> CreateSSS([FromBody] SikcaSorulanSoru sss)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                // Null kontrolü ve varsayılan değerler
+                sss.EklenmeTarihi = DateTime.UtcNow; // UTC zaman kullan
+                sss.GuncellenmeTarihi = null; // Yeni eklenen kaydın güncellenme tarihi olmasın
+                sss.AktifMi = true;
+
+                // ID sıfırla (otomatik artan alanda sorun olmasın)
+                sss.Id = 0;
+
+                _context.SikcaSorulanSorular.Add(sss);
+                await _context.SaveChangesAsync();
+
+                return CreatedAtAction(nameof(GetSSSById), new { id = sss.Id }, sss);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Sık sorulan soru eklenirken hata oluştu: {ex.Message}");
+            }
+        }
+
+        // Sık sorulan soru güncelle
+        [HttpPut("sss/{id}")]
+        public async Task<IActionResult> UpdateSSS(int id, [FromBody] SikcaSorulanSoru sss)
+        {
+            try
+            {
+                if (id != sss.Id)
+                {
+                    return BadRequest("Parametre ID'si ile gönderilen ID eşleşmiyor.");
+                }
+
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                // Mevcut SSS'yi veritabanından oku
+                var existingSss = await _context.SikcaSorulanSorular.FindAsync(id);
+                if (existingSss == null)
+                {
+                    return NotFound("Sık sorulan soru bulunamadı.");
+                }
+
+                // Güncellenecek alanları mevcut nesneden kopyala
+                existingSss.Soru = sss.Soru;
+                existingSss.Cevap = sss.Cevap;
+                existingSss.Kategori = sss.Kategori;
+                existingSss.SiraNo = sss.SiraNo;
+                existingSss.AktifMi = sss.AktifMi;
+                existingSss.GuncellenmeTarihi = DateTime.UtcNow; // UTC zaman kullan
+
+                // Eklenme tarihini koruyoruz
+                // existingSss.EklenmeTarihi değiştirilmiyor
+
+                await _context.SaveChangesAsync();
+
+                return Ok(new { Mesaj = "Sık sorulan soru başarıyla güncellendi.", SoruId = id, AktifMi = existingSss.AktifMi });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Sık sorulan soru güncellenirken hata oluştu: {ex.Message}");
+            }
+        }
+
+        // Sık sorulan soru durumunu değiştir (aktif/pasif)
+        [HttpPut("sss/{id}/durum")]
+        public async Task<IActionResult> ToggleSSSStatus(int id)
+        {
+            try
+            {
+                var sss = await _context.SikcaSorulanSorular.FindAsync(id);
+                if (sss == null)
+                {
+                    return NotFound("Sık sorulan soru bulunamadı.");
+                }
+
+                // Durumu tersine çevir
+                sss.AktifMi = !sss.AktifMi;
+                sss.GuncellenmeTarihi = DateTime.UtcNow; // UTC zaman kullan
+
+                await _context.SaveChangesAsync();
+
+                return Ok(new { Mesaj = $"Sık sorulan soru durumu {(sss.AktifMi ? "aktif" : "pasif")} olarak güncellendi.", SoruId = id, AktifMi = sss.AktifMi });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Sık sorulan soru durumu değiştirilirken hata oluştu: {ex.Message}");
+            }
+        }
+
+        // Sık sorulan soru sil
+        [HttpDelete("sss/{id}")]
+        public async Task<IActionResult> DeleteSSS(int id)
+        {
+            try
+            {
+                var sss = await _context.SikcaSorulanSorular.FindAsync(id);
+                if (sss == null)
+                {
+                    return NotFound("Sık sorulan soru bulunamadı.");
+                }
+
+                _context.SikcaSorulanSorular.Remove(sss);
+                await _context.SaveChangesAsync();
+
+                return Ok(new { Mesaj = "Sık sorulan soru başarıyla silindi.", SoruId = id });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Sık sorulan soru silinirken hata oluştu: {ex.Message}");
+            }
+        }
+
+        private bool SSSExists(int id)
+        {
+            return _context.SikcaSorulanSorular.Any(e => e.Id == id);
+        }
+
+        #endregion
 
     }
 }

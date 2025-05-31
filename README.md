@@ -94,7 +94,7 @@ npm install
 Kök dizinde bulunan PowerShell scriptini kullanarak hem backend hem de frontend tek bir komutla başlatılabilir:
 
 ```powershell
-cd ../..  # Kök dizine dön
+cd ../  # Kök dizine dön
 ./start.ps1
 ```
 

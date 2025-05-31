@@ -266,10 +266,26 @@ const AdminPanel = () => {
             )}
           </div>
           
-          {/* Alt bilgi */}
-          <div className="mt-6 text-center text-gray-500 text-xs">
-            <p>© {new Date().getFullYear()} T.C. Adalet Bakanlığı - Tüm Hakları Saklıdır</p>
-            <p>Tayin ve Personel Yönetim Sistemi v1.0</p>
+          {/* Alt bilgi - Footer */}
+          <div className="mt-8 pb-6 pt-6 border-t border-gray-200 bg-gradient-to-b from-white to-gray-50 rounded-b-lg shadow-inner">
+            <div className="flex flex-col md:flex-row justify-between items-center px-6">
+              <div className="flex items-center mb-3 md:mb-0">
+                <div className="bg-indigo-800 text-white p-2 rounded-lg shadow-md mr-3">
+                  <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-gray-700">T.C. Adalet Bakanlığı</p>
+                  <p className="text-xs text-gray-500">Tayin ve Personel Yönetim Sistemi</p>
+                </div>
+              </div>
+              
+              <div className="text-center md:text-right">
+                <p className="text-xs text-gray-500">© {new Date().getFullYear()} Tüm Hakları Saklıdır</p>
+                <p className="text-xs text-gray-400 mt-1">Sürüm 1.0</p>
+              </div>
+            </div>
           </div>
         </main>
       </div>

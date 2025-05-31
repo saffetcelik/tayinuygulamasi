@@ -7,6 +7,7 @@ import AdminHeader from './components/AdminHeader';
 import TayinListesi from './components/TayinListesi';
 import LogPanel from './components/LogPanel';
 import PersonelListesi from './components/PersonelListesi';
+import SSSYonetimi from './components/SSSYonetimi';
 
 const AdminPanel = () => {
   const navigate = useNavigate();
@@ -173,12 +174,14 @@ const AdminPanel = () => {
               {activeTab === 'personeller' && 'Personel Yönetimi'}
               {activeTab === 'istatistikler' && 'İstatistikler'}
               {activeTab === 'logs' && 'Sistem Kayıtları'}
+              {activeTab === 'sss' && 'Sık Sorulan Sorular Yönetimi'}
             </h1>
             <p className="text-gray-600 mt-1">
               {activeTab === 'tayinler' && 'Tüm tayin taleplerini görüntüleyebilir ve yönetebilirsiniz.'}
               {activeTab === 'personeller' && 'Sistemdeki personelleri görüntüleyebilir ve yönetebilirsiniz.'}
               {activeTab === 'istatistikler' && 'Tayin taleplerine ilişkin istatistikleri inceleyebilirsiniz.'}
               {activeTab === 'logs' && 'Sistem üzerinde gerçekleştirilen işlemlerin kayıtlarını görüntüleyebilirsiniz.'}
+              {activeTab === 'sss' && 'Sık sorulan soruları ekleyebilir, düzenleyebilir ve silebilirsiniz.'}
             </p>
           </div>
           
@@ -304,6 +307,10 @@ const AdminPanel = () => {
             
             {activeTab === 'logs' && (
               <LogPanel />
+            )}
+            
+            {activeTab === 'sss' && (
+              <SSSYonetimi />
             )}
           </div>
           

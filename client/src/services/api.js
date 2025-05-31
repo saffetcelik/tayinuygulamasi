@@ -424,6 +424,89 @@ const adminService = {
       throw error;
     }
   },
+  
+  // Sık Sorulan Sorular yönetimi
+  
+  // Tüm sık sorulan soruları getir (aktif/pasif hepsi) - Admin için
+  getAllSSS: async () => {
+    try {
+      const response = await api.get('/Admin/sss');
+      const data = response.data;
+      return Array.isArray(data) ? data : 
+             (data && data.value && Array.isArray(data.value)) ? data.value : [];
+    } catch (error) {
+      console.error('Sık sorulan sorular alınamadı:', error);
+      throw error;
+    }
+  },
+  
+  // SSS kategorilerini getir
+  getSSSKategorileri: async () => {
+    try {
+      const response = await api.get('/Admin/sss/kategoriler');
+      const data = response.data;
+      return Array.isArray(data) ? data : 
+             (data && data.value && Array.isArray(data.value)) ? data.value : [];
+    } catch (error) {
+      console.error('SSS kategorileri alınamadı:', error);
+      throw error;
+    }
+  },
+  
+  // SSS detayını getir
+  getSSSById: async (id) => {
+    try {
+      const response = await api.get(`/Admin/sss/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error(`SSS #${id} detayları alınamadı:`, error);
+      throw error;
+    }
+  },
+  
+  // Yeni SSS ekle
+  createSSS: async (sssData) => {
+    try {
+      const response = await api.post('/Admin/sss', sssData);
+      return response.data;
+    } catch (error) {
+      console.error('SSS eklenirken hata:', error);
+      throw error;
+    }
+  },
+  
+  // SSS güncelle
+  updateSSS: async (id, sssData) => {
+    try {
+      const response = await api.put(`/Admin/sss/${id}`, sssData);
+      return response.data;
+    } catch (error) {
+      console.error(`SSS #${id} güncellenirken hata:`, error);
+      throw error;
+    }
+  },
+  
+  // SSS durumunu değiştir (aktif/pasif)
+  toggleSSSStatus: async (id) => {
+    try {
+      const response = await api.put(`/Admin/sss/${id}/durum`);
+      return response.data;
+    } catch (error) {
+      console.error(`SSS #${id} durumu değiştirilirken hata:`, error);
+      throw error;
+    }
+  },
+  
+  // SSS sil
+  deleteSSS: async (id) => {
+    try {
+      const response = await api.delete(`/Admin/sss/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error(`SSS #${id} silinirken hata:`, error);
+      throw error;
+    }
+  },
 };
 
 export { authService, personelService, tayinService, sssService, adminService };

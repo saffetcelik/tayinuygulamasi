@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { AlertTriangle, Info, XCircle, Search, ChevronDown, ChevronRight, Server, Clock, RefreshCw, ListFilter, CalendarDays, UserCircle, CheckCircle, XOctagon, FileText, Loader2 } from 'lucide-react';
+import { AlertTriangle, Info, XCircle, Search, ChevronDown, ChevronRight, Server, Clock, RefreshCw, ListFilter, CalendarDays, UserCircle, CheckCircle, XOctagon, FileText, Loader2, ChevronLeft, ChevronUp } from 'lucide-react';
 import { adminService } from '../../../services/api';
 
 // Tarih formatlama
@@ -117,6 +117,10 @@ const LogPanel = () => {
   const [loadingOzeti, setLoadingOzeti] = useState(true);
   const [selectedLog, setSelectedLog] = useState(null);
   const [showLogModal, setShowLogModal] = useState(false);
+  
+  // Sayfalama için state değişkenleri
+  const [currentPage, setCurrentPage] = useState(1);
+  const [logsPerPage, setLogsPerPage] = useState(5); // Sayfa başına 5 log varsayılan olarak
 
   useEffect(() => {
     fetchLogs();
@@ -135,6 +139,7 @@ const LogPanel = () => {
       if (filters.basariliMi) queryParams.append('basariliMi', filters.basariliMi);
       const response = await adminService.getLoglar(queryParams);
       setLogs(response);
+      setCurrentPage(1); // Filtreleme yapıldığında ilk sayfaya dön
     } catch (error) {
       console.error('Loglar alınırken hata:', error);
       setError('Loglar alınırken bir hata oluştu. Lütfen daha sonra tekrar deneyiniz.');
@@ -181,6 +186,30 @@ const LogPanel = () => {
     setShowLogModal(true);
   };
 
+  // Sayfalama hesaplamaları
+  const indexOfLastLog = currentPage * logsPerPage;
+  const indexOfFirstLog = indexOfLastLog - logsPerPage;
+  const currentLogs = logs.slice(indexOfFirstLog, indexOfLastLog);
+  const totalPages = Math.ceil(logs.length / logsPerPage);
+
+  // Sayfa değiştirme işlevi
+  const paginate = (pageNumber) => {
+    if (pageNumber > 0 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+      // Sayfayı yukarı kaydır
+      window.scrollTo({
+        top: document.getElementById('logPanelTop').offsetTop - 100,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  // Sayfa başına log sayısını değiştirme işlevi
+  const handleLogsPerPageChange = (e) => {
+    setLogsPerPage(Number(e.target.value));
+    setCurrentPage(1); // İlk sayfaya dön
+  };
+
   const SummaryCard = ({ title, value, icon, colorClass = 'text-blue-600', bgColorClass = 'bg-white' }) => (
     <div className={`${bgColorClass} p-4 rounded-lg shadow-md flex items-center space-x-3 border border-gray-200`}>
       <div className={`p-2 rounded-full ${colorClass.replace('text-', 'bg-')}/10`}>
@@ -193,8 +222,93 @@ const LogPanel = () => {
     </div>
   );
 
+  // Sayfalama bileşeni
+  const Pagination = () => {
+    const pageNumbers = [];
+    
+    // 5 sayfadan fazla varsa, akıllı sayfalama göster
+    if (totalPages > 5) {
+      // Her zaman ilk sayfayı göster
+      pageNumbers.push(1);
+      
+      // Eğer aktif sayfa 4'ten büyükse, '...' göster
+      if (currentPage > 3) {
+        pageNumbers.push('...');
+      }
+      
+      // Aktif sayfanın etrafındaki sayfaları göster
+      const startPage = Math.max(2, currentPage - 1);
+      const endPage = Math.min(totalPages - 1, currentPage + 1);
+      
+      for (let i = startPage; i <= endPage; i++) {
+        pageNumbers.push(i);
+      }
+      
+      // Eğer aktif sayfa sondan 3'ten yakınsa, '...' göster
+      if (currentPage < totalPages - 2) {
+        pageNumbers.push('...');
+      }
+      
+      // Her zaman son sayfayı göster
+      pageNumbers.push(totalPages);
+    } else {
+      // 5 veya daha az sayfa varsa, hepsini göster
+      for (let i = 1; i <= totalPages; i++) {
+        pageNumbers.push(i);
+      }
+    }
+    
+    return (
+      <div className="flex items-center justify-between mt-6">
+        <div className="flex items-center space-x-2">
+          <select 
+            className="border border-gray-300 rounded-md p-1 text-sm" 
+            value={logsPerPage}
+            onChange={handleLogsPerPageChange}
+          >
+            <option value="5">5 kayıt</option>
+            <option value="10">10 kayıt</option>
+            <option value="20">20 kayıt</option>
+            <option value="50">50 kayıt</option>
+          </select>
+          <span className="text-sm text-gray-500">
+            Toplam {logs.length} kayıttan {indexOfFirstLog + 1}-{Math.min(indexOfLastLog, logs.length)} arası gösteriliyor
+          </span>
+        </div>
+        
+        <nav className="flex items-center space-x-1">
+          <button 
+            onClick={() => paginate(currentPage - 1)} 
+            disabled={currentPage === 1}
+            className={`px-3 py-1 rounded-md ${currentPage === 1 ? 'text-gray-400 cursor-not-allowed' : 'text-gray-600 hover:bg-gray-200'}`}
+          >
+            Önceki
+          </button>
+          
+          {pageNumbers.map((number, index) => (
+            <button 
+              key={index} 
+              onClick={() => number !== '...' ? paginate(number) : null}
+              className={`px-3 py-1 rounded-md ${number === '...' ? 'text-gray-600 cursor-default' : number === currentPage ? 'bg-blue-600 text-white' : 'text-gray-600 hover:bg-gray-200'}`}
+            >
+              {number}
+            </button>
+          ))}
+          
+          <button 
+            onClick={() => paginate(currentPage + 1)} 
+            disabled={currentPage === totalPages}
+            className={`px-3 py-1 rounded-md ${currentPage === totalPages || totalPages === 0 ? 'text-gray-400 cursor-not-allowed' : 'text-gray-600 hover:bg-gray-200'}`}
+          >
+            Sonraki
+          </button>
+        </nav>
+      </div>
+    );
+  };
+
   return (
-    <div className="bg-gray-100 min-h-screen p-4 md:p-6 font-sans text-gray-800">
+    <div id="logPanelTop" className="bg-gray-100 min-h-screen p-4 md:p-6 font-sans text-gray-800">
       <header className="mb-6 flex justify-between items-center">
         <div>
             <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Sistem Logları Yönetimi</h1>
@@ -282,31 +396,47 @@ const LogPanel = () => {
         </form>
       </div>
 
-      {/* Log Listesi */}
-      <div>
-        {loading ? (
-          <div className="text-center py-10">
-            <Loader2 size={48} className="mx-auto text-blue-500 animate-spin mb-4" />
-            <p className="text-gray-600 text-lg">Loglar yükleniyor...</p>
+      {/* Loglar */}
+      {loading ? (
+        <div className="flex justify-center items-center h-40">
+          <div className="flex flex-col items-center">
+            <Loader2 size={40} className="animate-spin text-blue-600" />
+            <span className="mt-2 text-gray-600">Loglar yükleniyor...</span>
           </div>
-        ) : error ? (
-          <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-md text-center">
-            <AlertTriangle size={24} className="inline mr-2"/> {error}
+        </div>
+      ) : error ? (
+        <div className="p-4 bg-red-100 text-red-700 rounded-md">
+          <AlertTriangle size={20} className="inline mr-2" />
+          {error}
+        </div>
+      ) : logs.length === 0 ? (
+        <div className="p-4 bg-yellow-50 text-yellow-700 rounded-md text-center">
+          <AlertTriangle size={20} className="inline mr-2" />
+          Belirtilen kriterlere uygun log bulunamadı.
+        </div>
+      ) : (
+        <div className="mt-6">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-lg font-bold flex items-center">
+              <FileText size={18} className="mr-2" /> Log Kayıtları
+              <span className="text-xs ml-2 text-gray-500">({logs.length} kayıt)</span>
+            </h2>
+            <div className="text-sm text-gray-600">
+              Sayfa {currentPage} / {totalPages || 1}
+            </div>
           </div>
-        ) : logs.length === 0 ? (
-          <div className="text-center py-10 bg-white rounded-lg shadow-md border border-gray-200">
-            <Server size={48} className="mx-auto text-gray-400 mb-4" />
-            <p className="text-gray-600 text-lg">Filtrelere uygun log kaydı bulunamadı.</p>
-            <p className="text-gray-500 text-sm">Lütfen filtrelerinizi değiştirin veya daha sonra tekrar deneyin.</p>
-          </div>
-        ) : (
-          <div className="space-y-1">
-            {logs.map(log => (
+          
+          {/* Sadece mevcut sayfadaki logları göster */}
+          <div className="space-y-2">
+            {currentLogs.map((log) => (
               <LogEntryItem key={log.id} log={log} onShowDetail={showLogDetail} />
             ))}
           </div>
-        )}
-      </div>
+          
+          {/* Sayfalama */}
+          {logs.length > 0 && <Pagination />}
+        </div>
+      )}
       
       <LogDetailModal log={selectedLog} show={showLogModal} onClose={() => setShowLogModal(false)} />
 

@@ -548,7 +548,7 @@ const Dashboard = () => {
                 <p className="text-gray-600 mb-6">
                   Bu sayfadan yeni bir tayin talebi oluşturabilirsiniz. Lütfen aşağıdaki formu eksiksiz doldurunuz.
                 </p>
-                <TayinTalebiForm />
+                <TayinTalebiForm setActiveTab={setActiveTab} />
               </div>
             )}
 

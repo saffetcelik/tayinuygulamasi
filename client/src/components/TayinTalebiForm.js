@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { tayinService } from '../services/api';
 import Select from 'react-select';
-import { createPortal } from 'react-dom';
+import Swal from 'sweetalert2';
 import TurkeyMap from './TurkeyMap';
 import './TayinTalebiForm.css';
 
-const TayinTalebiForm = () => {
+const TayinTalebiForm = ({ setActiveTab }) => {
   // Sayfa yüklendikten sonra document.body'yi erişilebilir yapmak için state
   const [mounted, setMounted] = useState(false);
   
@@ -21,7 +21,6 @@ const TayinTalebiForm = () => {
   
   const [adliyeler, setAdliyeler] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
   const [talepTuruError, setTalepTuruError] = useState('');
   const [tercihError, setTercihError] = useState('');
@@ -221,13 +220,28 @@ const TayinTalebiForm = () => {
       const response = await tayinService.createTayinTalebi(talepData);
       console.log('Tayin talebi başarıyla oluşturuldu:', response);
       
-      setSuccess(true);
+      // Form verilerini sıfırla
       setTalep({
         talepTuru: '',
         aciklama: '',
         tercihler: [null, null, null]
       });
       setLoading(false);
+      
+      // SweetAlert2 ile başarı mesajı göster ve tamam butonuna tıklandığında yönlendir
+      Swal.fire({
+        title: 'Başarılı!',
+        text: 'Tayin talebiniz başarıyla oluşturuldu.',
+        icon: 'success',
+        confirmButtonText: 'Tamam',
+        confirmButtonColor: '#3B82F6'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Tamam butonuna tıklandığında Tayin Taleplerim sayfasına yönlendir
+          // Sayfa yenilenmesini önlemek için navigate yerine setActiveTab kullan
+          setActiveTab('list');
+        }
+      });
     } catch (err) {
       console.error('Tayin talebi oluşturulurken hata:', err);
       setError('Tayin talebi oluşturulurken bir hata meydana geldi.');
@@ -235,59 +249,10 @@ const TayinTalebiForm = () => {
     }
   };
 
-  // Başarı modalı
-  const SuccessModal = () => {
-    if (!mounted) return null;
-    
-    return createPortal(
-      <div
-        className={`fixed inset-0 bg-gray-800 bg-opacity-75 overflow-y-auto h-full w-full z-50 ${!success ? 'hidden' : ''} transition-opacity duration-300`}
-      >
-        <div className="relative top-20 mx-auto p-6 border w-96 shadow-lg rounded-lg bg-white">
-          <div className="mt-3 text-center">
-            <div className="mx-auto flex items-center justify-center h-14 w-14 rounded-full bg-green-100">
-              <svg
-                className="h-7 w-7 text-green-600"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M5 13l4 4L19 7"
-                ></path>
-              </svg>
-            </div>
-            <h3 className="text-xl leading-6 font-semibold text-gray-900 mt-3">
-              Başarılı!
-            </h3>
-            <div className="mt-3 px-7 py-3">
-              <p className="text-base text-gray-600">
-                Tayin talebiniz başarıyla oluşturuldu.
-              </p>
-            </div>
-            <div className="items-center px-4 py-3">
-              <button
-                onClick={() => setSuccess(false)}
-                className="px-4 py-2.5 bg-blue-600 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-colors duration-200"
-              >
-                Kapat
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>,
-      document.body
-    );
-  };
+
 
   return (
     <>
-      {success && <SuccessModal />}
-      
       <div className="max-w-7xl mx-auto my-8 p-8 bg-white rounded-xl shadow-lg border border-gray-100">
         <div className="flex items-center mb-6 pb-4 border-b border-gray-100">
           <svg className="w-6 h-6 text-blue-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

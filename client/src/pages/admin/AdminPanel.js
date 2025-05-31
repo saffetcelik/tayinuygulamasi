@@ -16,6 +16,12 @@ const AdminPanel = () => {
   const [adminInfo, setAdminInfo] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [refreshInterval, setRefreshInterval] = useState(null);
+  const [istatistikler, setIstatistikler] = useState({
+    toplamKullanici: 0,
+    toplamTayinTalebi: 0,
+    kullaniciArtisYuzdesi: 0,
+    tayinArtisYuzdesi: 0
+  });
   
   // Admin bilgilerini ve yetki kontrolü
   useEffect(() => {
@@ -31,14 +37,16 @@ const AdminPanel = () => {
     setAdminInfo({ kullaniciAdi: adminKullaniciAdi });
   }, [navigate]);
   
-  // Tayin taleplerini getir - ayrı bir useEffect içinde
+  // Tayin taleplerini ve personel listesini getir - ayrı bir useEffect içinde
   useEffect(() => {
     if (adminInfo) {
       fetchTayinTalepleri();
+      fetchPersoneller();
       
       // Her 2 dakikada bir otomatik yenileme yapalım
       const interval = setInterval(() => {
         fetchTayinTalepleri(false); // sessiz yenileme
+        fetchPersoneller(false); // sessiz yenileme
       }, 120000); // 2 dakika
       
       setRefreshInterval(interval);
@@ -65,6 +73,37 @@ const AdminPanel = () => {
       if (showLoading) setLoading(false);
     }
   };
+  
+  // Personel listesini getir
+  const [personeller, setPersoneller] = useState([]);
+  
+  // Personelleri getir
+  const fetchPersoneller = async (showLoading = false) => {
+    try {
+      const data = await adminService.getPersoneller();
+      setPersoneller(data);
+      
+      // İstatistikleri güncelle
+      setIstatistikler(prev => ({
+        ...prev,
+        toplamKullanici: data.length,
+        kullaniciArtisYuzdesi: 4 // Sabit bırakılabilir ya da hesaplanabilir
+      }));
+    } catch (error) {
+      console.error('Personeller alınamadı:', error);
+    }
+  };
+  
+  // İstatistikleri güncelle - tayinTalepleri değiştiğinde çağrılır
+  useEffect(() => {
+    if (tayinTalepleri.length > 0) {
+      setIstatistikler(prev => ({
+        ...prev,
+        toplamTayinTalebi: tayinTalepleri.length,
+        tayinArtisYuzdesi: 3 // Sabit bırakılabilir ya da hesaplanabilir
+      }));
+    }
+  }, [tayinTalepleri]);
   
   // Tayin durumunu güncelle
   const updateTayinDurumu = async (id, durum, durumAciklamasi) => {
@@ -105,6 +144,16 @@ const AdminPanel = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex flex-col">
+      {/* Sol Menü */}
+      <AdminSidebar 
+        activeTab={activeTab} 
+        setActiveTab={setActiveTab}
+        mobileMenuOpen={mobileMenuOpen}
+        setMobileMenuOpen={setMobileMenuOpen}
+        istatistikler={istatistikler}
+        onLogout={handleLogout}
+      />
+      
       {/* Admin Header */}
       <AdminHeader 
         adminInfo={adminInfo} 
@@ -114,17 +163,9 @@ const AdminPanel = () => {
       />
       
       {/* Ana İçerik */}
-      <div className="flex flex-1 pt-16">
-        {/* Sol Menü */}
-        <AdminSidebar 
-          activeTab={activeTab} 
-          setActiveTab={setActiveTab}
-          mobileMenuOpen={mobileMenuOpen}
-          setMobileMenuOpen={setMobileMenuOpen}
-        />
-        
+      <div className="flex flex-1 relative">
         {/* Sağ İçerik */}
-        <main className="flex-1 p-4 md:p-6 ml-0 md:ml-64 transition-all duration-300">
+        <main className="flex-1 p-4 md:p-6 ml-0 md:ml-64 mt-16 transition-all duration-300 bg-slate-50 min-h-screen">
           {/* Sayfanın başlık bölümü */}
           <div className="mb-6">
             <h1 className="text-2xl font-bold text-gray-800 tracking-tight">

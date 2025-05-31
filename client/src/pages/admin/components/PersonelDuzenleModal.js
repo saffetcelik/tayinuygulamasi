@@ -104,33 +104,40 @@ const PersonelDuzenleModal = ({ personelId, isOpen, onClose, onSave }) => {
   };
 
   if (!isOpen) return null;
+  
+  // Modal açıldığında konsola log yazdır
+  console.log('Personel düzenle modalı açılıyor');
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 overflow-auto py-8">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-3xl max-h-full overflow-auto">
-        {/* Modal Başlık */}
-        <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center sticky top-0 bg-white z-10">
-          <h3 className="text-xl font-semibold text-gray-800">
-            Personel Bilgilerini Düzenle
-          </h3>
-          <button
-            onClick={onClose}
-            className="text-gray-500 hover:text-gray-700 focus:outline-none"
-          >
-            <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
+    <div 
+      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" 
+      style={{ zIndex: 9999, overflow: 'hidden' }}
+    >
+      <div className="relative w-full h-full max-w-3xl mx-auto flex items-center justify-center py-6 px-4 sm:px-6 lg:px-8">
+        <div className="bg-white rounded-lg shadow-xl w-full max-w-3xl max-h-[85vh] overflow-auto">
+          {/* Modal Başlık */}
+          <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center sticky top-0 bg-white z-10">
+            <h3 className="text-xl font-semibold text-gray-800">
+              Personel Bilgilerini Düzenle
+            </h3>
+            <button
+              onClick={onClose}
+              className="text-gray-500 hover:text-gray-700 focus:outline-none"
+            >
+              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
 
-        {/* Modal İçerik */}
-        <div className="p-6">
-          {loading ? (
-            <div className="flex justify-center items-center py-10">
-              <div className="animate-spin rounded-full h-10 w-10 border-4 border-blue-500 border-t-transparent"></div>
-              <span className="ml-3 text-gray-600">Yükleniyor...</span>
-            </div>
-          ) : (
+          {/* Modal İçerik */}
+          <div className="p-6">
+            {loading ? (
+              <div className="flex justify-center items-center py-10">
+                <div className="animate-spin rounded-full h-10 w-10 border-4 border-blue-500 border-t-transparent"></div>
+                <span className="ml-3 text-gray-600">Yükleniyor...</span>
+              </div>
+            ) : (
             <form onSubmit={handleSubmit}>
               {/* Temel Bilgiler */}
               <div className="mb-6">
@@ -327,8 +334,9 @@ const PersonelDuzenleModal = ({ personelId, isOpen, onClose, onSave }) => {
                   Kaydet
                 </button>
               </div>
-            </form>
-          )}
+              </form>
+            )}
+          </div>
         </div>
       </div>
     </div>

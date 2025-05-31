@@ -138,7 +138,7 @@ const AdminPanel = () => {
   }
 
   // Özet istatistikleri hesaplayalım
-  const bekleyenTalepler = tayinTalepleri.filter(t => t.durum === 'Bekliyor').length;
+  const bekleyenTalepler = tayinTalepleri.filter(t => t.durum === 'Beklemede').length;
   const onaylananTalepler = tayinTalepleri.filter(t => t.durum === 'Onaylandı').length;
   const reddedilenTalepler = tayinTalepleri.filter(t => t.durum === 'Reddedildi').length;
 

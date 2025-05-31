@@ -20,6 +20,8 @@ const TayinTalebiForm = () => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
+  const [talepTuruError, setTalepTuruError] = useState('');
+  const [tercihError, setTercihError] = useState('');
 
   // Adliyeleri yükle
   useEffect(() => {
@@ -55,6 +57,15 @@ const TayinTalebiForm = () => {
       ...talep,
       [name]: value
     });
+    
+    // Talep türü değiştiğinde doğrulama yap
+    if (name === 'talepTuru') {
+      if (!value) {
+        setTalepTuruError('Lütfen bir talep türü seçiniz');
+      } else {
+        setTalepTuruError('');
+      }
+    }
   };
 
   // Tercih sıralaması değiştiğinde state'i güncelle
@@ -75,6 +86,14 @@ const TayinTalebiForm = () => {
       ...talep,
       tercihler: newTercihler
     });
+    
+    // Tercih değişikliğinde doğrulama yap
+    const validTercihler = newTercihler.filter(t => t !== null);
+    if (validTercihler.length === 0) {
+      setTercihError('Lütfen en az bir adliye tercihi yapınız');
+    } else {
+      setTercihError('');
+    }
   };
   
   // Belirli bir tercih sırası için kullanılabilir adliyeleri filtrele
@@ -92,20 +111,27 @@ const TayinTalebiForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
+    // Hata durumlarını temizle
+    setError('');
+    
     // Tercih kontrolü
     const validTercihler = talep.tercihler.filter(t => t !== null);
     if (validTercihler.length === 0) {
-      setError('Lütfen en az bir adliye tercihi yapınız.');
+      setTercihError('Lütfen en az bir adliye tercihi yapınız.');
+      setError('Lütfen formdaki hataları düzeltiniz.');
       return;
     }
     
     if (!talep.talepTuru) {
-      setError('Lütfen talep türünü seçiniz.');
+      setTalepTuruError('Lütfen talep türünü seçiniz.');
+      setError('Lütfen formdaki hataları düzeltiniz.');
       return;
     }
     
     setLoading(true);
     setError('');
+    setTalepTuruError('');
+    setTercihError('');
     
     try {
       // Tayin talebini oluşturacak veriyi hazırla
@@ -197,8 +223,7 @@ const TayinTalebiForm = () => {
                 name="talepTuru"
                 value={talep.talepTuru}
                 onChange={handleChange}
-                className="form-input pl-10"
-                required
+                className={`form-input pl-10 ${talepTuruError ? 'border-red-500 text-red-600' : ''}`}
               >
                 <option value="">Seçiniz</option>
                 <option value="Sağlık Nedeniyle">Sağlık Nedeniyle</option>
@@ -251,6 +276,14 @@ const TayinTalebiForm = () => {
             <p className="text-sm text-gray-500 mb-3 ml-9">
               Lütfen tayin olmak istediğiniz adliyeleri öncelik sırasına göre seçiniz.
             </p>
+            {tercihError && (
+              <div className="mb-3 flex items-center space-x-2 text-red-600 bg-red-50 px-3 py-2 rounded-md border-l-4 border-red-500 animate-fade-in transition-all duration-300 ease-in-out">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                </svg>
+                <span className="text-sm font-medium">{tercihError}</span>
+              </div>
+            )}
             
             {[0, 1, 2].map((index) => (
               <div key={index} className="mb-3">
@@ -277,13 +310,13 @@ const TayinTalebiForm = () => {
                   // Otomatik scroll'u devre dışı bırak
                   menuShouldScrollIntoView={false}
                   styles={{
-                    control: (base) => ({
+                    control: (base, state) => ({
                       ...base,
                       minHeight: '42px',
-                      borderColor: '#e2e8f0',
+                      borderColor: tercihError ? '#ef4444' : state.isFocused ? '#818cf8' : '#e2e8f0',
                       boxShadow: 'none',
                       '&:hover': {
-                        borderColor: '#cbd5e0'
+                        borderColor: tercihError ? '#ef4444' : state.isFocused ? '#818cf8' : '#cbd5e0'
                       }
                     }),
                     option: (base, state) => ({
@@ -301,6 +334,10 @@ const TayinTalebiForm = () => {
                     menuPortal: (base) => ({
                       ...base,
                       zIndex: 9999
+                    }),
+                    valueContainer: (base) => ({
+                      ...base,
+                      backgroundColor: tercihError ? 'rgba(254, 242, 242, 0.2)' : 'transparent'
                     })
                   }}
                 />
@@ -339,3 +376,15 @@ const TayinTalebiForm = () => {
 };
 
 export default TayinTalebiForm;
+
+// CSS için stil tanımlamaları
+document.head.appendChild(document.createElement('style')).textContent = `
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out forwards;
+}
+`;

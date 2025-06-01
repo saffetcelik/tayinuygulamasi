@@ -46,7 +46,7 @@ const AdminPanel = () => {
       
       // Her 2 dakikada bir otomatik yenileme yapalım
       const interval = setInterval(() => {
-        fetchTayinTalepleri(false); // sessiz yenileme
+        fetchTayinTalepleri(false, false); // sessiz yenileme, bildirim yok
         fetchPersoneller(false); // sessiz yenileme
       }, 120000); // 2 dakika
       
@@ -61,14 +61,16 @@ const AdminPanel = () => {
   }, [adminInfo]); // Sadece adminInfo değiştiğinde çalışır
   
   // Tayin taleplerini getir
-  const fetchTayinTalepleri = async (showLoading = true) => {
+  const fetchTayinTalepleri = async (showLoading = true, showNotification = false) => {
     if (showLoading) setLoading(true);
     try {
       const data = await adminService.getTayinTalepleri();
       setTayinTalepleri(data);
-      if (showLoading) toast.success('Tayin talepleri güncellendi.');
+      // Sadece bildirim gösterilmesi istendiğinde toast göster
+      if (showNotification) toast.success('Tayin talepleri güncellendi.');
     } catch (error) {
       console.error('Tayin talepleri alınamadı:', error);
+      // Hata durumunda her zaman bildirim göster
       toast.error('Tayin talepleri yüklenirken bir hata oluştu.');
     } finally {
       if (showLoading) setLoading(false);
@@ -111,8 +113,8 @@ const AdminPanel = () => {
     try {
       await adminService.updateTayinTalebiDurum(id, durum, durumAciklamasi);
       toast.success('Tayin talebi durumu güncellendi.');
-      // Listeyi yenile
-      fetchTayinTalepleri();
+      // Listeyi sessizce yenile (bildirim göstermeden)
+      fetchTayinTalepleri(true, false);
     } catch (error) {
       console.error('Tayin durumu güncellenemedi:', error);
       toast.error('Tayin durumu güncellenirken bir hata oluştu.');

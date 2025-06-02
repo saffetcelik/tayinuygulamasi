@@ -156,7 +156,7 @@ npm start
 ### Frontend Başlatma Sorunları
 - Node.js sürümünüzün 18+ olduğundan emin olun: `node --version`
 - npm paketlerini yeniden yükleyin: `npm ci`
-- OpenSSL sorunları için start.ps1 scriptini kullanın (otomatik olarak NODE_OPTIONS ayarlanır)
+
 
 ## Proje Yapısı
 

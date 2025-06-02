@@ -6,6 +6,24 @@ Bu proje, ASP.NET Core backend ve React frontend kullanan MVC mimarisine uygun b
 
 Tayin projesi, kullanıcı dostu arayüz tasarımı ve verimli bileşen kullanımına odaklanmış, mobil ve tablet cihazlarda uyumlu çalışacak şekilde tasarlanmıştır.
 
+### Kullanıcı Profil Özellikleri
+
+- **Profil Yönetimi:** Kullanıcılar kişisel bilgilerini ve mevcut adliye bilgilerini görüntüleyebilir
+- **Vektörel Türkiye Haritası:** Modern harita arayüzü ile şehir seçerek adliye tercihlerini yapabilme
+- **Adliye Seçimi:** Açılır menü üzerinden adliye seçimi yaparak tayin tercihlerini sıralayabilme
+- **Tayin Talepleri Takibi:** Kullanıcılar mevcut tayin taleplerini listeleyebilir, durumlarını görebilir ve taleplerini iptal edebilir
+- **Sıkça Sorulan Sorular:** Kategorize edilmiş SSS bölümü ve arama özelliği ile bilgilere hızlı erişim
+- **Şifre Değiştirme:** Kullanıcılar ayarlar menüsü üzerinden güvenli şekilde şifrelerini değiştirebilir
+
+### Admin Panel Özellikleri
+
+- **Personel Yönetimi:** Tüm personel kayıtlarını görüntüleme, düzenleme, silme
+- **Tayin Talepleri Yönetimi:** Gelen tayin taleplerini inceleme, onaylama veya reddetme
+- **Log Yönetimi:** Sistem loglarını çeşitli kriterlere göre filtreleme ve görüntüleme
+  - Loglanan İşlemler: Kimlik doğrulama, başarılı başarısız login istekleri, tayin talepleri
+  - Filtreleme Seçenekleri: Tarih, kullanıcı, işlem türü, başarı durumu
+- **Sıkça Sorulan Sorular Yönetimi:** SSS bölümü için soru ekleme, düzenleme, silme
+
 ## Teknolojiler
 
 ### Backend
@@ -19,11 +37,9 @@ Tayin projesi, kullanıcı dostu arayüz tasarımı ve verimli bileşen kullanı
 - React.js
 - React Router
 - Axios
-- Tailwind CSS
 - React Bootstrap
 - React Icons
 - React Simple Maps
-- Turkey Map React
 - SweetAlert2
 - React Toastify
 
@@ -81,6 +97,12 @@ dotnet restore
 dotnet tool install --global dotnet-ef  # Entity Framework CLI aracını kur
 dotnet ef database update  # Veritabanını oluştur ve migrate et
 ```
+
+> **Not:** Veritabanı migration işlemi sırasında otomatik olarak varsayılan başlangıç verileri oluşturulur. Bu veriler arasında:
+> - Rasgele personel kayıtları (farklı illerde görev yapan)
+> - Çeşitli durumlarda (Beklemede, İncelemede, Onaylandı, Reddedildi) tayin talepleri ve tercihleri
+> - Personellerin giriş, şifre değiştirme ve tayin taleplerine ait örnek log kayıtları 
+> - Kategorilere ayrılmış sıkça sorulan sorular bulunmaktadır. Böylece sistem ilk kurulumda demo kullanım için hazır hale gelir.
 
 ### 4. Frontend (React) Kurulumu
 

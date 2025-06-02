@@ -200,7 +200,7 @@ const AdminSidebar = ({ activeTab, setActiveTab, mobileMenuOpen, setMobileMenuOp
         <div className="pt-6 pb-2 px-4 mt-auto">
           <div className="p-3 rounded-lg bg-blue-800/30 text-center">
             <p className="text-xs text-blue-300">Tayin Sistemi</p>
-            <p className="text-xs text-blue-400 font-medium">v1.5.2</p>
+            <p className="text-xs text-blue-400 font-medium">v1.0</p>
           </div>
         </div>
         <p className="text-xs text-blue-400 mt-1 text-center">© {new Date().getFullYear()} Personel Tayin Sistemi v1.0</p>

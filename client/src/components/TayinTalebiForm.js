@@ -101,8 +101,7 @@ const TayinTalebiForm = ({ setActiveTab }) => {
     // 3. tercih de seçildiyse butonu vurgula
     if (validTercihler.length === 3) {
       setHighlightSubmitButton(true);
-      // 5 saniye sonra vurgulamayı kaldır
-      setTimeout(() => setHighlightSubmitButton(false), 5000);
+      // Artık butona tıklanana kadar animasyon devam edecek
     }
   };
   
@@ -159,8 +158,6 @@ const TayinTalebiForm = ({ setActiveTab }) => {
     const validTercihler = newTercihler.filter(t => t !== null);
     if (validTercihler.length === 3) {
       setHighlightSubmitButton(true);
-      // 5 saniye sonra vurgulamayı kaldır
-      setTimeout(() => setHighlightSubmitButton(false), 5000);
     }
   };
   
@@ -178,6 +175,8 @@ const TayinTalebiForm = ({ setActiveTab }) => {
   // Formu gönder
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // Form gönderildiğinde animasyonu durdur
+    setHighlightSubmitButton(false);
     
     // Hata durumlarını temizle
     setError('');

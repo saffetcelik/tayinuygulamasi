@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using TayinAPI.Data;
 using TayinAPI.Models;
 using Microsoft.AspNetCore.Authorization;
+using TayinAPI.Services;
 
 namespace TayinAPI.Controllers
 {
@@ -16,10 +17,12 @@ namespace TayinAPI.Controllers
     public class TayinController : ControllerBase
     {
         private readonly TayinDbContext _context;
+        private readonly LogService _logService;
 
-        public TayinController(TayinDbContext context)
+        public TayinController(TayinDbContext context, LogService logService)
         {
             _context = context;
+            _logService = logService;
         }
 
         // Tüm adliyeleri listele
@@ -178,6 +181,10 @@ namespace TayinAPI.Controllers
                     await _context.SaveChangesAsync();
                     await transaction.CommitAsync();
 
+                    // Tayin talebi oluşturma işlemini logla
+                    string detayBilgi = $"Tayin talebi oluşturuldu. Talep ID: {tayinTalebi.Id}, Talep Türü: {model.TalepTuru}";
+                    await _logService.KaydetAsync("Tayin Talebi Oluşturma", detayBilgi, sicilNo, personel.Ad + " " + personel.Soyad, true);
+
                     return Ok(new { id = tayinTalebi.Id, message = "Tayin talebi başarıyla oluşturuldu" });
                 }
                 catch (Exception ex)
@@ -185,6 +192,11 @@ namespace TayinAPI.Controllers
                     await transaction.RollbackAsync();
                     Console.WriteLine($"Tayin talebi oluşturma işlemi sırasında hata: {ex.Message}");
                     Console.WriteLine($"Stack trace: {ex.StackTrace}");
+                    
+                    // Tayin talebi oluşturma hatası logla
+                    string hataBilgisi = $"Hata: {ex.Message}";
+                    await _logService.KaydetAsync("Tayin Talebi Oluşturma", "Tayin talebi oluşturma işlemi başarısız oldu", sicilNo, personel != null ? personel.Ad + " " + personel.Soyad : "", false, hataBilgisi);
+                    
                     return StatusCode(500, "Tayin talebi oluşturulurken bir hata oluştu: " + ex.Message);
                 }
             }
@@ -194,7 +206,8 @@ namespace TayinAPI.Controllers
         [HttpDelete("talepler/{id}")]
         public async Task<IActionResult> CancelTayinTalebi(int id, [FromQuery] string sicilNo)
         {
-            // Debug mesajları ekle
+            // Debug mesajları ekle .\start.ps1
+            
             Console.WriteLine($"Tayin talebi iptal isteği alındı: TalepId={id}, SicilNo={sicilNo}");
             
             // Sicil numarasına göre personeli bul
@@ -246,11 +259,20 @@ namespace TayinAPI.Controllers
                     await _context.SaveChangesAsync();
                     await transaction.CommitAsync();
 
+                    // Tayin talebi iptal işlemini logla
+                    string detayBilgi = $"Tayin talebi iptal edildi. Talep ID: {tayinTalebi.Id}, Talep Türü: {tayinTalebi.TalepTuru}";
+                    await _logService.KaydetAsync("Tayin Talebi İptal", detayBilgi, sicilNo, personel.Ad + " " + personel.Soyad, true);
+
                     return Ok(new { message = "Tayin talebi başarıyla iptal edildi" });
                 }
                 catch (Exception ex)
                 {
                     await transaction.RollbackAsync();
+                    
+                    // Tayin talebi iptal etme hatası logla
+                    string hataBilgisi = $"Hata: {ex.Message}";
+                    await _logService.KaydetAsync("Tayin Talebi İptal", "Tayin talebi iptal işlemi başarısız oldu", sicilNo, personel != null ? personel.Ad + " " + personel.Soyad : "", false, hataBilgisi);
+                    
                     return StatusCode(500, "Tayin talebi iptal edilirken bir hata oluştu: " + ex.Message);
                 }
             }

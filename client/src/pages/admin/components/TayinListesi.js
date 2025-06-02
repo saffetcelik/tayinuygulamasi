@@ -98,7 +98,7 @@ const TayinListesi = ({ tayinTalepleri, loading, updateTayinDurumu, onRefresh })
         <div className="flex flex-col md:flex-row space-y-3 md:space-y-0 md:space-x-3 w-full md:w-auto">
           {/* Yenile butonu */}
           <button 
-            onClick={onRefresh}
+            onClick={() => onRefresh(true, true)}
             className="px-4 py-2 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors flex items-center justify-center"
           >
             <svg className="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">

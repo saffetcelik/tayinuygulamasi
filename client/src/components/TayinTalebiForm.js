@@ -3,6 +3,7 @@ import { tayinService } from '../services/api';
 import Select from 'react-select';
 import Swal from 'sweetalert2';
 import TurkeyMap from './TurkeyMap';
+import { toast } from 'react-toastify';
 import './TayinTalebiForm.css';
 
 const TayinTalebiForm = ({ setActiveTab }) => {
@@ -116,7 +117,9 @@ const TayinTalebiForm = ({ setActiveTab }) => {
     });
     
     if (ilAdliyeleri.length === 0) {
-      setTercihError(`${ilAdi} ilinde adliye bulunamadı.`);
+      const errorMsg = `${ilAdi} ilinde adliye bulunamadı.`;
+      setTercihError(errorMsg);
+      toast.warning(errorMsg);
       setTimeout(() => setTercihError(''), 3000);
       return;
     }
@@ -126,7 +129,9 @@ const TayinTalebiForm = ({ setActiveTab }) => {
     
     // Tüm tercihler doluysa ve maksimum tercih sayısına ulaşıldıysa uyarı göster
     if (emptyIndex === -1) {
-      setTercihError(`Maksimum 3 tercih yapabilirsiniz. Yeni tercih yapmak için önce bir tercihi temizleyin.`);
+      const errorMsg = `Maksimum 3 tercih yapabilirsiniz. Yeni tercih yapmak için önce bir tercihi temizleyin.`;
+      setTercihError(errorMsg);
+      toast.warning(errorMsg);
       setTimeout(() => setTercihError(''), 3000);
       return;
     }
@@ -141,7 +146,9 @@ const TayinTalebiForm = ({ setActiveTab }) => {
     });
     
     if (isAlreadySelected) {
-      setTercihError(`${ilAdi} ilinden bir adliye zaten tercihlerinizde bulunuyor.`);
+      const errorMsg = `${ilAdi} ilinden bir adliye zaten tercihlerinizde bulunuyor.`;
+      setTercihError(errorMsg);
+      toast.warning(errorMsg);
       setTimeout(() => setTercihError(''), 3000);
       return;
     }
@@ -187,12 +194,14 @@ const TayinTalebiForm = ({ setActiveTab }) => {
     if (validTercihler.length === 0) {
       setTercihError('Lütfen en az bir adliye tercihi yapınız.');
       setError('Lütfen formdaki hataları düzeltiniz.');
+      toast.error('Lütfen en az bir adliye tercihi yapınız.');
       return;
     }
     
     if (!talep.talepTuru) {
       setTalepTuruError('Lütfen talep türünü seçiniz.');
       setError('Lütfen formdaki hataları düzeltiniz.');
+      toast.error('Lütfen talep türünü seçiniz.');
       return;
     }
     
@@ -228,6 +237,9 @@ const TayinTalebiForm = ({ setActiveTab }) => {
       });
       setLoading(false);
       
+      // Hem Toast bildirimi hem de SweetAlert2 ile başarı mesajı göster
+      toast.success('Tayin talebiniz başarıyla oluşturuldu.');
+      
       // SweetAlert2 ile başarı mesajı göster ve tamam butonuna tıklandığında yönlendir
       Swal.fire({
         title: 'Başarılı!',
@@ -244,7 +256,9 @@ const TayinTalebiForm = ({ setActiveTab }) => {
       });
     } catch (err) {
       console.error('Tayin talebi oluşturulurken hata:', err);
-      setError('Tayin talebi oluşturulurken bir hata meydana geldi.');
+      const errorMsg = 'Tayin talebi oluşturulurken bir hata meydana geldi.';
+      setError(errorMsg);
+      toast.error(errorMsg);
       setLoading(false);
     }
   };

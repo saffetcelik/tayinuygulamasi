@@ -1,0 +1,76 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: tayin-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: tayin
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - tayin-network
+
+  backend:
+    build:
+      context: .
+      dockerfile: dockerfiles/backend.Dockerfile
+    container_name: tayin-backend
+    restart: on-failure
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__DefaultConnection=Host=postgres;Database=tayin;Username=postgres;Password=root
+      - Jwt__Key=3MX7dRLzbY6fXPYVIUlRWcXltjQdUEtwKmojJuzVBwc
+      - Jwt__Issuer=TayinAPI
+      - Jwt__Audience=TayinClient
+      - CorsOrigins__0=http://localhost:3000
+      - CorsOrigins__1=http://localhost:80
+      - CorsOrigins__2=http://frontend:80
+      - CorsOrigins__3=http://localhost
+      - DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
+      - LC_ALL=tr_TR.UTF-8
+      - LANG=tr_TR.UTF-8
+      - TZ=Europe/Istanbul
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/api/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    ports:
+      - "5000:80"
+    networks:
+      - tayin-network
+
+  frontend:
+    build:
+      context: .
+      dockerfile: dockerfiles/frontend.Dockerfile
+    container_name: tayin-frontend
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
+    networks:
+      - tayin-network
+
+networks:
+  tayin-network:
+    driver: bridge
+
+volumes:
+  postgres-data:

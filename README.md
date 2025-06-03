@@ -84,7 +84,7 @@ cd tayinuygulamasi
 ```json
 {
   "ConnectionStrings": {
-    "DefaultConnection": "Host=localhost;Port=5432;Database=TayinDB;Username=postgres;Password=şifreniz"
+    "DefaultConnection": "Host=localhost;Port=5432;Database=tayin;Username=postgres;Password=şifreniz"
   }
 }
 ```
@@ -103,6 +103,8 @@ dotnet ef database update  # Veritabanını oluştur ve migrate et
 > - Çeşitli durumlarda (Beklemede, İncelemede, Onaylandı, Reddedildi) tayin talepleri ve tercihleri
 > - Personellerin giriş, şifre değiştirme ve tayin taleplerine ait örnek log kayıtları 
 > - Kategorilere ayrılmış sıkça sorulan sorular bulunmaktadır. Böylece sistem ilk kurulumda demo kullanım için hazır hale gelir.
+>
+
 
 ### 4. Frontend (React) Kurulumu
 
@@ -115,8 +117,7 @@ npm install
 
 Kök dizinde bulunan PowerShell scriptini kullanarak hem backend hem de frontend tek bir komutla başlatılabilir:
 
-```powershell
-cd ../  # Kök dizine dön
+``` kök dizinde start.ps1 dosyasını çalıştır
 ./start.ps1
 ```
 
@@ -142,6 +143,34 @@ cd client
 npm start
 ```
 
+
+**Uygulama Erişim Linkleri:**
+- Kullanıcı Girişi: http://localhost:3001
+- Admin Panel Girişi: http://localhost:3001/admin/panel
+
+> **Varsayılan Kullanıcı Bilgileri:**
+>
+> **Admin Paneli Kullanıcısı:**
+> - Kullanıcı Adı: `admin`
+> - Şifre: `123`
+>
+> **Personel (Deneme) Kullanıcıları:**
+> 1. **Zabıt Katibi**
+>    - Sicil No: `229301`
+>    - Şifre: `123`
+>    - Ad Soyad: Saffet Çelik
+> 
+> 2. **Mübaşir**
+>    - Sicil No: `229302`
+>    - Şifre: `123`
+>    - Ad Soyad: Zeynep Çelik
+> 
+> 3. **Yazı İşleri Müdürü**
+>    - Sicil No: `229304`
+>    - Şifre: `123`
+>    - Ad Soyad: Ayşe Demir
+
+
 ## Sorun Giderme
 
 ### Veritabanı Bağlantı Hatası
@@ -156,7 +185,6 @@ npm start
 ### Frontend Başlatma Sorunları
 - Node.js sürümünüzün 18+ olduğundan emin olun: `node --version`
 - npm paketlerini yeniden yükleyin: `npm ci`
-- OpenSSL sorunları için start.ps1 scriptini kullanın (otomatik olarak NODE_OPTIONS ayarlanır)
 
 ## Proje Yapısı
 

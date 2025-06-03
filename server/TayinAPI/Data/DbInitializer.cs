@@ -33,7 +33,7 @@ namespace TayinAPI.Data
                 var admin = new Admin
                 {
                     KullaniciAdi = "admin",
-                    Sifre = BCrypt.Net.BCrypt.HashPassword("1"), // Güvenli şifre hash'leme
+                    Sifre = BCrypt.Net.BCrypt.HashPassword("123"), // Güvenli şifre hash'leme
                     AdSoyad = "Sistem Yöneticisi",
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow,
@@ -150,7 +150,7 @@ namespace TayinAPI.Data
                     new Personel
                     {
                         SicilNo = "229301",
-                        Sifre = BCrypt.Net.BCrypt.HashPassword("1"), // Güvenli şifre hash'leme
+                        Sifre = BCrypt.Net.BCrypt.HashPassword("123"), // Güvenli şifre hash'leme
                         Ad = "Saffet",
                         Soyad = "Çelik",
                         Email = "saffet.celik@adalet.gov.tr",
@@ -164,38 +164,8 @@ namespace TayinAPI.Data
                     },
                     new Personel
                     {
-                        SicilNo = "229302",
-                        Sifre = BCrypt.Net.BCrypt.HashPassword("1"),
-                        Ad = "Zeynep",
-                        Soyad = "Çelik",
-                        Email = "zeynep.celik@adalet.gov.tr",
-                        MevcutAdliyeId = adliyeler[random.Next(adliyeler.Count)].Id,
-                        Unvan = "Mübaşir",
-                        Telefon = GenerateRandomPhoneNumber(),
-                        DogumTarihi = GenerateRandomBirthDate(),
-                        BaslamaTarihi = simdi.AddYears(-1),
-                        CreatedAt = simdi,
-                        UpdatedAt = simdi
-                    },
-                    new Personel
-                    {
-                        SicilNo = "229303",
-                        Sifre = BCrypt.Net.BCrypt.HashPassword("1"),
-                        Ad = "Ali",
-                        Soyad = "Yılmaz",
-                        Email = "ali.yilmaz@adalet.gov.tr",
-                        MevcutAdliyeId = adliyeler[random.Next(adliyeler.Count)].Id,
-                        Unvan = "Zabıt Katibi",
-                        Telefon = GenerateRandomPhoneNumber(),
-                        DogumTarihi = GenerateRandomBirthDate(),
-                        BaslamaTarihi = simdi.AddYears(-3),
-                        CreatedAt = simdi,
-                        UpdatedAt = simdi
-                    },
-                    new Personel
-                    {
                         SicilNo = "229304",
-                        Sifre = BCrypt.Net.BCrypt.HashPassword("1"),
+                        Sifre = BCrypt.Net.BCrypt.HashPassword("123"),
                         Ad = "Ayşe",
                         Soyad = "Demir",
                         Email = "ayse.demir@adalet.gov.tr",
@@ -210,7 +180,7 @@ namespace TayinAPI.Data
                     new Personel
                     {
                         SicilNo = "229305",
-                        Sifre = BCrypt.Net.BCrypt.HashPassword("1"),
+                        Sifre = BCrypt.Net.BCrypt.HashPassword("123"),
                         Ad = "Ahmet",
                         Soyad = "Öztürk",
                         Email = "ahmet.ozturk@adalet.gov.tr",

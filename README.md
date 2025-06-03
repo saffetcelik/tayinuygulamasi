@@ -20,7 +20,7 @@ Tayin projesi, kullanıcı dostu arayüz tasarımı ve verimli bileşen kullanı
 - **Personel Yönetimi:** Tüm personel kayıtlarını görüntüleme, düzenleme, silme
 - **Tayin Talepleri Yönetimi:** Gelen tayin taleplerini inceleme, onaylama veya reddetme
 - **Log Yönetimi:** Sistem loglarını çeşitli kriterlere göre filtreleme ve görüntüleme
-  - Loglanan İşlemler: Kimlik doğrulama, başarılı başarısız login istekleri, tayin talepleri
+  - Loglanan İşlemler: Kimlik doğrulama, başarılı başarısız login istekleri, tayin talepleri, sistem hataları
   - Filtreleme Seçenekleri: Tarih, kullanıcı, işlem türü, başarı durumu
 - **Sıkça Sorulan Sorular Yönetimi:** SSS bölümü için soru ekleme, düzenleme, silme
 
@@ -171,6 +171,18 @@ npm start
 >    - Ad Soyad: Ayşe Demir
 
 
+
+### Sistem Hatalarının Loglandığını Test Etme (Admin panelde Log Yönetimini test etmek için)
+- Aşağıdaki adresler üzerinden çeşitli hata senaryolarını test edebilirsiniz:
+  1. Manuel log oluşturma: `http://localhost:5000/api/TestHata/log-olustur?mesaj=Test%20Mesaj`
+  2. Sıfıra bölme hatası: `http://localhost:5000/api/TestHata/bolme-hatasi?sayi=0`
+  3. Veritabanı hatası: `http://localhost:5000/api/TestHata/veritabani-hatasi`
+  4. Bellek hatası: `http://localhost:5000/api/TestHata/bellek-hatasi`
+- Hata loglarını admin panelindeki Log Yönetimi bölümünden görüntüleyebilirsiniz
+- Frontend hatalarının yakalanması için Axios hata interceptor'ı eklenmiştir
+- Sistem hatalarının tümü otomatik olarak loglanır ve admin panelinde incelenebilir
+
+
 ## Sorun Giderme
 
 ### Veritabanı Bağlantı Hatası
@@ -181,6 +193,7 @@ npm start
 ### Backend Başlatma Sorunları
 - .NET SDK'nın doğru sürümünün (8.0+) yüklü olduğunu kontrol edin: `dotnet --version`
 - Eksik paketleri yükleyin: `dotnet restore`
+
 
 ### Frontend Başlatma Sorunları
 - Node.js sürümünüzün 18+ olduğundan emin olun: `node --version`

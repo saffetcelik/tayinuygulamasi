@@ -42,6 +42,56 @@ api.interceptors.request.use(
   }
 );
 
+// Hata yakalama interceptor'u
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    // Hata bilgilerini topla
+    const errorData = {
+      islemTuru: "Frontend Sistem Hatası",
+      detayBilgi: `API isteği başarısız: ${error?.config?.url || 'Bilinmeyen URL'}`,
+      kullaniciSicilNo: localStorage.getItem('userSicil') || 'Bilinmeyen Kullanıcı',
+      kullaniciAdi: null,
+      basariliMi: "Hayır",
+      hataBilgisi: JSON.stringify({
+        message: error?.message,
+        status: error?.response?.status,
+        statusText: error?.response?.statusText,
+        method: error?.config?.method,
+        url: error?.config?.url,
+        data: error?.config?.data,
+        time: new Date().toISOString()
+      })
+    };
+
+    // Sunucu hatası olduğunda loglama yap (5xx hatalar)
+    if (error?.response?.status >= 500) {
+      try {
+        // Log API'sine direkt axios ile istek yapalım (api instance değil - sonsuz döngüye girmemek için)
+        await axios.post(`${API_URL}/Log`, errorData, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('adminToken') || localStorage.getItem('token')}`
+          }
+        });
+        console.log('Sistem hatası loglandı:', errorData.detayBilgi);
+      } catch (logError) {
+        // Log kaydedilemezse local storage'a kaydet
+        console.error('Hata loglanırken ikincil hata oluştu:', logError);
+        const clientErrorLogs = JSON.parse(localStorage.getItem('clientErrorLogs') || '[]');
+        clientErrorLogs.push({
+          ...errorData,
+          timestamp: new Date().toISOString(),
+          logError: logError?.message
+        });
+        localStorage.setItem('clientErrorLogs', JSON.stringify(clientErrorLogs.slice(-20))); // Son 20 hatayı sakla
+      }
+    }
+
+    return Promise.reject(error);
+  }
+);
+
 // Kimlik doğrulama servisleri
 const authService = {
   // Giriş işlemi

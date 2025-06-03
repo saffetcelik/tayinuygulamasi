@@ -34,176 +34,175 @@ const AdminSidebar = ({ activeTab, setActiveTab, mobileMenuOpen, setMobileMenuOp
   return (
     <aside
       ref={sidebarRef}
-      className={`fixed bg-[#0f172a] text-white w-64 h-full top-0 left-0 shadow-lg transition-transform duration-300 transform ${
+      className={`fixed bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 text-white w-72 h-full top-0 left-0 shadow-2xl transition-transform duration-300 transform ${
         mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
-      } md:translate-x-0 z-30 overflow-y-auto pb-16`}
+      } md:translate-x-0 z-30 overflow-y-auto overflow-x-hidden scrollbar-hide border-r border-slate-700/50`}
+      style={{
+        scrollbarWidth: 'none',
+        msOverflowStyle: 'none',
+        WebkitScrollbar: { display: 'none' }
+      }}
     >
-      {/* Logo ve Başlık - Minimalist Tasarım */}
-      <div className="p-5 border-b border-blue-800/20">
-        <div className="flex items-center justify-center mb-4">
-          <div className="bg-blue-600 rounded-lg p-2 shadow">
-            <svg className="w-6 h-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-            </svg>
-          </div>
-        </div>
+      {/* Kurumsal Header - Kompakt */}
+      <div className="p-6 border-b border-slate-700/30">
         <div className="text-center">
-          <h2 className="text-lg font-bold tracking-tight">Tayin Sistemi</h2>
-          <div className="text-xs text-blue-400/80 uppercase tracking-wider font-medium mt-1">Yönetim Paneli</div>
-        </div>
-      </div>
-      
-      {/* Admin Profil Bilgisi - Minimalist */}
-      <div className="py-3 px-4 border-b border-blue-800/20 text-center">
-        <div className="inline-flex items-center justify-center mb-1">
-          <div className="bg-blue-700 text-white rounded-full p-1 mr-2">
-            <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+          <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl shadow-lg mb-4">
+            <svg className="w-7 h-7 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
             </svg>
           </div>
-          <span className="text-sm font-medium">Admin Kullanıcı</span>
+          <h1 className="text-lg font-bold text-white mb-2 tracking-tight">T.C. Adalet Bakanlığı</h1>
+          <div className="w-12 h-0.5 bg-gradient-to-r from-blue-400 to-blue-600 mx-auto rounded-full mb-3"></div>
+          <p className="text-xs text-slate-400 font-medium uppercase tracking-wider">Tayin Yönetim Sistemi</p>
         </div>
       </div>
       
-      {/* İstatistik Kartları */}
-      <div className="p-3 border-b border-blue-800">
-        <div className="grid grid-cols-2 gap-2">
-          <div className="bg-blue-800/50 p-3 rounded-lg">
-            <div className="text-xs text-blue-300">Toplam Kullanıcı</div>
-            <div className="text-xl font-bold text-white">{istatistikler.toplamKullanici || 0}</div>
 
-          </div>
-          <div className="bg-blue-800/50 p-3 rounded-lg">
-            <div className="text-xs text-blue-300">Tayin Talebi</div>
-            <div className="text-xl font-bold text-white">{istatistikler.toplamTayinTalebi || 0}</div>
-
-          </div>
-        </div>
-      </div>
       
-      {/* Ana Menü */}
-      <div className="p-4">
-        <div className="mb-4">
-          <p className="text-xs uppercase font-bold tracking-wider text-white/70 mb-3 pl-2 flex items-center">
-            <Home size={14} className="mr-1" />
-            <span>GENEL</span>
-          </p>
-          
-          <ul className="space-y-1">
-            <li>
-              <button
-                onClick={() => handleTabChange('tayinler')}
-                className={`flex items-center w-full px-3 py-2.5 rounded transition-all duration-200 ${
-                  activeTab === 'tayinler' 
-                  ? 'bg-blue-600 text-white' 
-                  : 'text-white hover:bg-blue-800/50 hover:text-white'
-                }`}
-              >
-                <Calendar size={18} className="mr-3" />
-                <span className="font-medium">Tayin Talepleri</span>
-                <ChevronRight size={16} className="ml-auto" />
-              </button>
-            </li>
-            
-            <li>
-              <button
-                onClick={() => handleTabChange('personeller')}
-                className={`flex items-center w-full px-3 py-2.5 rounded transition-all duration-200 ${
-                  activeTab === 'personeller' 
-                  ? 'bg-blue-600 text-white' 
-                  : 'text-white hover:bg-blue-800/50 hover:text-white'
-                }`}
-              >
-                <Users size={18} className="mr-3" />
-                <span className="font-medium">Personeller</span>
-                <ChevronRight size={16} className="ml-auto" />
-              </button>
-            </li>
-            
-            <li>
-              <button
-                onClick={() => handleTabChange('istatistikler')}
-                className={`flex items-center w-full px-3 py-2.5 rounded transition-all duration-200 ${
-                  activeTab === 'istatistikler' 
-                  ? 'bg-blue-600 text-white' 
-                  : 'text-white hover:bg-blue-800/50 hover:text-white'
-                }`}
-              >
-                <BarChart2 size={18} className="mr-3" />
-                <span className="font-medium">İstatistikler</span>
-                <ChevronRight size={16} className="ml-auto" />
-              </button>
-            </li>
-            
-            <li>
-              <button
-                onClick={() => handleTabChange('sss')}
-                className={`flex items-center w-full px-3 py-2.5 rounded transition-all duration-200 ${
-                  activeTab === 'sss' 
-                  ? 'bg-blue-600 text-white' 
-                  : 'text-white hover:bg-blue-800/50 hover:text-white'
-                }`}
-              >
-                <HelpCircle size={18} className="mr-3" />
-                <span className="font-medium">Sık Sorulan Sorular</span>
-                <ChevronRight size={16} className="ml-auto" />
-              </button>
-            </li>
+
+      
+      {/* Ana Navigasyon */}
+      <div className="flex-1 p-5">
+        <nav className="space-y-2">
+          <div className="mb-6">
+            <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3 px-2">Yönetim Modülleri</h3>
+            <ul className="space-y-1">
+              <li>
+                <button
+                  onClick={() => handleTabChange('tayinler')}
+                  className={`flex items-center w-full px-4 py-3 rounded-xl transition-all duration-200 group ${
+                    activeTab === 'tayinler'
+                    ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg'
+                    : 'text-slate-300 hover:bg-slate-700/50 hover:text-white'
+                  }`}
+                >
+                  <div className={`p-1.5 rounded-lg mr-3 transition-all duration-200 ${
+                    activeTab === 'tayinler'
+                    ? 'bg-white/20'
+                    : 'bg-slate-600/40 group-hover:bg-slate-500/40'
+                  }`}>
+                    <Calendar size={18} />
+                  </div>
+                  <span className="font-medium text-sm">Tayin Talepleri</span>
+                  <ChevronRight size={16} className="ml-auto opacity-50 group-hover:opacity-80 group-hover:translate-x-0.5 transition-all duration-200" />
+                </button>
+              </li>
+
+              <li>
+                <button
+                  onClick={() => handleTabChange('personeller')}
+                  className={`flex items-center w-full px-4 py-3 rounded-xl transition-all duration-200 group ${
+                    activeTab === 'personeller'
+                    ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg'
+                    : 'text-slate-300 hover:bg-slate-700/50 hover:text-white'
+                  }`}
+                >
+                  <div className={`p-1.5 rounded-lg mr-3 transition-all duration-200 ${
+                    activeTab === 'personeller'
+                    ? 'bg-white/20'
+                    : 'bg-slate-600/40 group-hover:bg-slate-500/40'
+                  }`}>
+                    <Users size={18} />
+                  </div>
+                  <span className="font-medium text-sm">Personeller</span>
+                  <ChevronRight size={16} className="ml-auto opacity-50 group-hover:opacity-80 group-hover:translate-x-0.5 transition-all duration-200" />
+                </button>
+              </li>
+
+              <li>
+                <button
+                  onClick={() => handleTabChange('istatistikler')}
+                  className={`flex items-center w-full px-4 py-3 rounded-xl transition-all duration-200 group ${
+                    activeTab === 'istatistikler'
+                    ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg'
+                    : 'text-slate-300 hover:bg-slate-700/50 hover:text-white'
+                  }`}
+                >
+                  <div className={`p-1.5 rounded-lg mr-3 transition-all duration-200 ${
+                    activeTab === 'istatistikler'
+                    ? 'bg-white/20'
+                    : 'bg-slate-600/40 group-hover:bg-slate-500/40'
+                  }`}>
+                    <BarChart2 size={18} />
+                  </div>
+                  <span className="font-medium text-sm">İstatistikler</span>
+                  <ChevronRight size={16} className="ml-auto opacity-50 group-hover:opacity-80 group-hover:translate-x-0.5 transition-all duration-200" />
+                </button>
+              </li>
+
+              <li>
+                <button
+                  onClick={() => handleTabChange('sss')}
+                  className={`flex items-center w-full px-4 py-3 rounded-xl transition-all duration-200 group ${
+                    activeTab === 'sss'
+                    ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg'
+                    : 'text-slate-300 hover:bg-slate-700/50 hover:text-white'
+                  }`}
+                >
+                  <div className={`p-1.5 rounded-lg mr-3 transition-all duration-200 ${
+                    activeTab === 'sss'
+                    ? 'bg-white/20'
+                    : 'bg-slate-600/40 group-hover:bg-slate-500/40'
+                  }`}>
+                    <HelpCircle size={18} />
+                  </div>
+                  <span className="font-medium text-sm">Sık Sorulan Sorular</span>
+                  <ChevronRight size={16} className="ml-auto opacity-50 group-hover:opacity-80 group-hover:translate-x-0.5 transition-all duration-200" />
+                </button>
+              </li>
           </ul>
         </div>
-          
-        <div className="mb-4">
-          <p className="text-xs uppercase font-bold tracking-wider text-white/70 mb-3 pl-2 flex items-center">
-            <Shield size={14} className="mr-1" />
-            <span>GÜVENLİK</span>
-          </p>
-          
+
+        {/* Sistem Yönetimi */}
+        <div className="mb-6">
+          <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3 px-2">Sistem Yönetimi</h3>
           <ul className="space-y-1">
             <li>
               <button
                 onClick={() => handleTabChange('logs')}
-                className={`flex items-center w-full px-3 py-2.5 rounded transition-all duration-200 ${
-                  activeTab === 'logs' 
-                  ? 'bg-blue-600 text-white' 
-                  : 'text-white hover:bg-blue-800/50 hover:text-white'
+                className={`flex items-center w-full px-4 py-3 rounded-xl transition-all duration-200 group ${
+                  activeTab === 'logs'
+                  ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg'
+                  : 'text-slate-300 hover:bg-slate-700/50 hover:text-white'
                 }`}
               >
-                <Activity size={18} className="mr-3" />
-                <span className="font-medium">Sistem Logları</span>
-                <ChevronRight size={16} className="ml-auto" />
+                <div className={`p-1.5 rounded-lg mr-3 transition-all duration-200 ${
+                  activeTab === 'logs'
+                  ? 'bg-white/20'
+                  : 'bg-slate-600/40 group-hover:bg-slate-500/40'
+                }`}>
+                  <Activity size={18} />
+                </div>
+                <span className="font-medium text-sm">Sistem Logları</span>
+                <ChevronRight size={16} className="ml-auto opacity-50 group-hover:opacity-80 group-hover:translate-x-0.5 transition-all duration-200" />
               </button>
             </li>
           </ul>
         </div>
-        
-        <div className="mb-4">
-          <p className="text-xs uppercase font-bold tracking-wider text-white/70 mb-3 pl-2 flex items-center">
-            <Settings size={14} className="mr-1" />
-            <span>SİSTEM</span>
-          </p>
-          
-          <ul className="space-y-1">
+        </nav>
 
-            <li>
-              <button
-                onClick={onLogout}
-                className="flex items-center w-full px-3 py-2.5 rounded transition-all duration-200 text-white hover:bg-red-500 hover:text-white"
-              >
-                <LogOut size={18} className="mr-3" />
-                <span className="font-medium">Çıkış Yap</span>
-              </button>
-            </li>
-          </ul>
+        {/* Çıkış Butonu */}
+        <div className="mt-auto pt-6 border-t border-slate-700/30">
+          <button
+            onClick={onLogout}
+            className="flex items-center w-full px-4 py-3 rounded-xl transition-all duration-200 text-slate-300 hover:bg-red-500/20 hover:text-red-300 group border border-slate-600/30 hover:border-red-500/30"
+          >
+            <div className="p-1.5 rounded-lg mr-3 bg-slate-600/40 group-hover:bg-red-500/20 transition-all duration-200">
+              <LogOut size={18} />
+            </div>
+            <span className="font-medium text-sm">Güvenli Çıkış</span>
+            <ChevronRight size={16} className="ml-auto opacity-50 group-hover:opacity-80 group-hover:translate-x-0.5 transition-all duration-200" />
+          </button>
         </div>
         
-        {/* Versiyon Bilgisi */}
-        <div className="pt-6 pb-2 px-4 mt-auto">
-          <div className="p-3 rounded-lg bg-blue-800/30 text-center">
-            <p className="text-xs text-blue-300">Tayin Sistemi</p>
-            <p className="text-xs text-blue-400 font-medium">v1.0</p>
+        {/* Footer */}
+        <div className="pt-4 pb-3">
+          <div className="text-center">
+            <div className="bg-slate-800/30 rounded-lg p-3 border border-slate-600/20">
+              <p className="text-xs text-slate-500 font-medium">v1.0 • © {new Date().getFullYear()}</p>
+            </div>
           </div>
         </div>
-        <p className="text-xs text-blue-400 mt-1 text-center">© {new Date().getFullYear()} Personel Tayin Sistemi v1.0</p>
       </div>
     </aside>
   );

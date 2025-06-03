@@ -320,20 +320,6 @@ const LogPanel = () => {
 
   return (
     <div id="logPanelTop" className="bg-gray-100 min-h-screen p-4 md:p-6 font-sans text-gray-800">
-      <header className="mb-6 flex justify-between items-center">
-        <div>
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Sistem Logları Yönetimi</h1>
-            <p className="text-sm text-gray-600">Uygulama loglarını filtreleyin ve inceleyin.</p>
-        </div>
-        <button
-            onClick={() => { fetchLogs(); fetchLogOzeti(); }}
-            disabled={loading || loadingOzeti}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md flex items-center transition-colors disabled:opacity-50"
-        >
-            <RefreshCw size={16} className={`mr-2 ${loading || loadingOzeti ? 'animate-spin' : ''}`} />
-            Yenile
-        </button>
-      </header>
 
       {/* Log Özeti */}
       {loadingOzeti ? (
@@ -402,6 +388,15 @@ const LogPanel = () => {
             <button type="submit" disabled={loading} className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md flex items-center justify-center transition-colors disabled:opacity-50">
               {loading && <Loader2 size={16} className="animate-spin mr-2" />}
               Filtrele
+            </button>
+            <button
+              type="button"
+              onClick={() => { fetchLogs(); fetchLogOzeti(); }}
+              disabled={loading || loadingOzeti}
+              className="w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-md flex items-center justify-center transition-colors disabled:opacity-50"
+            >
+              <RefreshCw size={16} className={`mr-2 ${loading || loadingOzeti ? 'animate-spin' : ''}`} />
+              Yenile
             </button>
           </div>
         </form>

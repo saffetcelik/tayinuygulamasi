@@ -100,4 +100,30 @@ app.UseAuthorization();
 // Controller'ları eşle
 app.MapControllers();
 
+// Global Exception Handler - Tüm yakalanmamış hataları loglar
+app.UseExceptionHandler(errorApp =>
+{
+    errorApp.Run(async context =>
+    {
+        var exceptionFeature = context.Features.Get<Microsoft.AspNetCore.Diagnostics.IExceptionHandlerPathFeature>();
+        var exception = exceptionFeature?.Error;
+        
+        // Hata loglanıyor
+        var logService = context.RequestServices.GetRequiredService<TayinAPI.Services.LogService>();
+        await logService.KaydetAsync(
+            "Sistem Hatası",
+            $"API'de beklenmeyen hata: {exception?.Message}", 
+            null, 
+            "Sistem", 
+            false, 
+            $"{exception?.GetType().Name}: {exception?.StackTrace}"
+        );
+        
+        // Hata yanıtı
+        context.Response.StatusCode = 500;
+        context.Response.ContentType = "application/json";
+        await context.Response.WriteAsJsonAsync(new { hata = "İşlem sırasında beklenmeyen bir hata oluştu." });
+    });
+});
+
 app.Run();

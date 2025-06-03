@@ -3,6 +3,7 @@ import { tayinService } from '../services/api';
 import Select from 'react-select';
 import Swal from 'sweetalert2';
 import TurkeyMap from './TurkeyMap';
+import { toast } from 'react-toastify';
 import './TayinTalebiForm.css';
 
 const TayinTalebiForm = ({ setActiveTab }) => {
@@ -16,7 +17,7 @@ const TayinTalebiForm = ({ setActiveTab }) => {
   const [talep, setTalep] = useState({
     talepTuru: '',
     aciklama: '',
-    tercihler: [null, null, null]
+    tercihler: [null]
   });
   
   const [adliyeler, setAdliyeler] = useState([]);
@@ -96,13 +97,38 @@ const TayinTalebiForm = ({ setActiveTab }) => {
       setTercihError('Lütfen en az bir adliye tercihi yapınız');
     } else {
       setTercihError('');
-    }
-    
-    // 3. tercih de seçildiyse butonu vurgula
-    if (validTercihler.length === 3) {
+      
+      // En az bir geçerli tercih varsa butonu vurgula - kullanıcı tıklayana kadar devam edecek
       setHighlightSubmitButton(true);
-      // 5 saniye sonra vurgulamayı kaldır
-      setTimeout(() => setHighlightSubmitButton(false), 5000);
+    }
+  };
+  
+  // Yeni tercih alanı ekleme
+  const handleAddTercih = () => {
+    if (talep.tercihler.length < 3) {
+      const newTercihler = [...talep.tercihler, null];
+      setTalep({
+        ...talep,
+        tercihler: newTercihler
+      });
+      toast.info(`${talep.tercihler.length + 1}. tercih eklendi`);
+    } else {
+      toast.warning('En fazla 3 adliye tercihi yapabilirsiniz.');
+    }
+  };
+  
+  // Tercih alanını kaldırma
+  const handleRemoveTercih = (index) => {
+    if (talep.tercihler.length > 1) {
+      const newTercihler = [...talep.tercihler];
+      newTercihler.splice(index, 1);
+      setTalep({
+        ...talep,
+        tercihler: newTercihler
+      });
+      toast.info(`${index + 1}. tercih kaldırıldı`);
+    } else {
+      toast.warning('En az bir tercih yapmalısınız.');
     }
   };
   
@@ -116,7 +142,9 @@ const TayinTalebiForm = ({ setActiveTab }) => {
     });
     
     if (ilAdliyeleri.length === 0) {
-      setTercihError(`${ilAdi} ilinde adliye bulunamadı.`);
+      const errorMsg = `${ilAdi} ilinde adliye bulunamadı.`;
+      setTercihError(errorMsg);
+      toast.warning(errorMsg);
       setTimeout(() => setTercihError(''), 3000);
       return;
     }
@@ -124,11 +152,25 @@ const TayinTalebiForm = ({ setActiveTab }) => {
     // İlk boş tercih alanını bul
     const emptyIndex = talep.tercihler.findIndex(tercihId => tercihId === null);
     
-    // Tüm tercihler doluysa ve maksimum tercih sayısına ulaşıldıysa uyarı göster
+    // Tüm mevcut tercihler doluysa
     if (emptyIndex === -1) {
-      setTercihError(`Maksimum 3 tercih yapabilirsiniz. Yeni tercih yapmak için önce bir tercihi temizleyin.`);
-      setTimeout(() => setTercihError(''), 3000);
-      return;
+      // Eğer maksimum tercih sayısına ulaşılmadıysa yeni tercih ekle
+      if (talep.tercihler.length < 3) {
+        const newTercihler = [...talep.tercihler, ilAdliyeleri[0].value];
+        setTalep({
+          ...talep,
+          tercihler: newTercihler
+        });
+        toast.info(`${talep.tercihler.length + 1}. tercih olarak ${ilAdi} eklendi`);
+        return;
+      } else {
+        // Maksimum tercih sayısına ulaşıldıysa uyarı göster
+        const errorMsg = `Maksimum 3 tercih yapabilirsiniz. Yeni tercih yapmak için önce bir tercihi temizleyin.`;
+        setTercihError(errorMsg);
+        toast.warning(errorMsg);
+        setTimeout(() => setTercihError(''), 3000);
+        return;
+      }
     }
     
     // İlden bir adliye zaten seçilmiş mi kontrol et
@@ -141,7 +183,9 @@ const TayinTalebiForm = ({ setActiveTab }) => {
     });
     
     if (isAlreadySelected) {
-      setTercihError(`${ilAdi} ilinden bir adliye zaten tercihlerinizde bulunuyor.`);
+      const errorMsg = `${ilAdi} ilinden bir adliye zaten tercihlerinizde bulunuyor.`;
+      setTercihError(errorMsg);
+      toast.warning(errorMsg);
       setTimeout(() => setTercihError(''), 3000);
       return;
     }
@@ -155,12 +199,10 @@ const TayinTalebiForm = ({ setActiveTab }) => {
       tercihler: newTercihler
     });
     
-    // 3. tercih de seçildiyse butonu vurgula
+    // Eğer geçerli tercihler varsa butonu vurgula
     const validTercihler = newTercihler.filter(t => t !== null);
-    if (validTercihler.length === 3) {
+    if (validTercihler.length > 0) {
       setHighlightSubmitButton(true);
-      // 5 saniye sonra vurgulamayı kaldır
-      setTimeout(() => setHighlightSubmitButton(false), 5000);
     }
   };
   
@@ -179,6 +221,9 @@ const TayinTalebiForm = ({ setActiveTab }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
+    // Animasyonu durdur
+    setHighlightSubmitButton(false);
+    
     // Hata durumlarını temizle
     setError('');
     
@@ -187,12 +232,14 @@ const TayinTalebiForm = ({ setActiveTab }) => {
     if (validTercihler.length === 0) {
       setTercihError('Lütfen en az bir adliye tercihi yapınız.');
       setError('Lütfen formdaki hataları düzeltiniz.');
+      toast.error('Lütfen en az bir adliye tercihi yapınız.');
       return;
     }
     
     if (!talep.talepTuru) {
       setTalepTuruError('Lütfen talep türünü seçiniz.');
       setError('Lütfen formdaki hataları düzeltiniz.');
+      toast.error('Lütfen talep türünü seçiniz.');
       return;
     }
     
@@ -224,9 +271,12 @@ const TayinTalebiForm = ({ setActiveTab }) => {
       setTalep({
         talepTuru: '',
         aciklama: '',
-        tercihler: [null, null, null]
+        tercihler: [null]
       });
       setLoading(false);
+      
+      // Hem Toast bildirimi hem de SweetAlert2 ile başarı mesajı göster
+      toast.success('Tayin talebiniz başarıyla oluşturuldu.');
       
       // SweetAlert2 ile başarı mesajı göster ve tamam butonuna tıklandığında yönlendir
       Swal.fire({
@@ -244,7 +294,9 @@ const TayinTalebiForm = ({ setActiveTab }) => {
       });
     } catch (err) {
       console.error('Tayin talebi oluşturulurken hata:', err);
-      setError('Tayin talebi oluşturulurken bir hata meydana geldi.');
+      const errorMsg = 'Tayin talebi oluşturulurken bir hata meydana geldi.';
+      setError(errorMsg);
+      toast.error(errorMsg);
       setLoading(false);
     }
   };
@@ -328,7 +380,7 @@ const TayinTalebiForm = ({ setActiveTab }) => {
               <svg className="w-5 h-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
               </svg>
-              <h3 className="text-lg font-semibold text-gray-800">Tercih Ettiğiniz Adliyeler <span className="text-red-500">*</span></h3>
+              <h3 className="text-lg font-semibold text-gray-800">Tercih Ettiğiniz Adliye(ler) <span className="text-red-500">*</span></h3>
             </div>
             
             <p className="text-sm text-gray-600 mb-4 ml-7">
@@ -353,38 +405,68 @@ const TayinTalebiForm = ({ setActiveTab }) => {
                     </span>
                   </div>
                   
-                  <div className="mt-2">
-                    <Select
-                      inputId={`tercih-${index + 1}`}
-                      value={adliyeler.find(a => a.value === tercihId)}
-                      onChange={(selected) => handleTercihChange(selected, index)}
-                      options={getFilteredAdliyeler(index)}
-                      isClearable={true} // Tüm tercihler için temizleme ikonu göster
-                      placeholder="Adliye seçiniz"
-                      isDisabled={loading}
-                      className="basic-single"
-                      classNamePrefix="select"
-                      styles={{
-                        control: (provided) => ({
-                          ...provided,
-                          borderRadius: '0.5rem',
-                          border: '1px solid #e2e8f0',
-                          padding: '2px',
-                          boxShadow: 'none',
-                          '&:hover': {
-                            border: '1px solid #cbd5e1',
-                          },
-                        }),
-                        option: (provided, state) => ({
-                          ...provided,
-                          backgroundColor: state.isSelected ? '#3b82f6' : state.isFocused ? '#eff6ff' : null,
-                          color: state.isSelected ? 'white' : '#1e293b',
-                        }),
-                      }}
-                    />
+                  <div className="mt-2 flex items-center space-x-2">
+                    <div className="flex-grow">
+                      <Select
+                        inputId={`tercih-${index + 1}`}
+                        value={adliyeler.find(a => a.value === tercihId)}
+                        onChange={(selected) => handleTercihChange(selected, index)}
+                        options={getFilteredAdliyeler(index)}
+                        isClearable={true}
+                        placeholder="Adliye seçiniz"
+                        isDisabled={loading}
+                        className="basic-single"
+                        classNamePrefix="select"
+                        styles={{
+                          control: (provided) => ({
+                            ...provided,
+                            borderRadius: '0.5rem',
+                            border: '1px solid #e2e8f0',
+                            padding: '2px',
+                            boxShadow: 'none',
+                            '&:hover': {
+                              border: '1px solid #cbd5e1',
+                            },
+                          }),
+                          option: (provided, state) => ({
+                            ...provided,
+                            backgroundColor: state.isSelected ? '#3b82f6' : state.isFocused ? '#eff6ff' : null,
+                            color: state.isSelected ? 'white' : '#1e293b',
+                          }),
+                        }}
+                      />
+                    </div>
+                    {index > 0 && (
+                      <button 
+                        type="button" 
+                        onClick={() => handleRemoveTercih(index)}
+                        className="p-2 text-red-500 hover:text-red-700 focus:outline-none transition-colors"
+                        disabled={loading}
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                          <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+                        </svg>
+                      </button>
+                    )}
                   </div>
                 </div>
               ))}
+              
+              {talep.tercihler.length < 3 && (
+                <div className="flex justify-center mt-2">
+                  <button 
+                    type="button" 
+                    onClick={handleAddTercih}
+                    className="px-4 py-2 bg-blue-50 text-blue-600 rounded-lg border border-blue-200 hover:bg-blue-100 transition-colors flex items-center space-x-2 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                    disabled={loading}
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd" />
+                    </svg>
+                    <span>Tercih Ekle</span>
+                  </button>
+                </div>
+              )}
             </div>
             
             <div className="flex justify-end mt-6 mb-8">

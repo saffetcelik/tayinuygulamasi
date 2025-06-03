@@ -440,144 +440,221 @@ const Dashboard = () => {
           {/* Modern içerik alanı */}
           <div className="flex-1 bg-white/95 backdrop-blur-sm rounded-xl shadow-lg p-6 border border-gray-100">
             {activeTab === 'profile' && (
-              <div>
-                <h2 className="text-2xl font-bold text-gray-800 mb-6">Profil Bilgileri</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="flex items-start">
-                    <div className="bg-primary-100 text-primary-700 p-2 rounded-lg mr-3">
-                      <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" />
-                      </svg>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-500">Sicil Numarası</p>
-                      <p className="text-lg font-medium text-gray-800">{personelBilgisi.sicilNo}</p>
-                    </div>
+              <div className="space-y-8">
+                {/* Elegant Corporate Header */}
+                <div className="relative bg-gradient-to-r from-primary-600 to-primary-700 rounded-xl shadow-lg overflow-hidden">
+                  {/* Subtle background accent */}
+                  <div className="absolute inset-0 opacity-5">
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-white rounded-full -translate-y-32 translate-x-32"></div>
                   </div>
-                  
-                  <div className="flex items-start">
-                    <div className="bg-primary-100 text-primary-700 p-2 rounded-lg mr-3">
-                      <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-500">Ad Soyad</p>
-                      <p className="text-lg font-medium text-gray-800">{personelBilgisi.ad} {personelBilgisi.soyad}</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start">
-                    <div className="bg-primary-100 text-primary-700 p-2 rounded-lg mr-3">
-                      <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-500">Unvan</p>
-                      <p className="text-lg font-medium text-gray-800">{personelBilgisi.unvan}</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start">
-                    <div className="bg-primary-100 text-primary-700 p-2 rounded-lg mr-3">
-                      <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                      </svg>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-500">Mevcut Adliye</p>
-                      <p className="text-lg font-medium text-gray-800">{personelBilgisi.mevcutAdliye}</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start">
-                    <div className="bg-primary-100 text-primary-700 p-2 rounded-lg mr-3">
-                      <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-500">Telefon</p>
-                      <p className="text-lg font-medium text-gray-800">{personelBilgisi.telefon}</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start">
-                    <div className="bg-primary-100 text-primary-700 p-2 rounded-lg mr-3">
-                      <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-500">E-posta</p>
-                      <p className="text-lg font-medium text-gray-800">{personelBilgisi.email}</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start">
-                    <div className="bg-primary-100 text-primary-700 p-2 rounded-lg mr-3">
-                      <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-500">Doğum Tarihi</p>
-                      <p className="text-lg font-medium text-gray-800">{new Date(personelBilgisi.dogumTarihi).toLocaleDateString('tr-TR')}</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start">
-                    <div className="bg-primary-100 text-primary-700 p-2 rounded-lg mr-3">
-                      <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-500">İşe Başlama Tarihi</p>
-                      <p className="text-lg font-medium text-gray-800">{new Date(personelBilgisi.baslamaTarihi).toLocaleDateString('tr-TR')}</p>
+
+                  <div className="relative z-10 px-6 py-5">
+                    <div className="flex items-center space-x-4">
+                      <div className="relative">
+                        <div className="bg-white/20 backdrop-blur-sm p-3 rounded-xl border border-white/20">
+                          <svg className="w-7 h-7 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                          </svg>
+                        </div>
+                        <div className="absolute -top-0.5 -right-0.5 w-3 h-3 bg-emerald-400 rounded-full border border-white"></div>
+                      </div>
+
+                      <div className="text-white flex-1">
+                        <h1 className="text-xl font-bold mb-1">{personelBilgisi.ad} {personelBilgisi.soyad}</h1>
+                        <p className="text-white/90 text-sm font-medium mb-1">{personelBilgisi.unvan}</p>
+                        <div className="flex items-center text-white/75 text-xs">
+                          <svg className="w-3 h-3 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                          </svg>
+                          <span className="font-medium">{personelBilgisi.mevcutAdliye}</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
+
+                {/* Modern Info Cards */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  {/* Modern Kişisel Bilgiler Kartı */}
+                  <div className="group bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                    <div className="bg-gradient-to-r from-gray-50 to-gray-100/50 px-6 py-5 border-b border-gray-200/50">
+                      <h3 className="text-lg font-bold text-gray-800 flex items-center">
+                        <div className="bg-gray-100 p-2.5 rounded-xl mr-3 group-hover:bg-gray-200 transition-colors">
+                          <svg className="w-5 h-5 text-gray-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                          </svg>
+                        </div>
+                        Kişisel Bilgiler
+                      </h3>
+                    </div>
+                    <div className="p-6 space-y-5">
+                      <div className="flex items-center p-4 bg-gray-50 rounded-xl border border-gray-200/50 hover:bg-gray-100 transition-all duration-200 hover:shadow-md">
+                        <div className="bg-gray-100 p-3 rounded-xl mr-4 group-hover:bg-gray-200 transition-colors">
+                          <svg className="w-5 h-5 text-gray-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                          </svg>
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-sm text-gray-600 font-medium mb-1">Sicil Numarası</p>
+                          <p className="text-xl font-bold text-gray-800">{personelBilgisi.sicilNo}</p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center p-4 bg-gray-50 rounded-xl border border-gray-200/50 hover:bg-gray-100 transition-all duration-200 hover:shadow-md">
+                        <div className="bg-gray-100 p-3 rounded-xl mr-4 group-hover:bg-gray-200 transition-colors">
+                          <svg className="w-5 h-5 text-gray-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                          </svg>
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-sm text-gray-600 font-medium mb-1">Doğum Tarihi</p>
+                          <p className="text-xl font-bold text-gray-800">
+                            {personelBilgisi.dogumTarihi ? new Date(personelBilgisi.dogumTarihi).toLocaleDateString('tr-TR') : 'Belirtilmemiş'}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center p-4 bg-gray-50 rounded-xl border border-gray-200/50 hover:bg-gray-100 transition-all duration-200 hover:shadow-md">
+                        <div className="bg-gray-100 p-3 rounded-xl mr-4 group-hover:bg-gray-200 transition-colors">
+                          <svg className="w-5 h-5 text-gray-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-sm text-gray-600 font-medium mb-1">İşe Başlama Tarihi</p>
+                          <p className="text-xl font-bold text-gray-800">
+                            {personelBilgisi.baslamaTarihi ? new Date(personelBilgisi.baslamaTarihi).toLocaleDateString('tr-TR') : 'Belirtilmemiş'}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Modern İletişim Bilgileri Kartı */}
+                  <div className="group bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                    <div className="bg-gradient-to-r from-gray-50 to-gray-100/50 px-6 py-5 border-b border-gray-200/50">
+                      <h3 className="text-lg font-bold text-gray-800 flex items-center">
+                        <div className="bg-gray-100 p-2.5 rounded-xl mr-3 group-hover:bg-gray-200 transition-colors">
+                          <svg className="w-5 h-5 text-gray-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                          </svg>
+                        </div>
+                        İletişim Bilgileri
+                      </h3>
+                    </div>
+                    <div className="p-6 space-y-5">
+                      <div className="flex items-center p-4 bg-gray-50 rounded-xl border border-gray-200/50 hover:bg-gray-100 transition-all duration-200 hover:shadow-md">
+                        <div className="bg-gray-100 p-3 rounded-xl mr-4 group-hover:bg-gray-200 transition-colors">
+                          <svg className="w-5 h-5 text-gray-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                          </svg>
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-sm text-gray-600 font-medium mb-1">Telefon</p>
+                          <p className="text-xl font-bold text-gray-800">{personelBilgisi.telefon}</p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center p-4 bg-gray-50 rounded-xl border border-gray-200/50 hover:bg-gray-100 transition-all duration-200 hover:shadow-md">
+                        <div className="bg-gray-100 p-3 rounded-xl mr-4 group-hover:bg-gray-200 transition-colors">
+                          <svg className="w-5 h-5 text-gray-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                          </svg>
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-sm text-gray-600 font-medium mb-1">E-posta</p>
+                          <p className="text-xl font-bold text-gray-800 break-all">{personelBilgisi.email}</p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center p-4 bg-gray-50 rounded-xl border border-gray-200/50 hover:bg-gray-100 transition-all duration-200 hover:shadow-md">
+                        <div className="bg-gray-100 p-3 rounded-xl mr-4 group-hover:bg-gray-200 transition-colors">
+                          <svg className="w-5 h-5 text-gray-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                          </svg>
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-sm text-gray-600 font-medium mb-1">Mevcut Adliye</p>
+                          <p className="text-xl font-bold text-gray-800">{personelBilgisi.mevcutAdliye}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
               </div>
             )}
 
             {activeTab === 'create' && (
-              <div>
-                <h2 className="text-2xl font-bold text-gray-800 mb-6">Yeni Tayin Talebi Oluştur</h2>
-                <p className="text-gray-600 mb-6">
-                  Bu sayfadan yeni bir tayin talebi oluşturabilirsiniz. Lütfen aşağıdaki formu eksiksiz doldurunuz.
-                </p>
+              <div className="space-y-8">
                 <TayinTalebiForm setActiveTab={setActiveTab} />
               </div>
             )}
 
             {activeTab === 'list' && (
-              <div>
-                <h2 className="text-2xl font-bold text-gray-800 mb-6">Tayin Taleplerim</h2>
-                <p className="text-gray-600 mb-6">
-                  Daha önce oluşturduğunuz tayin talepleri ve durumları aşağıda listelenmektedir.
-                </p>
+              <div className="space-y-8">
+                {/* Modern Header */}
+                <div className="bg-gradient-to-br from-white to-gray-50/30 rounded-2xl border border-gray-200/50 shadow-lg p-8">
+                  <div className="flex items-center">
+                    <div className="bg-primary-100 p-4 rounded-2xl mr-6">
+                      <svg className="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                      </svg>
+                    </div>
+                    <div>
+                      <h2 className="text-3xl font-bold text-gray-800 mb-2">Tayin Taleplerim</h2>
+                      <p className="text-gray-600">
+                        Oluşturduğunuz tayin taleplerini görüntüleyin ve yönetin
+                      </p>
+                    </div>
+                  </div>
+                </div>
                 <TayinTalepleriList />
               </div>
             )}
             
             {activeTab === 'sss' && (
-              <div>
-                <h2 className="text-2xl font-bold text-gray-800 mb-6">Sık Sorulan Sorular</h2>
-                <p className="text-gray-600 mb-6">
-                  Tayin işlemleri hakkında merak edilen sorular ve cevapları aşağıda bulabilirsiniz.
-                </p>
+              <div className="space-y-8">
+                {/* Modern Header */}
+                <div className="bg-gradient-to-br from-white to-gray-50/30 rounded-2xl border border-gray-200/50 shadow-lg p-8">
+                  <div className="flex items-center">
+                    <div className="bg-primary-100 p-4 rounded-2xl mr-6">
+                      <svg className="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                      </svg>
+                    </div>
+                    <div>
+                      <h2 className="text-3xl font-bold text-gray-800 mb-2">Sık Sorulan Sorular</h2>
+                      <p className="text-gray-600">
+                        Tayin işlemleri hakkında merak edilen sorular ve cevapları
+                      </p>
+                    </div>
+                  </div>
+                </div>
                 <SSSPage />
               </div>
             )}
             
             {activeTab === 'settings' && (
-              <div>
-                <h2 className="text-2xl font-bold text-gray-800 mb-6">Ayarlar</h2>
-                <p className="text-gray-600 mb-6">
-                  Hesap ayarlarınızı bu sayfadan yönetebilirsiniz.
-                </p>
+              <div className="space-y-8">
+                {/* Modern Header */}
+                <div className="bg-gradient-to-br from-white to-gray-50/30 rounded-2xl border border-gray-200/50 shadow-lg p-8">
+                  <div className="flex items-center">
+                    <div className="bg-primary-100 p-4 rounded-2xl mr-6">
+                      <svg className="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                      </svg>
+                    </div>
+                    <div>
+                      <h2 className="text-3xl font-bold text-gray-800 mb-2">Ayarlar</h2>
+                      <p className="text-gray-600">
+                        Hesap güvenliğinizi ve tercihlerinizi yönetin
+                      </p>
+                    </div>
+                  </div>
+                </div>
                 <Ayarlar />
               </div>
             )}

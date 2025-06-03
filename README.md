@@ -6,7 +6,7 @@ Bu proje, ASP.NET Core backend ve React frontend kullanan MVC mimarisine uygun b
 
 Tayin projesi, kullanıcı dostu arayüz tasarımı ve verimli bileşen kullanımına odaklanmış, mobil ve tablet cihazlarda uyumlu çalışacak şekilde tasarlanmıştır.
 
-### Kullanıcı Profil Özellikleri
+### Kullanıcı Profil Özellikleri 
 
 - **Profil Yönetimi:** Kullanıcılar kişisel bilgilerini ve mevcut adliye bilgilerini görüntüleyebilir
 - **Vektörel Türkiye Haritası:** Modern harita arayüzü ile şehir seçerek adliye tercihlerini yapabilme

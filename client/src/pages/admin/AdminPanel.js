@@ -112,12 +112,12 @@ const AdminPanel = () => {
   const updateTayinDurumu = async (id, durum, durumAciklamasi) => {
     try {
       await adminService.updateTayinTalebiDurum(id, durum, durumAciklamasi);
-      toast.success('Tayin talebi durumu güncellendi.');
+      toast.success(`${durum} olarak güncellendi.`);
       // Listeyi sessizce yenile (bildirim göstermeden)
       fetchTayinTalepleri(true, false);
     } catch (error) {
       console.error('Tayin durumu güncellenemedi:', error);
-      toast.error('Tayin durumu güncellenirken bir hata oluştu.');
+      toast.error('Güncelleme hatası.');
     }
   };
   
@@ -141,7 +141,7 @@ const AdminPanel = () => {
   }
 
   // Özet istatistikleri hesaplayalım
-  const bekleyenTalepler = tayinTalepleri.filter(t => t.durum === 'Beklemede').length;
+  const bekleyenTalepler = tayinTalepleri.filter(t => t.durum === 'Beklemede' || t.durum === 'İncelemede').length;
   const onaylananTalepler = tayinTalepleri.filter(t => t.durum === 'Onaylandı').length;
   const reddedilenTalepler = tayinTalepleri.filter(t => t.durum === 'Reddedildi').length;
 
@@ -168,80 +168,141 @@ const AdminPanel = () => {
       {/* Ana İçerik */}
       <div className="flex flex-1 relative">
         {/* Sağ İçerik */}
-        <main className="flex-1 p-4 md:p-6 ml-0 md:ml-64 mt-16 transition-all duration-300 bg-slate-50 min-h-screen">
-          {/* Sayfanın başlık bölümü */}
-          <div className="mb-6">
-            <h1 className="text-2xl font-bold text-gray-800 tracking-tight">
-              {activeTab === 'tayinler' && 'Tayin Talepleri'}
-              {activeTab === 'personeller' && 'Personel Yönetimi'}
-              {activeTab === 'istatistikler' && 'İstatistikler'}
-              {activeTab === 'logs' && 'Sistem Kayıtları'}
-              {activeTab === 'sss' && 'Sık Sorulan Sorular Yönetimi'}
-            </h1>
-            <p className="text-gray-600 mt-1">
-              {activeTab === 'tayinler' && 'Tüm tayin taleplerini görüntüleyebilir ve yönetebilirsiniz.'}
-              {activeTab === 'personeller' && 'Sistemdeki personelleri görüntüleyebilir ve yönetebilirsiniz.'}
-              {activeTab === 'istatistikler' && 'Tayin taleplerine ilişkin istatistikleri inceleyebilirsiniz.'}
-              {activeTab === 'logs' && 'Sistem üzerinde gerçekleştirilen işlemlerin kayıtlarını görüntüleyebilirsiniz.'}
-              {activeTab === 'sss' && 'Sık sorulan soruları ekleyebilir, düzenleyebilir ve silebilirsiniz.'}
-            </p>
+        <main className="flex-1 p-4 md:p-6 ml-0 md:ml-72 mt-16 transition-all duration-300 bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
+          {/* Modern Başlık Bölümü */}
+          <div className="mb-8">
+            <div className="bg-white rounded-2xl shadow-lg border border-gray-200/50 p-8">
+              <div className="flex items-center">
+                <div className="bg-primary-100 p-4 rounded-2xl mr-6">
+                  {activeTab === 'tayinler' && (
+                    <svg className="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                    </svg>
+                  )}
+                  {activeTab === 'personeller' && (
+                    <svg className="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+                    </svg>
+                  )}
+                  {activeTab === 'istatistikler' && (
+                    <svg className="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                    </svg>
+                  )}
+                  {activeTab === 'logs' && (
+                    <svg className="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                  )}
+                  {activeTab === 'sss' && (
+                    <svg className="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                  )}
+                </div>
+                <div>
+                  <h1 className="text-3xl font-bold text-gray-800 mb-2">
+                    {activeTab === 'tayinler' && 'Tayin Talepleri'}
+                    {activeTab === 'personeller' && 'Personel Yönetimi'}
+                    {activeTab === 'istatistikler' && 'İstatistikler'}
+                    {activeTab === 'logs' && 'Sistem Kayıtları'}
+                    {activeTab === 'sss' && 'Sık Sorulan Sorular Yönetimi'}
+                  </h1>
+                  <p className="text-gray-600">
+                    {activeTab === 'tayinler' && 'Tüm tayin taleplerini görüntüleyebilir ve yönetebilirsiniz'}
+                    {activeTab === 'personeller' && 'Sistemdeki personelleri görüntüleyebilir ve yönetebilirsiniz'}
+                    {activeTab === 'istatistikler' && 'Tayin taleplerine ilişkin istatistikleri inceleyebilirsiniz'}
+                    {activeTab === 'logs' && 'Sistem üzerinde gerçekleştirilen işlemlerin kayıtlarını görüntüleyebilirsiniz'}
+                    {activeTab === 'sss' && 'Sık sorulan soruları ekleyebilir, düzenleyebilir ve silebilirsiniz'}
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
           
-          {/* Özet bilgi kartları - Sadece tayin talepleri menüsünde gösterelim */}
+          {/* Modern İstatistik Kartları - Sadece tayin talepleri menüsünde gösterelim */}
           {activeTab === 'tayinler' && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-6">
-              <div className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 hover:shadow-lg transition-shadow flex items-center p-1">
-                <div className="flex-shrink-0 bg-indigo-50 p-4 flex items-center justify-center rounded-lg mr-4">
-                  <svg className="w-8 h-8 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                  </svg>
-                </div>
-                <div className="py-4 pr-4">
-                  <div className="text-sm font-medium text-gray-500">Toplam Talepler</div>
-                  <div className="text-2xl font-bold text-gray-800">{tayinTalepleri.length}</div>
-                </div>
-              </div>
-              
-              <div className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 hover:shadow-lg transition-shadow flex items-center p-1">
-                <div className="flex-shrink-0 bg-yellow-50 p-4 flex items-center justify-center rounded-lg mr-4">
-                  <svg className="w-8 h-8 text-yellow-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
-                <div className="py-4 pr-4">
-                  <div className="text-sm font-medium text-gray-500">Bekleyen Talepler</div>
-                  <div className="text-2xl font-bold text-gray-800">{bekleyenTalepler}</div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+              <div className="group bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                <div className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-gray-600 mb-1">Toplam Talep</p>
+                      <p className="text-3xl font-bold text-gray-900">{tayinTalepleri.length}</p>
+                    </div>
+                    <div className="bg-gradient-to-br from-blue-500 to-blue-600 p-3 rounded-xl shadow-lg">
+                      <svg className="w-8 h-8 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      </svg>
+                    </div>
+                  </div>
+                  <div className="mt-4 bg-blue-50 rounded-lg p-2">
+                    <div className="text-xs text-blue-600 font-medium">Tüm Talepler</div>
+                  </div>
                 </div>
               </div>
-              
-              <div className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 hover:shadow-lg transition-shadow flex items-center p-1">
-                <div className="flex-shrink-0 bg-green-50 p-4 flex items-center justify-center rounded-lg mr-4">
-                  <svg className="w-8 h-8 text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
-                <div className="py-4 pr-4">
-                  <div className="text-sm font-medium text-gray-500">Onaylanan Talepler</div>
-                  <div className="text-2xl font-bold text-gray-800">{onaylananTalepler}</div>
+
+              <div className="group bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                <div className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-gray-600 mb-1">Bekleyen</p>
+                      <p className="text-3xl font-bold text-gray-900">{bekleyenTalepler}</p>
+                    </div>
+                    <div className="bg-gradient-to-br from-amber-500 to-amber-600 p-3 rounded-xl shadow-lg">
+                      <svg className="w-8 h-8 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </div>
+                  </div>
+                  <div className="mt-4 bg-amber-50 rounded-lg p-2">
+                    <div className="text-xs text-amber-600 font-medium">İnceleme Bekliyor</div>
+                  </div>
                 </div>
               </div>
-              
-              <div className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 hover:shadow-lg transition-shadow flex items-center p-1">
-                <div className="flex-shrink-0 bg-red-50 p-4 flex items-center justify-center rounded-lg mr-4">
-                  <svg className="w-8 h-8 text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
+
+              <div className="group bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                <div className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-gray-600 mb-1">Onaylanan</p>
+                      <p className="text-3xl font-bold text-gray-900">{onaylananTalepler}</p>
+                    </div>
+                    <div className="bg-gradient-to-br from-emerald-500 to-emerald-600 p-3 rounded-xl shadow-lg">
+                      <svg className="w-8 h-8 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </div>
+                  </div>
+                  <div className="mt-4 bg-emerald-50 rounded-lg p-2">
+                    <div className="text-xs text-emerald-600 font-medium">Başarılı Talepler</div>
+                  </div>
                 </div>
-                <div className="py-4 pr-4">
-                  <div className="text-sm font-medium text-gray-500">Reddedilen Talepler</div>
-                  <div className="text-2xl font-bold text-gray-800">{reddedilenTalepler}</div>
+              </div>
+
+              <div className="group bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                <div className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-gray-600 mb-1">Reddedilen</p>
+                      <p className="text-3xl font-bold text-gray-900">{reddedilenTalepler}</p>
+                    </div>
+                    <div className="bg-gradient-to-br from-red-500 to-red-600 p-3 rounded-xl shadow-lg">
+                      <svg className="w-8 h-8 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </div>
+                  </div>
+                  <div className="mt-4 bg-red-50 rounded-lg p-2">
+                    <div className="text-xs text-red-600 font-medium">Kabul Edilmeyen</div>
+                  </div>
                 </div>
               </div>
             </div>
           )}
           
-          {/* İçerik Alanları */}
-          <div className="bg-white rounded-xl shadow-md p-5 border border-gray-100">
+          {/* Modern İçerik Alanları */}
+          <div className="bg-white rounded-2xl shadow-lg border border-gray-200/50 p-8">
             {activeTab === 'tayinler' && (
               <TayinListesi 
                 tayinTalepleri={tayinTalepleri} 
@@ -256,54 +317,85 @@ const AdminPanel = () => {
             )}
 
             {activeTab === 'istatistikler' && (
-              <div>
-                <h2 className="text-xl font-semibold text-gray-800 mb-6">Detaylı İstatistikler</h2>
-                <p className="text-gray-600 mb-6">
-                  Bu bölümde tayin taleplerine ilişkin detaylı istatistikleri görüntüleyebilirsiniz. Aşağıdaki grafikler, taleplerin durumlarına ve kategorilerine göre dağılımını göstermektedir.
-                </p>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                  <div className="bg-gradient-to-br from-indigo-50 to-blue-50 rounded-xl p-6 border border-indigo-100 shadow-sm">
-                    <div className="flex justify-between items-center mb-4">
-                      <h3 className="text-lg font-semibold text-indigo-800">Toplam Tayin Talebi</h3>
-                      <span className="bg-indigo-100 text-indigo-700 text-sm font-medium py-1 px-2.5 rounded-md">{tayinTalepleri.length}</span>
+              <div className="space-y-8">
+                {/* Modern İstatistik Kartları */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div className="group bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-6 border border-blue-200/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                    <div className="flex items-center justify-between mb-6">
+                      <div className="bg-blue-500 p-3 rounded-xl shadow-lg">
+                        <svg className="w-8 h-8 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                      </div>
+                      <span className="bg-blue-500 text-white text-lg font-bold py-2 px-4 rounded-xl shadow-md">{tayinTalepleri.length}</span>
                     </div>
-                    <div className="h-2 bg-indigo-100 rounded-full overflow-hidden">
-                      <div className="bg-indigo-600 h-2 rounded-full" style={{ width: '100%' }}></div>
+                    <h3 className="text-xl font-bold text-blue-800 mb-2">Toplam Tayin Talebi</h3>
+                    <div className="h-3 bg-blue-200 rounded-full overflow-hidden mb-3">
+                      <div className="bg-blue-600 h-3 rounded-full transition-all duration-500" style={{ width: '100%' }}></div>
                     </div>
-                    <div className="mt-3 text-sm text-indigo-700">
-                      Tüm zamanlar
+                    <div className="text-sm text-blue-700 font-medium">Tüm zamanlar</div>
+                  </div>
+
+                  <div className="group bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-2xl p-6 border border-emerald-200/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                    <div className="flex items-center justify-between mb-6">
+                      <div className="bg-emerald-500 p-3 rounded-xl shadow-lg">
+                        <svg className="w-8 h-8 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      </div>
+                      <span className="bg-emerald-500 text-white text-lg font-bold py-2 px-4 rounded-xl shadow-md">{onaylananTalepler}</span>
+                    </div>
+                    <h3 className="text-xl font-bold text-emerald-800 mb-2">Onaylanan Talepler</h3>
+                    <div className="h-3 bg-emerald-200 rounded-full overflow-hidden mb-3">
+                      <div className="bg-emerald-600 h-3 rounded-full transition-all duration-500" style={{ width: `${tayinTalepleri.length ? (onaylananTalepler / tayinTalepleri.length) * 100 : 0}%` }}></div>
+                    </div>
+                    <div className="text-sm text-emerald-700 font-medium">
+                      {tayinTalepleri.length ? Math.round((onaylananTalepler / tayinTalepleri.length) * 100) : 0}% başarı oranı
                     </div>
                   </div>
-                  
-                  <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 border border-green-100 shadow-sm">
-                    <div className="flex justify-between items-center mb-4">
-                      <h3 className="text-lg font-semibold text-green-800">Onaylanan Talepler</h3>
-                      <span className="bg-green-100 text-green-700 text-sm font-medium py-1 px-2.5 rounded-md">{onaylananTalepler}</span>
+
+                  <div className="group bg-gradient-to-br from-red-50 to-red-100 rounded-2xl p-6 border border-red-200/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                    <div className="flex items-center justify-between mb-6">
+                      <div className="bg-red-500 p-3 rounded-xl shadow-lg">
+                        <svg className="w-8 h-8 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      </div>
+                      <span className="bg-red-500 text-white text-lg font-bold py-2 px-4 rounded-xl shadow-md">{reddedilenTalepler}</span>
                     </div>
-                    <div className="h-2 bg-green-100 rounded-full overflow-hidden">
-                      <div className="bg-green-600 h-2 rounded-full" style={{ width: `${tayinTalepleri.length ? (onaylananTalepler / tayinTalepleri.length) * 100 : 0}%` }}></div>
+                    <h3 className="text-xl font-bold text-red-800 mb-2">Reddedilen Talepler</h3>
+                    <div className="h-3 bg-red-200 rounded-full overflow-hidden mb-3">
+                      <div className="bg-red-600 h-3 rounded-full transition-all duration-500" style={{ width: `${tayinTalepleri.length ? (reddedilenTalepler / tayinTalepleri.length) * 100 : 0}%` }}></div>
                     </div>
-                    <div className="mt-3 text-sm text-green-700">
-                      {tayinTalepleri.length ? Math.round((onaylananTalepler / tayinTalepleri.length) * 100) : 0}% oran
-                    </div>
-                  </div>
-                  
-                  <div className="bg-gradient-to-br from-red-50 to-rose-50 rounded-xl p-6 border border-red-100 shadow-sm">
-                    <div className="flex justify-between items-center mb-4">
-                      <h3 className="text-lg font-semibold text-red-800">Reddedilen Talepler</h3>
-                      <span className="bg-red-100 text-red-700 text-sm font-medium py-1 px-2.5 rounded-md">{reddedilenTalepler}</span>
-                    </div>
-                    <div className="h-2 bg-red-100 rounded-full overflow-hidden">
-                      <div className="bg-red-600 h-2 rounded-full" style={{ width: `${tayinTalepleri.length ? (reddedilenTalepler / tayinTalepleri.length) * 100 : 0}%` }}></div>
-                    </div>
-                    <div className="mt-3 text-sm text-red-700">
-                      {tayinTalepleri.length ? Math.round((reddedilenTalepler / tayinTalepleri.length) * 100) : 0}% oran
+                    <div className="text-sm text-red-700 font-medium">
+                      {tayinTalepleri.length ? Math.round((reddedilenTalepler / tayinTalepleri.length) * 100) : 0}% red oranı
                     </div>
                   </div>
                 </div>
-                
 
+                {/* Ek İstatistik Bilgileri */}
+                <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-6 border border-gray-200/50">
+                  <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                    <svg className="w-6 h-6 mr-3 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                    </svg>
+                    Özet Bilgiler
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="bg-white rounded-xl p-4 shadow-md">
+                      <div className="text-sm text-gray-600 mb-1">Bekleyen Talepler</div>
+                      <div className="text-2xl font-bold text-amber-600">{bekleyenTalepler}</div>
+                      <div className="text-xs text-gray-500 mt-1">Beklemede + İncelemede</div>
+                    </div>
+                    <div className="bg-white rounded-xl p-4 shadow-md">
+                      <div className="text-sm text-gray-600 mb-1">İşlem Oranı</div>
+                      <div className="text-2xl font-bold text-blue-600">
+                        {tayinTalepleri.length ? Math.round(((onaylananTalepler + reddedilenTalepler) / tayinTalepleri.length) * 100) : 0}%
+                      </div>
+                      <div className="text-xs text-gray-500 mt-1">Tamamlanan işlemler</div>
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
             

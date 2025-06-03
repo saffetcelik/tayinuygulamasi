@@ -269,7 +269,7 @@ const Login = () => {
                 </button>
               </div>
               
-              <div className="flex items-center justify-between mt-4">
+              <div className="flex items-center mt-4">
                 <div className="flex items-center">
                   <input
                     id="remember-me"
@@ -282,12 +282,6 @@ const Login = () => {
                   <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
                     Beni hatırla
                   </label>
-                </div>
-
-                <div className="text-sm">
-                  <a href="#" className="font-medium text-primary-600 hover:text-primary-500 transition-colors">
-                    Şifremi unuttum
-                  </a>
                 </div>
               </div>
             </form>

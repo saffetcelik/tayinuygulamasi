@@ -2,43 +2,18 @@ import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
 const TayinListesi = ({ tayinTalepleri, loading, updateTayinDurumu, onRefresh }) => {
-  const [selectedTayin, setSelectedTayin] = useState(null);
-  const [durumModalOpen, setDurumModalOpen] = useState(false);
-  const [durumAciklamasi, setDurumAciklamasi] = useState('');
   const [filterDurum, setFilterDurum] = useState('Tümü');
   const [searchText, setSearchText] = useState('');
   const [siralama, setSiralama] = useState('newest');
 
-  // Durum güncelleme modalını aç (tıklama sorunlarını önlemek için event.preventDefault ve stopPropagation eklendi)
-  const openDurumModal = (event, tayin, initialDurum) => {
-    if (event) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-    console.log('Durumu Değiştir butonuna tıklandı, Tayin ID:', tayin.id);
-    setSelectedTayin({...tayin, durum: initialDurum || tayin.durum});
-    setDurumAciklamasi(tayin.durumAciklamasi || '');
-    setDurumModalOpen(true);
-  };
-
-  // Durum güncelleme işlemi
-  const handleDurumUpdate = async () => {
-    if (!selectedTayin || !selectedTayin.durum) {
-      toast.error('Lütfen bir durum seçiniz.');
-      return;
-    }
-
+  // Hızlı durum güncelleme işlemi
+  const handleQuickDurumUpdate = async (tayin, yeniDurum) => {
     try {
-      await updateTayinDurumu(
-        selectedTayin.id,
-        selectedTayin.durum,
-        durumAciklamasi
-      );
-      setDurumModalOpen(false);
-      setSelectedTayin(null);
-      setDurumAciklamasi('');
+      await updateTayinDurumu(tayin.id, yeniDurum, '');
+      // Toast bildirimi kaldırıldı - AdminPanel'deki updateTayinDurumu zaten bildirim gösteriyor
     } catch (error) {
       console.error('Durum güncellenirken bir hata oluştu:', error);
+      toast.error('Durum güncellenirken bir hata oluştu.');
     }
   };
 
@@ -224,22 +199,53 @@ const TayinListesi = ({ tayinTalepleri, loading, updateTayinDurumu, onRefresh })
                         <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium border ${getDurumRenk(tayin.durum)}`}>
                           {tayin.durum || 'Beklemede'}
                         </span>
-                        {tayin.durumAciklamasi && (
-                          <div className="text-xs text-gray-500 mt-1 max-w-xs truncate">
-                            {tayin.durumAciklamasi}
-                          </div>
-                        )}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         {new Date(tayin.createdAt).toLocaleDateString('tr-TR')}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <button
-                          onClick={(e) => openDurumModal(e, tayin)}
-                          className="text-blue-600 hover:text-blue-900 mr-3 cursor-pointer"
-                        >
-                          Durumu Değiştir
-                        </button>
+                        <div className="flex items-center justify-end gap-2">
+                          {/* Hızlı Durum Butonları */}
+                          {tayin.durum !== 'Onaylandı' && (
+                            <button
+                              onClick={() => handleQuickDurumUpdate(tayin, 'Onaylandı')}
+                              className="inline-flex items-center px-3 py-1.5 bg-emerald-100 text-emerald-700 text-xs font-medium rounded-lg hover:bg-emerald-200 transition-colors"
+                              title="Onayla"
+                            >
+                              <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                              </svg>
+                              Onayla
+                            </button>
+                          )}
+
+                          {tayin.durum !== 'Reddedildi' && (
+                            <button
+                              onClick={() => handleQuickDurumUpdate(tayin, 'Reddedildi')}
+                              className="inline-flex items-center px-3 py-1.5 bg-red-100 text-red-700 text-xs font-medium rounded-lg hover:bg-red-200 transition-colors"
+                              title="Reddet"
+                            >
+                              <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+                              </svg>
+                              Reddet
+                            </button>
+                          )}
+
+                          {tayin.durum !== 'İncelemede' && (
+                            <button
+                              onClick={() => handleQuickDurumUpdate(tayin, 'İncelemede')}
+                              className="inline-flex items-center px-3 py-1.5 bg-amber-100 text-amber-700 text-xs font-medium rounded-lg hover:bg-amber-200 transition-colors"
+                              title="İncelemeye Al"
+                            >
+                              <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                              </svg>
+                              İncele
+                            </button>
+                          )}
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -270,75 +276,7 @@ const TayinListesi = ({ tayinTalepleri, loading, updateTayinDurumu, onRefresh })
           )}
         </>
       )}
-      
-      {/* Durum Güncelleme Modal */}
-      {durumModalOpen && selectedTayin && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50" style={{ zIndex: 9999, overflow: 'hidden' }}>
-          {console.log('Durum güncelleme modalı açılıyor')}
-          <div className="relative w-full h-full max-w-lg mx-auto flex items-center justify-center py-6 px-4 sm:px-6 lg:px-8">
-          <div className="bg-white rounded-lg shadow-xl w-full max-w-md overflow-hidden animate-fade-in-up">
-            <div className="p-6">
-              <h3 className="text-lg font-bold text-gray-900 mb-4">
-                Tayin Talebi Durumunu Güncelle
-              </h3>
-              
-              <div className="mb-4">
-                <p className="text-sm text-gray-600 mb-2">
-                  <span className="font-medium">Personel:</span> {selectedTayin.personel?.ad} {selectedTayin.personel?.soyad}
-                </p>
-                <p className="text-sm text-gray-600">
-                  <span className="font-medium">Talep Nedeni:</span> {selectedTayin.talepNedeni}
-                </p>
-              </div>
-              
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Durum
-                </label>
-                <select
-                  value={selectedTayin.durum}
-                  onChange={(e) => setSelectedTayin({...selectedTayin, durum: e.target.value})}
-                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                >
-                  <option value="Beklemede">Beklemede</option>
-                  <option value="İncelemede">İncelemede</option>
-                  <option value="Onaylandı">Onaylandı</option>
-                  <option value="Reddedildi">Reddedildi</option>
-                </select>
-              </div>
-              
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Durum Açıklaması (Opsiyonel)
-                </label>
-                <textarea
-                  value={durumAciklamasi}
-                  onChange={(e) => setDurumAciklamasi(e.target.value)}
-                  rows="3"
-                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Durum hakkında ek bilgi girebilirsiniz..."
-                ></textarea>
-              </div>
-              
-              <div className="flex justify-end space-x-3 mt-6">
-                <button
-                  onClick={() => setDurumModalOpen(false)}
-                  className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  İptal
-                </button>
-                <button
-                  onClick={handleDurumUpdate}
-                  className="px-4 py-2 border border-transparent rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  Kaydet
-                </button>
-              </div>
-            </div>
-          </div>
-          </div>
-        </div>
-      )}
+
     </div>
   );
 };

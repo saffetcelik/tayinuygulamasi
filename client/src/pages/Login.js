@@ -11,6 +11,8 @@ const Login = () => {
   const [error, setError] = useState('');
   const [sicilNoError, setSicilNoError] = useState('');
   const [animationComplete, setAnimationComplete] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [focusedField, setFocusedField] = useState('');
   const navigate = useNavigate();
   
   // Sayfa yüklendiğinde animasyon efekti ve cookie kontrolü
@@ -133,23 +135,39 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-primary-800 to-primary-600 p-4 relative overflow-hidden">
-      {/* Modernleştirilmiş arka plan desenleri */}
+    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Kurumsal Modern Gradient Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900"></div>
+      <div className="absolute inset-0 bg-gradient-to-tr from-primary-900/80 via-transparent to-primary-700/40"></div>
+
+      {/* Animated Corporate Background Elements */}
       <div className="absolute inset-0 overflow-hidden z-0">
-        {/* Modern geometrik desenler */}
-        <div className="absolute top-0 right-0 w-full h-full opacity-10">
+        {/* Floating Corporate Shapes */}
+        <div className="absolute top-1/4 left-1/6 w-64 h-64 bg-gradient-to-r from-primary-500/10 to-blue-600/10 rounded-full blur-2xl animate-float-slow"></div>
+        <div className="absolute top-2/3 right-1/5 w-80 h-80 bg-gradient-to-r from-indigo-500/8 to-purple-600/8 rounded-full blur-3xl animate-float-medium"></div>
+        <div className="absolute bottom-1/3 left-1/2 w-72 h-72 bg-gradient-to-r from-cyan-500/6 to-blue-700/6 rounded-full blur-2xl animate-float-fast"></div>
+
+        {/* Corporate Grid Pattern */}
+        <div className="absolute inset-0 opacity-[0.02]">
           <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-            <path d="M0,0 L100,0 L100,100 L0,100 Z" fill="url(#grad1)" />
             <defs>
-              <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#ffffff" stopOpacity="0.05" />
-                <stop offset="100%" stopColor="#ffffff" stopOpacity="0.2" />
-              </linearGradient>
+              <pattern id="corporateGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="white" strokeWidth="0.5"/>
+                <circle cx="0" cy="0" r="1" fill="white" opacity="0.3"/>
+              </pattern>
             </defs>
+            <rect width="100" height="100" fill="url(#corporateGrid)" />
           </svg>
         </div>
-        <div className="absolute top-0 left-0 w-1/2 h-1/2 bg-white opacity-[0.03] rounded-br-full"></div>
-        <div className="absolute bottom-0 right-0 w-3/4 h-1/3 bg-white opacity-[0.04] rounded-tl-3xl"></div>
+
+        {/* Modern Geometric Elements */}
+        <div className="absolute top-20 right-20 w-24 h-24 border border-white/10 rounded-lg rotate-45 animate-spin-slow"></div>
+        <div className="absolute bottom-32 left-16 w-16 h-16 bg-white/5 backdrop-blur-sm rounded-full animate-pulse-slow"></div>
+        <div className="absolute top-1/2 right-10 w-32 h-1 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-slide-right"></div>
+
+        {/* Subtle Light Rays */}
+        <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-white/10 to-transparent animate-fade-in-out"></div>
+        <div className="absolute top-0 right-1/3 w-px h-full bg-gradient-to-b from-transparent via-white/8 to-transparent animate-fade-in-out-delayed"></div>
       </div>
 
       <div className="w-full max-w-md z-10">
@@ -207,6 +225,8 @@ const Login = () => {
                     type="text"
                     value={sicilNo}
                     onChange={handleSicilNoChange}
+                    onFocus={() => setFocusedField('sicilNo')}
+                    onBlur={() => setFocusedField('')}
                     className={`block w-full pl-10 pr-3 py-3 border-0 focus:ring-0 transition-all duration-200 bg-transparent ${sicilNoError ? 'border-red-500 text-red-600' : ''}`}
                     placeholder="Sicil numaranızı giriniz (6 haneli)"
                     maxLength={6}
@@ -236,13 +256,31 @@ const Login = () => {
                   </div>
                   <input
                     id="sifre"
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     value={sifre}
                     onChange={(e) => setSifre(e.target.value)}
-                    className="block w-full pl-10 pr-3 py-3 border-0 focus:ring-0 transition-all duration-200 bg-transparent"
+                    onFocus={() => setFocusedField('sifre')}
+                    onBlur={() => setFocusedField('')}
+                    className="block w-full pl-10 pr-12 py-3 border-0 focus:ring-0 transition-all duration-200 bg-transparent"
                     placeholder="Şifrenizi giriniz"
                     required
                   />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-primary-600 transition-colors duration-200"
+                  >
+                    {showPassword ? (
+                      <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21" />
+                      </svg>
+                    ) : (
+                      <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                      </svg>
+                    )}
+                  </button>
                   <div className="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-primary-600 to-primary-400 w-0 group-focus-within:w-full transition-all duration-300"></div>
                 </div>
               </div>
@@ -325,16 +363,80 @@ const Login = () => {
           100% { transform: scale(2); opacity: 0; }
         }
         
+        @keyframes float-slow {
+          0%, 100% { transform: translateY(0px) translateX(0px) rotate(0deg); }
+          25% { transform: translateY(-20px) translateX(10px) rotate(1deg); }
+          50% { transform: translateY(-10px) translateX(-15px) rotate(-1deg); }
+          75% { transform: translateY(-30px) translateX(5px) rotate(0.5deg); }
+        }
+
+        @keyframes float-medium {
+          0%, 100% { transform: translateY(0px) translateX(0px) rotate(0deg); }
+          33% { transform: translateY(-15px) translateX(-10px) rotate(-0.5deg); }
+          66% { transform: translateY(-25px) translateX(8px) rotate(1deg); }
+        }
+
+        @keyframes float-fast {
+          0%, 100% { transform: translateY(0px) translateX(0px) rotate(0deg); }
+          50% { transform: translateY(-20px) translateX(-12px) rotate(-0.8deg); }
+        }
+
+        @keyframes spin-slow {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse-slow {
+          0%, 100% { opacity: 0.3; transform: scale(1); }
+          50% { opacity: 0.6; transform: scale(1.05); }
+        }
+
+        @keyframes slide-right {
+          0% { transform: translateX(-100%); opacity: 0; }
+          50% { opacity: 1; }
+          100% { transform: translateX(100%); opacity: 0; }
+        }
+
+        @keyframes fade-in-out {
+          0%, 100% { opacity: 0; }
+          50% { opacity: 0.3; }
+        }
+
+        @keyframes fade-in-out-delayed {
+          0%, 100% { opacity: 0; }
+          50% { opacity: 0.2; }
+        }
+
         .animate-float-slow {
           animation: float-slow 20s ease-in-out infinite;
         }
-        
+
         .animate-float-medium {
           animation: float-medium 15s ease-in-out infinite;
         }
-        
+
         .animate-float-fast {
           animation: float-fast 12s ease-in-out infinite;
+        }
+
+        .animate-spin-slow {
+          animation: spin-slow 8s linear infinite;
+        }
+
+        .animate-pulse-slow {
+          animation: pulse-slow 4s ease-in-out infinite;
+        }
+
+        .animate-slide-right {
+          animation: slide-right 6s ease-in-out infinite;
+        }
+
+        .animate-fade-in-out {
+          animation: fade-in-out 8s ease-in-out infinite;
+        }
+
+        .animate-fade-in-out-delayed {
+          animation: fade-in-out-delayed 10s ease-in-out infinite 2s;
         }
         
         .animate-shake {

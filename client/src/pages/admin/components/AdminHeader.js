@@ -25,7 +25,7 @@ const AdminHeader = ({ adminInfo, onLogout, mobileMenuOpen, setMobileMenuOpen })
   }, [profilMenuRef, notificationsRef]);
 
   return (
-    <header className="bg-white text-slate-700 fixed w-full top-0 left-0 z-20 shadow-sm border-b border-slate-200 md:pl-64">
+    <header className="bg-white text-slate-700 fixed w-full top-0 left-0 z-20 shadow-sm border-b border-slate-200 md:pl-72">
       <div className="px-4 py-2.5 flex justify-between items-center">
         {/* Hamburger menü butonu - Mobil görünüm için */}
         <div className="flex items-center">

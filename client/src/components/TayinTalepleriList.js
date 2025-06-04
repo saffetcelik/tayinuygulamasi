@@ -231,18 +231,18 @@ const TayinTalepleriList = () => {
     <div className="space-y-6">
       {talepler.map((talep) => (
         <div key={talep.id} className="bg-gradient-to-br from-white to-gray-50/30 rounded-2xl border border-gray-200/50 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
-          {/* Card Header */}
-          <div className="bg-gradient-to-r from-primary-600 to-blue-600 px-6 py-4">
+          {/* Card Header - Soft Design */}
+          <div className="bg-gradient-to-r from-gray-50 to-gray-100/80 px-6 py-4 border-b border-gray-200/50">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
-                <div className="bg-white/20 p-2 rounded-lg">
-                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="bg-primary-100 p-2 rounded-lg">
+                  <svg className="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-white">Tayin Talebi #{talep.id}</h3>
-                  <p className="text-blue-100 text-sm">{new Date(talep.basvuru_tarihi).toLocaleDateString('tr-TR', {
+                  <h3 className="text-lg font-semibold text-gray-800">Tayin Talebi</h3>
+                  <p className="text-gray-600 text-sm">{new Date(talep.basvuru_tarihi).toLocaleDateString('tr-TR', {
                     year: 'numeric',
                     month: 'long',
                     day: 'numeric'

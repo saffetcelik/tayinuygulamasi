@@ -83,7 +83,7 @@ docker-compose up -d --build
 Bu komut:
 - PostgreSQL veritabanını başlatır
 
-> **Not:** Backend konteyneri (`tayin-backend`) için veritabanı bağlantı bilgileri (`ConnectionStrings__DefaultConnection`) `dockerfiles/entrypoint.sh` dosyası içerisinde tanımlanmıştır. Varsayılan olarak `Host=postgres;Database=tayin;Username=postgres;Password=root` şeklindedir. Eğer farklı bir veritabanı sunucusu veya kimlik bilgileri kullanmak isterseniz, bu dosyayı güncelleyebilir veya `docker-compose.yml` dosyasında backend servisi için `environment` bölümüne `ConnectionStrings__DefaultConnection` değişkenini ekleyerek bu değeri ezebilirsiniz.
+> **Not:** Backend konteyneri (`tayin-backend`) için veritabanı bağlantı bilgileri (`ConnectionStrings__DefaultConnection`) `dockerfiles/entrypoint.sh` dosyası içerisinde tanımlanmıştır. Varsayılan olarak `Host=postgres;Database=tayin;Username=postgres;Password=root` şeklindedir.
 - Backend API'yi build edip çalıştırır (veritabanı bağlantısını bekler)
 - Frontend uygulamasını build edip çalıştırır
 - Tüm bileşenleri Docker ağında birbirine bağlar
@@ -92,28 +92,6 @@ Bu komut:
 - Backend API: http://localhost:5000
 - Frontend: http://localhost:3000
 - PostgreSQL: localhost:5432 (Docker içinde tayin-postgres konteynerinde)
-
-**Konteyner Durumunu Kontrol Etme:**
-```powershell
-docker ps
-```
-
-**Container Loglarını Görüntüleme:**
-```powershell
-docker logs tayin-backend  # Backend logları
-docker logs tayin-frontend # Frontend logları
-docker logs tayin-postgres # PostgreSQL logları
-```
-
-**Konteynerleri Durdurma:**
-```powershell
-docker-compose down
-```
-
-**Konteynerleri ve Verileri Tamamen Silme:**
-```powershell
-docker-compose down -v --rmi all
-```
 
 ### 3. PostgreSQL Kurulumu ve Veritabanı Ayarları (Docker Olmadan Manuel Kurulum)
 

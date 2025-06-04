@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     ComposableMap,
     Geographies,
@@ -131,22 +131,64 @@ const extractIlFromAdliye = (adliyeAdi) => {
 };
 
 function TurkeyMap({ tercihler = [], onIlSelect = null, maxTercih = 3 }) {
-    // GeoJSON verisini state olarak tutalım
-    const [geographies, setGeographies] = React.useState([]);
     const [errorMessage, setErrorMessage] = React.useState('');
-    // Tooltip tamamen kaldırıldı
-    const [selectedTercih, setSelectedTercih] = React.useState(null);
+    const [animatingProvinces, setAnimatingProvinces] = useState(new Set());
+    const [isInitialLoad, setIsInitialLoad] = useState(true);
     
-    // GeoJSON verisini component mount olduğunda yükleyelim
-    React.useEffect(() => {
-        fetch(geoUrl)
-            .then(res => res.json())
-            .then(data => {
-                setGeographies(data);
-            })
-            .catch(error => console.error("Harita verileri yüklenirken hata oluştu:", error));
-    }, []);
-    
+    // İlk yüklemede enerji dalgası animasyonu
+    useEffect(() => {
+        if (isInitialLoad) {
+            // 1 saniye bekle sonra dalga animasyonunu başlat
+            setTimeout(() => {
+                // Tüm şehirleri koordinatlarına göre soldan sağa sırala
+                const sortedProvinces = [...turkeyProvinces]
+                    .sort((a, b) => a.coordinates[0] - b.coordinates[0])
+                    .map(p => normalizeIlAdi(p.name));
+
+                // Optimize edilmiş dalga efekti - lag'sız
+                let waveIndex = 0;
+                const waveSize = Math.ceil(sortedProvinces.length / 12); // 12 dalga grubu (daha az state değişikliği)
+
+                const waveInterval = setInterval(() => {
+                    const startIndex = waveIndex * waveSize;
+                    const endIndex = Math.min(startIndex + waveSize, sortedProvinces.length);
+                    const currentWaveProvinces = sortedProvinces.slice(startIndex, endIndex);
+
+                    // Batch state update - tek seferde güncelle
+                    setAnimatingProvinces(prev => {
+                        const newSet = new Set(prev);
+
+                        // Yeni dalga grubunu ekle
+                        currentWaveProvinces.forEach(province => newSet.add(province));
+
+                        // Önceki dalga grubunu kaldır (aynı anda)
+                        if (waveIndex > 2) {
+                            const prevStartIndex = (waveIndex - 3) * waveSize;
+                            const prevEndIndex = Math.min(prevStartIndex + waveSize, sortedProvinces.length);
+                            const prevWaveProvinces = sortedProvinces.slice(prevStartIndex, prevEndIndex);
+                            prevWaveProvinces.forEach(province => newSet.delete(province));
+                        }
+
+                        return newSet;
+                    });
+
+                    waveIndex++;
+
+                    // Dalga tamamlandığında
+                    if (waveIndex >= 12) {
+                        clearInterval(waveInterval);
+
+                        // 1800ms sonra tüm animasyonu temizle
+                        setTimeout(() => {
+                            setAnimatingProvinces(new Set());
+                            setIsInitialLoad(false);
+                        }, 1800);
+                    }
+                }, 100); // Her 100ms'de bir dalga grubu (daha az frequent update)
+            }, 1000);
+        }
+    }, [isInitialLoad]);
+
     // Seçilen illerin listesini oluştur
     const selectedIller = tercihler
         .filter(tercih => tercih && tercih.label) // Geçerli tercihleri filtrele
@@ -155,20 +197,10 @@ function TurkeyMap({ tercihler = [], onIlSelect = null, maxTercih = 3 }) {
             return normalizeIlAdi(ilAdi);
         });
     
-    // Kullanıcıya hangi tercih sırasında olduğunu gösterme fonksiyonu
-    const getNextTercihSirasi = () => {
-        // Seçilen il sayısı + 1 = bir sonraki tercih sırası
-        return selectedIller.length + 1;
-    };
-    
-    // Tooltip'ler tamamen kaldırıldığı için fare olayları boş fonksiyonlar
-    const handleMouseMove = (geo, event) => { };
-    
-    // Haritadan fare çıkışı işleyicisi
-    const handleMouseLeave = () => { };
+
     
     // İl tıklama işleyicisi
-    const handleIlClick = (geo, event) => {
+    const handleIlClick = (geo) => {
         if (!onIlSelect) return; // Eğer tıklama işlevi verilmemişse hiçbir şey yapma
         
         const ilAdi = geo.properties.name;
@@ -187,43 +219,38 @@ function TurkeyMap({ tercihler = [], onIlSelect = null, maxTercih = 3 }) {
             return;
         }
         
-        // Hangi tercih sırasında olduğunu göster
-        const tercihSirasi = getNextTercihSirasi();
-        setSelectedTercih({
-            il: ilAdi,
-            sira: tercihSirasi
-        });
-        
-        // 2 saniye sonra seçilen tercihi temizle
-        setTimeout(() => setSelectedTercih(null), 2000);
+
         
         // İl adını form bileşenine ilet
         onIlSelect(ilAdi);
     };
 
     return (
-        <div className="turkey-map-container relative">
-            <div className="turkey-map-title mb-1">
-                <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
-                </svg>
-                <span>Tercih Ettiğiniz İller</span>
-            </div>
-            
-            <div className="mb-4 p-4 bg-blue-50 border-l-4 border-blue-500 rounded-md shadow-sm">
-                <div className="flex">
-                    <div className="flex-shrink-0">
-                        <svg className="h-5 w-5 text-blue-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2h-1V9z" clipRule="evenodd" />
+        <div className="modern-turkey-map-container">
+            {/* Modern Header */}
+            <div className="modern-map-header">
+                <div className="header-content">
+                    <div className="header-icon">
+                        <svg className="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
                         </svg>
                     </div>
-                    <div className="ml-3">
-                        <h3 className="text-sm font-medium text-blue-800">Haritadan doğrudan tercih yapabilirsiniz</h3>
-                        <div className="mt-2 text-sm text-blue-700">
-                            <ul className="list-disc pl-5 space-y-1">
-                                <li>Haritada istediğiniz ile tıklayarak tercih listesine ekleyebilirsiniz</li>
-                            </ul>
-                        </div>
+                    <div className="header-text">
+                        <h3 className="header-title">Türkiye Haritası</h3>
+                        <p className="header-subtitle">Haritadan doğrudan tercih yapabilirsiniz</p>
+                    </div>
+                </div>
+
+                {/* Interactive Stats */}
+                <div className="map-stats">
+                    <div className="stat-item">
+                        <span className="stat-number">{selectedIller.length}</span>
+                        <span className="stat-label">Seçilen</span>
+                    </div>
+                    <div className="stat-divider"></div>
+                    <div className="stat-item">
+                        <span className="stat-number">{maxTercih - selectedIller.length}</span>
+                        <span className="stat-label">Kalan</span>
                     </div>
                 </div>
             </div>
@@ -237,71 +264,138 @@ function TurkeyMap({ tercihler = [], onIlSelect = null, maxTercih = 3 }) {
                 </div>
             )}
             
-            {/* Seçim bilgisi bildirimi */}
-            {selectedTercih && (
-                <div className="absolute top-40 right-4 z-10 bg-green-600 text-white px-4 py-3 rounded-lg shadow-lg animate-fade-in">
-                    <div className="flex items-center">
-                        <svg className="h-6 w-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                        <div>
-                            <p className="font-bold">{selectedTercih.il}</p>
-                            <p className="text-sm">{selectedTercih.sira}. tercihiniz olarak eklendi</p>
-                        </div>
-                    </div>
-                </div>
-            )}
+
             
             {/* Tüm tooltip'ler tamamen kaldırıldı */}
-            
-            <ComposableMap
-                projection="geoMercator"
-                projectionConfig={{
-                    scale: 2200,
-                    center: [35.5, 39]
-                }}
-                width={800}
-                height={450}
-                style={{ 
-                    width: "100%", 
-                    height: "auto", 
-                    maxWidth: "100%",
-                    borderRadius: "0.5rem",
-                    overflow: "visible"
-                }}
-            >
+
+            {/* Modern Map Container */}
+            <div className="modern-map-wrapper">
+                <div className="map-background-pattern"></div>
+
+                <ComposableMap
+                    projection="geoMercator"
+                    projectionConfig={{
+                        scale: 5500,
+                        center: [35.5, 39]
+                    }}
+                    width={1800}
+                    height={1000}
+                    className="modern-composable-map"
+                >
+                    {/* Modern SVG Gradients */}
+                    <defs>
+                        <linearGradient id="selectedGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.8" />
+                            <stop offset="50%" stopColor="#6366f1" stopOpacity="0.9" />
+                            <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0.8" />
+                        </linearGradient>
+
+                        <linearGradient id="selectedHoverGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stopColor="#2563eb" stopOpacity="0.9" />
+                            <stop offset="50%" stopColor="#4f46e5" stopOpacity="1" />
+                            <stop offset="100%" stopColor="#7c3aed" stopOpacity="0.9" />
+                        </linearGradient>
+
+                        <linearGradient id="selectedPressedGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stopColor="#1d4ed8" stopOpacity="1" />
+                            <stop offset="50%" stopColor="#4338ca" stopOpacity="1" />
+                            <stop offset="100%" stopColor="#6d28d9" stopOpacity="1" />
+                        </linearGradient>
+
+                        <filter id="modernShadow">
+                            <feDropShadow dx="0" dy="2" stdDeviation="3" floodColor="#000" floodOpacity="0.1"/>
+                        </filter>
+
+                        <filter id="selectedShadow">
+                            <feDropShadow dx="0" dy="4" stdDeviation="6" floodColor="#3b82f6" floodOpacity="0.3"/>
+                        </filter>
+
+                        {/* Modern Professional Wave Gradients */}
+                        <linearGradient id="professionalWaveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stopColor="#f8fafc" stopOpacity="1"/>
+                            <stop offset="20%" stopColor="#e2e8f0" stopOpacity="0.9"/>
+                            <stop offset="40%" stopColor="#3b82f6" stopOpacity="0.3"/>
+                            <stop offset="60%" stopColor="#6366f1" stopOpacity="0.5"/>
+                            <stop offset="80%" stopColor="#8b5cf6" stopOpacity="0.3"/>
+                            <stop offset="100%" stopColor="#f8fafc" stopOpacity="1"/>
+                        </linearGradient>
+
+                        <linearGradient id="subtleHighlight" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stopColor="#f1f5f9" stopOpacity="0.8"/>
+                            <stop offset="50%" stopColor="#e2e8f0" stopOpacity="0.6"/>
+                            <stop offset="100%" stopColor="#cbd5e1" stopOpacity="0.4"/>
+                        </linearGradient>
+
+                        {/* Lightweight Professional Glow Filter */}
+                        <filter id="professionalGlow" x="-20%" y="-20%" width="140%" height="140%">
+                            <feGaussianBlur stdDeviation="1" result="coloredBlur"/>
+                            <feMerge>
+                                <feMergeNode in="coloredBlur"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                    </defs>
                 <Geographies geography={geoUrl}>
                     {({ geographies }) =>
                         geographies.map(geo => {
                             const cityId = geo.properties.name ? normalizeIlAdi(geo.properties.name) : '';
                             const isSelected = selectedIller.includes(cityId);
+                            const isAnimating = animatingProvinces.has(cityId);
+
+                            // Modern profesyonel dalga efekti
+                            const getProfessionalWaveFill = () => {
+                                return 'url(#subtleHighlight)';
+                            };
                             
                             return (
                                 <Geography
                                     key={geo.rsmKey}
                                     geography={geo}
-                                    onClick={(event) => handleIlClick(geo, event)}
-                                    className="il-hover"
+                                    onClick={() => handleIlClick(geo)}
+                                    className="modern-province"
                                     style={{
                                         default: {
-                                            fill: isSelected ? '#10b981' : '#e5e7eb',
-                                            stroke: '#FFFFFF',
-                                            strokeWidth: 0.75,
+                                            fill: isAnimating
+                                                ? getProfessionalWaveFill()
+                                                : isSelected
+                                                ? 'url(#selectedGradient)'
+                                                : '#f8fafc',
+                                            stroke: isAnimating
+                                                ? '#6366f1'
+                                                : isSelected ? '#3b82f6' : '#94a3b8',
+                                            strokeWidth: isAnimating
+                                                ? 1.3
+                                                : isSelected ? 1.5 : 1.2,
                                             outline: 'none',
-                                            transition: 'all 0.3s ease'
+                                            transition: 'fill 0.3s ease-out, stroke 0.3s ease-out, filter 0.3s ease-out',
+                                            filter: isAnimating
+                                                ? 'url(#professionalGlow)'
+                                                : isSelected
+                                                ? 'drop-shadow(0 4px 6px rgba(59, 130, 246, 0.3))'
+                                                : 'none'
                                         },
                                         hover: {
-                                            fill: isSelected ? '#059669' : '#d1d5db',
-                                            stroke: '#FFFFFF',
-                                            strokeWidth: 0.75,
+                                            fill: isSelected
+                                                ? 'url(#selectedHoverGradient)'
+                                                : '#f1f5f9',
+                                            stroke: isSelected ? '#2563eb' : '#64748b',
+                                            strokeWidth: isSelected ? 1.8 : 1.5,
                                             outline: 'none',
-                                            cursor: 'pointer'
+                                            cursor: 'pointer',
+                                            filter: isSelected
+                                                ? 'drop-shadow(0 6px 8px rgba(59, 130, 246, 0.4))'
+                                                : 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1))'
                                         },
                                         pressed: {
-                                            fill: isSelected ? '#047857' : '#9ca3af',
-                                            stroke: '#FFFFFF',
-                                            strokeWidth: 0.75,
-                                            outline: 'none'
+                                            fill: isSelected
+                                                ? 'url(#selectedPressedGradient)'
+                                                : '#e2e8f0',
+                                            stroke: isSelected ? '#1d4ed8' : '#64748b',
+                                            strokeWidth: isSelected ? 2 : 1.5,
+                                            outline: 'none',
+                                            filter: isSelected
+                                                ? 'drop-shadow(0 2px 4px rgba(59, 130, 246, 0.5))'
+                                                : 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2))'
                                         }
                                     }}
                                 />
@@ -327,34 +421,58 @@ function TurkeyMap({ tercihler = [], onIlSelect = null, maxTercih = 3 }) {
                                 strokeWidth: 0,
                             }}
                         >
-                            <text 
-                                textAnchor="middle" 
+                            <text
+                                textAnchor="middle"
                                 alignmentBaseline="middle"
+                                className="modern-province-label"
                                 style={{
-                                    fontSize: "0.65rem",
-                                    fontWeight: isSelected ? "bold" : "normal",
-                                    fill: isSelected ? "#000" : "#555",
+                                    fontSize: isSelected ? "1.5rem" : "1.3rem",
+                                    fontWeight: isSelected ? "600" : "500",
+                                    fill: isSelected ? "#1e40af" : "#64748b",
                                     pointerEvents: "none",
-                                    textShadow: "0px 0px 3px #ffffff, 0px 0px 3px #ffffff"
+                                    textShadow: isSelected
+                                        ? "0px 0px 6px rgba(255,255,255,1), 0px 2px 4px rgba(59,130,246,0.4), 0px 0px 2px rgba(255,255,255,1)"
+                                        : "0px 0px 4px rgba(255,255,255,1), 0px 1px 2px rgba(0,0,0,0.2), 0px 0px 2px rgba(255,255,255,0.9)",
+                                    transition: "all 0.3s ease",
+                                    fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif"
                                 }}
                             >
                                 {name}
                             </text>
+
+                            {/* Selected Province Indicator */}
+                            {isSelected && (
+                                <circle
+                                    cx={0}
+                                    cy={-12}
+                                    r={3}
+                                    fill="#3b82f6"
+                                    className="modern-selection-indicator"
+                                    style={{
+                                        filter: "drop-shadow(0 2px 4px rgba(59, 130, 246, 0.4))"
+                                    }}
+                                >
+                                    <animate
+                                        attributeName="r"
+                                        values="2;4;2"
+                                        dur="2s"
+                                        repeatCount="indefinite"
+                                    />
+                                    <animate
+                                        attributeName="opacity"
+                                        values="0.6;1;0.6"
+                                        dur="2s"
+                                        repeatCount="indefinite"
+                                    />
+                                </circle>
+                            )}
                         </Annotation>
                     );
                 })}
             </ComposableMap>
-            
-            <div className="map-legend">
-                <div className="legend-item">
-                    <div className="legend-color selected-color"></div>
-                    <span>Tercih Edilen İller</span>
-                </div>
-                <div className="legend-item">
-                    <div className="legend-color unselected-color"></div>
-                    <span>Diğer İller</span>
-                </div>
             </div>
+
+
         </div>
     );
 }

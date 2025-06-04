@@ -4,6 +4,7 @@ import Select from 'react-select';
 import Swal from 'sweetalert2';
 import TurkeyMap from './TurkeyMap';
 import { toast } from 'react-toastify';
+
 import './TayinTalebiForm.css';
 
 const TayinTalebiForm = ({ setActiveTab }) => {
@@ -49,7 +50,9 @@ const TayinTalebiForm = ({ setActiveTab }) => {
         setAdliyeler(formattedData);
       } catch (err) {
         console.error('Adliyeler yüklenirken hata oluştu:', err);
-        setError('Adliye listesi yüklenirken bir hata oluştu.');
+        const errorMsg = 'Adliye listesi yüklenirken bir hata oluştu.';
+        setError(errorMsg);
+        toast.error(errorMsg);
       }
     };
 
@@ -67,7 +70,9 @@ const TayinTalebiForm = ({ setActiveTab }) => {
     // Talep türü değiştiğinde doğrulama yap
     if (name === 'talepTuru') {
       if (!value) {
-        setTalepTuruError('Lütfen bir talep türü seçiniz');
+        const errorMsg = 'Lütfen bir talep türü seçiniz';
+        setTalepTuruError(errorMsg);
+        toast.error(errorMsg);
       } else {
         setTalepTuruError('');
         // Talep türü seçildi ve tercih varsa floating buton ve panel göster
@@ -102,7 +107,9 @@ const TayinTalebiForm = ({ setActiveTab }) => {
     // Tercih değişikliğinde doğrulama yap
     const validTercihler = newTercihler.filter(t => t !== null);
     if (validTercihler.length === 0) {
-      setTercihError('Lütfen en az bir adliye tercihi yapınız');
+      const errorMsg = 'Lütfen en az bir adliye tercihi yapınız';
+      setTercihError(errorMsg);
+      toast.error(errorMsg);
       setShowMapSubmitButton(false); // Tercih yoksa floating buton gizle
       setShowMapTercihPanel(false); // Tercih yoksa panel gizle
     } else {
@@ -123,9 +130,9 @@ const TayinTalebiForm = ({ setActiveTab }) => {
         ...talep,
         tercihler: newTercihler
       });
-      toast.info(`${talep.tercihler.length + 1}. tercih eklendi`);
+
     } else {
-      toast.warning('En fazla 3 adliye tercihi yapabilirsiniz.');
+
     }
   };
   
@@ -138,9 +145,9 @@ const TayinTalebiForm = ({ setActiveTab }) => {
         ...talep,
         tercihler: newTercihler
       });
-      toast.info(`${index + 1}. tercih kaldırıldı`);
+
     } else {
-      toast.warning('En az bir tercih yapmalısınız.');
+
     }
   };
   
@@ -156,7 +163,8 @@ const TayinTalebiForm = ({ setActiveTab }) => {
     if (ilAdliyeleri.length === 0) {
       const errorMsg = `${ilAdi} ilinde adliye bulunamadı.`;
       setTercihError(errorMsg);
-      toast.warning(errorMsg);
+      toast.error(errorMsg);
+
       setTimeout(() => setTercihError(''), 3000);
       return;
     }
@@ -173,13 +181,14 @@ const TayinTalebiForm = ({ setActiveTab }) => {
           ...talep,
           tercihler: newTercihler
         });
-        toast.info(`${talep.tercihler.length + 1}. tercih olarak ${ilAdi} eklendi`);
+
         return;
       } else {
         // Maksimum tercih sayısına ulaşıldıysa uyarı göster
         const errorMsg = `Maksimum 3 tercih yapabilirsiniz. Yeni tercih yapmak için önce bir tercihi temizleyin.`;
         setTercihError(errorMsg);
-        toast.warning(errorMsg);
+        toast.error(errorMsg);
+
         setTimeout(() => setTercihError(''), 3000);
         return;
       }
@@ -197,7 +206,8 @@ const TayinTalebiForm = ({ setActiveTab }) => {
     if (isAlreadySelected) {
       const errorMsg = `${ilAdi} ilinden bir adliye zaten tercihlerinizde bulunuyor.`;
       setTercihError(errorMsg);
-      toast.warning(errorMsg);
+      toast.error(errorMsg);
+
       setTimeout(() => setTercihError(''), 3000);
       return;
     }
@@ -241,18 +251,24 @@ const TayinTalebiForm = ({ setActiveTab }) => {
     // Tercih kontrolü
     const validTercihler = talep.tercihler.filter(t => t !== null);
     if (validTercihler.length === 0) {
-      setTercihError('Lütfen en az bir adliye tercihi yapınız.');
-      setError('Lütfen formdaki hataları düzeltiniz.');
-      toast.error('Lütfen en az bir adliye tercihi yapınız.');
+      const tercihErrorMsg = 'Lütfen en az bir adliye tercihi yapınız.';
+      const formErrorMsg = 'Lütfen formdaki hataları düzeltiniz.';
+      setTercihError(tercihErrorMsg);
+      setError(formErrorMsg);
+      toast.error(tercihErrorMsg);
+
       // Floating buton'u geri göster çünkü form geçersiz
       setShowMapSubmitButton(false);
       return;
     }
 
     if (!talep.talepTuru) {
-      setTalepTuruError('Lütfen talep türünü seçiniz.');
-      setError('Lütfen formdaki hataları düzeltiniz.');
-      toast.error('Lütfen talep türünü seçiniz.');
+      const talepTuruErrorMsg = 'Lütfen talep türünü seçiniz.';
+      const formErrorMsg = 'Lütfen formdaki hataları düzeltiniz.';
+      setTalepTuruError(talepTuruErrorMsg);
+      setError(formErrorMsg);
+      toast.error(talepTuruErrorMsg);
+
       // Tercih var ama talep türü yok, floating buton'u geri göster
       setShowMapSubmitButton(true);
       return;
@@ -297,8 +313,7 @@ const TayinTalebiForm = ({ setActiveTab }) => {
       setShowMapSubmitButton(false); // Floating buton gizle
       setShowMapTercihPanel(false); // Panel gizle
       
-      // Hem Toast bildirimi hem de SweetAlert2 ile başarı mesajı göster
-      toast.success('Tayin talebiniz başarıyla oluşturuldu.');
+
       
       // SweetAlert2 ile başarı mesajı göster ve tamam butonuna tıklandığında yönlendir
       Swal.fire({
@@ -319,6 +334,7 @@ const TayinTalebiForm = ({ setActiveTab }) => {
       const errorMsg = 'Tayin talebi oluşturulurken bir hata meydana geldi.';
       setError(errorMsg);
       toast.error(errorMsg);
+
       setLoading(false);
       // Hata durumunda floating buton ve panel'i geri göster
       const validTercihler = talep.tercihler.filter(t => t !== null);
@@ -333,24 +349,24 @@ const TayinTalebiForm = ({ setActiveTab }) => {
 
   return (
     <>
-      <div className="max-w-7xl mx-auto bg-gradient-to-br from-white via-gray-50/50 to-blue-50/30 rounded-2xl shadow-xl border border-gray-100/50 overflow-hidden">
-        {/* Modern Header */}
-        <div className="relative bg-gradient-to-r from-primary-600 via-primary-700 to-blue-600 px-8 py-6">
-          {/* Background Pattern */}
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-white rounded-full -translate-y-16 translate-x-16"></div>
-            <div className="absolute bottom-0 left-0 w-24 h-24 bg-white rounded-full translate-y-12 -translate-x-12"></div>
+      <div className="max-w-7xl mx-auto bg-gradient-to-br from-white via-gray-50/50 to-gray-100/30 rounded-2xl shadow-lg border border-gray-200/50 overflow-hidden">
+        {/* Modern Header - Soft Kurumsal */}
+        <div className="relative bg-gradient-to-br from-slate-50 to-gray-100/80 border-b border-gray-200/50 px-8 py-6">
+          {/* Subtle Background Pattern */}
+          <div className="absolute inset-0 opacity-5">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-primary-500 rounded-full -translate-y-16 translate-x-16"></div>
+            <div className="absolute bottom-0 left-0 w-24 h-24 bg-primary-500 rounded-full translate-y-12 -translate-x-12"></div>
           </div>
 
           <div className="relative z-10 flex items-center">
-            <div className="bg-white/20 backdrop-blur-sm p-3 rounded-xl border border-white/30 mr-4">
-              <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <div className="bg-primary-100 p-3 rounded-xl border border-primary-200/50 mr-4">
+              <svg className="w-7 h-7 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
               </svg>
             </div>
             <div>
-              <h2 className="text-2xl font-bold text-white mb-1">Tayin Talebi Oluştur</h2>
-              <p className="text-white/80 text-sm">Yeni tayin talebinizi oluşturun ve tercihlerinizi belirleyin</p>
+              <h2 className="text-2xl font-bold text-gray-800 mb-1">Tayin Talebi Oluştur</h2>
+              <p className="text-gray-600 text-sm">Yeni tayin talebinizi oluşturun ve tercihlerinizi belirleyin</p>
             </div>
           </div>
         </div>
@@ -556,7 +572,7 @@ const TayinTalebiForm = ({ setActiveTab }) => {
               <button
                 type="submit"
                 disabled={loading}
-                className={`group px-8 py-4 bg-gradient-to-r from-primary-600 to-blue-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-primary-700 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-primary-500/20 disabled:from-gray-300 disabled:to-gray-400 disabled:cursor-not-allowed transition-all duration-300 flex items-center space-x-3 hover:-translate-y-1 ${highlightSubmitButton ? 'highlight-button' : ''}`}
+                className={`group px-8 py-4 bg-gradient-to-r from-primary-500 to-primary-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-primary-600 hover:to-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500/20 disabled:from-gray-300 disabled:to-gray-400 disabled:cursor-not-allowed transition-all duration-300 flex items-center space-x-3 hover:-translate-y-1 ${highlightSubmitButton ? 'highlight-button' : ''}`}
               >
                 {loading ? (
                   <>
@@ -584,19 +600,7 @@ const TayinTalebiForm = ({ setActiveTab }) => {
           
           {/* Corporate Turkey Map Section */}
           <div className="bg-gradient-to-br from-white to-gray-50/30 p-8 rounded-2xl border border-gray-200/50 shadow-lg relative">
-            <div className="flex items-center mb-6">
-              <div className="bg-primary-100 p-3 rounded-xl mr-4">
-                <svg className="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-1.447-.894L15 4m0 13V4m-6 3l6-3" />
-                </svg>
-              </div>
-              <div>
-                <h3 className="text-xl font-bold text-gray-800">Türkiye Haritası</h3>
-                <p className="text-sm text-gray-600 mt-1">
-                  Haritadan doğrudan tercih yapabilirsiniz
-                </p>
-              </div>
-            </div>
+
 
             <div className="relative">
               <TurkeyMap
@@ -610,23 +614,18 @@ const TayinTalebiForm = ({ setActiveTab }) => {
 
               {/* Modern Tercih Paneli - Harita Sağ Üst Köşe */}
               {showMapTercihPanel && (
-                <div className="absolute top-4 right-4 z-20 bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl border border-gray-200/50 p-5 min-w-[280px] animate-fade-in">
-                  {/* Panel Header */}
-                  <div className="flex items-center justify-between mb-4">
+                <div className="absolute top-4 left-4 right-4 z-20 bg-white/95 backdrop-blur-sm rounded-xl shadow-lg border border-gray-200/50 p-3 animate-fade-in">
+                  {/* Minimal Header */}
+                  <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center space-x-2">
-                      <div className="bg-primary-100 p-2 rounded-lg">
-                        <svg className="w-4 h-4 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
-                        </svg>
-                      </div>
-                      <div>
-                        <h4 className="text-sm font-bold text-gray-800">Tercih Listesi</h4>
-                        <p className="text-xs text-gray-500">Maksimum 3 tercih</p>
-                      </div>
+                      <h4 className="text-sm font-semibold text-gray-700">Tercihler</h4>
+                      <span className="text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full">
+                        {talep.tercihler.filter(t => t !== null).length}/3
+                      </span>
                     </div>
                     <button
                       onClick={() => setShowMapTercihPanel(false)}
-                      className="p-1 hover:bg-gray-100 rounded-lg transition-colors"
+                      className="p-1 hover:bg-gray-100 rounded-md transition-colors"
                     >
                       <svg className="w-4 h-4 text-gray-400 hover:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -634,93 +633,73 @@ const TayinTalebiForm = ({ setActiveTab }) => {
                     </button>
                   </div>
 
-                  {/* Tercih Listesi */}
-                  <div className="space-y-3">
+                  {/* Compact Horizontal Tercih Listesi */}
+                  <div className="flex space-x-3 overflow-x-auto pb-1">
                     {[1, 2, 3].map((tercihNo) => {
                       const tercihId = talep.tercihler[tercihNo - 1];
                       const tercihAdliye = tercihId ? adliyeler.find(a => a.value === tercihId) : null;
 
                       return (
-                        <div key={tercihNo} className={`flex items-center space-x-3 p-3 rounded-xl border transition-all duration-200 ${
+                        <div key={tercihNo} className={`flex-shrink-0 w-48 p-3 rounded-lg border transition-all duration-200 ${
                           tercihAdliye
-                            ? 'bg-gradient-to-r from-primary-50 to-blue-50 border-primary-200 shadow-sm'
+                            ? 'bg-primary-50 border-primary-200 shadow-sm'
                             : 'bg-gray-50 border-gray-200 border-dashed'
                         }`}>
-                          <div className={`flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
-                            tercihAdliye
-                              ? 'bg-primary-600 text-white'
-                              : 'bg-gray-300 text-gray-500'
-                          }`}>
-                            {tercihNo}
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            {tercihAdliye ? (
-                              <div>
-                                <p className="text-sm font-semibold text-gray-800 truncate">
-                                  {tercihAdliye.label}
-                                </p>
-                                <p className="text-xs text-gray-500">
-                                  {tercihNo}. Tercih
-                                </p>
+                          {tercihAdliye ? (
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center space-x-2 flex-1 min-w-0">
+                                <div className="w-6 h-6 rounded-full bg-primary-600 text-white flex items-center justify-center text-xs font-bold flex-shrink-0">
+                                  {tercihNo}
+                                </div>
+                                <div className="min-w-0 flex-1">
+                                  <p className="text-sm font-medium text-gray-800 truncate">
+                                    {tercihAdliye.label}
+                                  </p>
+                                  <p className="text-xs text-gray-500">
+                                    {tercihNo}. Tercih
+                                  </p>
+                                </div>
                               </div>
-                            ) : (
-                              <div>
-                                <p className="text-sm text-gray-400 italic">
-                                  Tercih seçilmedi
-                                </p>
-                                <p className="text-xs text-gray-400">
-                                  Haritadan il seçiniz
-                                </p>
-                              </div>
-                            )}
-                          </div>
-                          {tercihAdliye && (
-                            <button
-                              onClick={() => {
-                                const newTercihler = [...talep.tercihler];
-                                newTercihler[tercihNo - 1] = null;
-                                setTalep({
-                                  ...talep,
-                                  tercihler: newTercihler
-                                });
+                              <button
+                                onClick={() => {
+                                  const newTercihler = [...talep.tercihler];
+                                  newTercihler[tercihNo - 1] = null;
+                                  setTalep({
+                                    ...talep,
+                                    tercihler: newTercihler
+                                  });
 
-                                // Panel görünürlüğünü kontrol et
-                                const validTercihler = newTercihler.filter(t => t !== null);
-                                if (validTercihler.length === 0) {
-                                  setShowMapTercihPanel(false);
-                                  setShowMapSubmitButton(false);
-                                }
-                              }}
-                              className="flex-shrink-0 p-1 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                            >
-                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
-                              </svg>
-                            </button>
+                                  // Panel görünürlüğünü kontrol et
+                                  const validTercihler = newTercihler.filter(t => t !== null);
+                                  if (validTercihler.length === 0) {
+                                    setShowMapTercihPanel(false);
+                                    setShowMapSubmitButton(false);
+                                  }
+                                }}
+                                className="p-1 text-red-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors flex-shrink-0"
+                              >
+                                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                              </button>
+                            </div>
+                          ) : (
+                            <div className="flex items-center justify-center h-12">
+                              <div className="text-center">
+                                <div className="w-6 h-6 rounded-full bg-gray-300 text-gray-500 flex items-center justify-center text-xs font-bold mx-auto mb-1">
+                                  {tercihNo}
+                                </div>
+                                <p className="text-xs text-gray-400">
+                                  Boş
+                                </p>
+                              </div>
+                            </div>
                           )}
                         </div>
                       );
                     })}
                   </div>
 
-                  {/* Panel Footer */}
-                  <div className="mt-4 pt-3 border-t border-gray-200">
-                    <div className="flex items-center justify-between text-xs">
-                      <span className="text-gray-500">
-                        {talep.tercihler.filter(t => t !== null).length}/3 tercih seçildi
-                      </span>
-                      <div className="flex space-x-1">
-                        {[1, 2, 3].map((i) => (
-                          <div
-                            key={i}
-                            className={`w-2 h-2 rounded-full ${
-                              talep.tercihler[i - 1] ? 'bg-primary-600' : 'bg-gray-300'
-                            }`}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  </div>
                 </div>
               )}
 

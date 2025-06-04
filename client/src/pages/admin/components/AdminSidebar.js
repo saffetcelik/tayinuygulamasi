@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { Users, FileText, BarChart2, Activity, Shield, Settings, LogOut, Database, Home, Calendar, ChevronRight, LogIn, HelpCircle } from 'lucide-react';
+import { Users, FileText, BarChart2, Activity, Shield, Settings, LogOut, Database, Home, Calendar, ChevronRight, LogIn, HelpCircle, TestTube, BookOpen } from 'lucide-react';
 
 const AdminSidebar = ({ activeTab, setActiveTab, mobileMenuOpen, setMobileMenuOpen, istatistikler = {}, onLogout }) => {
   const sidebarRef = useRef(null);
@@ -174,6 +174,48 @@ const AdminSidebar = ({ activeTab, setActiveTab, mobileMenuOpen, setMobileMenuOp
                   <Activity size={18} />
                 </div>
                 <span className="font-medium text-sm">Sistem Logları</span>
+                <ChevronRight size={16} className="ml-auto opacity-50 group-hover:opacity-80 group-hover:translate-x-0.5 transition-all duration-200" />
+              </button>
+            </li>
+
+            <li>
+              <button
+                onClick={() => handleTabChange('sistem-testleri')}
+                className={`flex items-center w-full px-4 py-3 rounded-xl transition-all duration-200 group ${
+                  activeTab === 'sistem-testleri'
+                  ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg'
+                  : 'text-slate-300 hover:bg-slate-700/50 hover:text-white'
+                }`}
+              >
+                <div className={`p-1.5 rounded-lg mr-3 transition-all duration-200 ${
+                  activeTab === 'sistem-testleri'
+                  ? 'bg-white/20'
+                  : 'bg-slate-600/40 group-hover:bg-slate-500/40'
+                }`}>
+                  <TestTube size={18} />
+                </div>
+                <span className="font-medium text-sm">Sistem Testleri</span>
+                <ChevronRight size={16} className="ml-auto opacity-50 group-hover:opacity-80 group-hover:translate-x-0.5 transition-all duration-200" />
+              </button>
+            </li>
+
+            <li>
+              <button
+                onClick={() => handleTabChange('api-dokumantasyon')}
+                className={`flex items-center w-full px-4 py-3 rounded-xl transition-all duration-200 group ${
+                  activeTab === 'api-dokumantasyon'
+                  ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg'
+                  : 'text-slate-300 hover:bg-slate-700/50 hover:text-white'
+                }`}
+              >
+                <div className={`p-1.5 rounded-lg mr-3 transition-all duration-200 ${
+                  activeTab === 'api-dokumantasyon'
+                  ? 'bg-white/20'
+                  : 'bg-slate-600/40 group-hover:bg-slate-500/40'
+                }`}>
+                  <BookOpen size={18} />
+                </div>
+                <span className="font-medium text-sm">API Dokümantasyonu</span>
                 <ChevronRight size={16} className="ml-auto opacity-50 group-hover:opacity-80 group-hover:translate-x-0.5 transition-all duration-200" />
               </button>
             </li>

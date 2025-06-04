@@ -59,17 +59,17 @@ const Ayarlar = () => {
     <div className="space-y-8">
       {/* Modern Şifre Değiştirme Kartı */}
       <div className="bg-gradient-to-br from-white to-gray-50/30 rounded-2xl border border-gray-200/50 shadow-lg overflow-hidden">
-        {/* Card Header */}
-        <div className="bg-gradient-to-r from-primary-600 to-blue-600 px-8 py-6">
+        {/* Card Header - Soft Tasarım */}
+        <div className="bg-gradient-to-br from-gray-50 to-gray-100/50 border-b border-gray-200/50 px-8 py-6">
           <div className="flex items-center">
-            <div className="bg-white/20 p-3 rounded-xl mr-4">
-              <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="bg-primary-100 p-3 rounded-xl mr-4">
+              <svg className="w-7 h-7 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
               </svg>
             </div>
             <div>
-              <h2 className="text-2xl font-bold text-white mb-1">Şifre Değiştir</h2>
-              <p className="text-blue-100 text-sm">Hesap güvenliğiniz için şifrenizi güncelleyin</p>
+              <h2 className="text-2xl font-bold text-gray-800 mb-1">Şifre Değiştir</h2>
+              <p className="text-gray-600 text-sm">Hesap güvenliğiniz için şifrenizi güncelleyin</p>
             </div>
           </div>
         </div>
@@ -168,7 +168,7 @@ const Ayarlar = () => {
               <button
                 type="submit"
                 disabled={loading || (yeniSifre && yeniSifreTekrar && yeniSifre !== yeniSifreTekrar)}
-                className={`group px-8 py-4 bg-gradient-to-r from-primary-600 to-blue-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-primary-700 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-primary-500/20 disabled:from-gray-300 disabled:to-gray-400 disabled:cursor-not-allowed transition-all duration-300 flex items-center space-x-3 hover:-translate-y-1 ${loading ? 'animate-pulse' : ''}`}
+                className={`group px-8 py-4 bg-gradient-to-r from-primary-500 to-primary-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-primary-600 hover:to-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500/20 disabled:from-gray-300 disabled:to-gray-400 disabled:cursor-not-allowed transition-all duration-300 flex items-center space-x-3 hover:-translate-y-1 ${loading ? 'animate-pulse' : ''}`}
               >
                 {loading ? (
                   <>

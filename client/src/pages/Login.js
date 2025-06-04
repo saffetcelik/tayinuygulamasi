@@ -140,54 +140,127 @@ const Login = () => {
       <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900"></div>
       <div className="absolute inset-0 bg-gradient-to-tr from-primary-900/80 via-transparent to-primary-700/40"></div>
 
-      {/* Animated Corporate Background Elements */}
+      {/* Ultra Dynamic Background Elements */}
       <div className="absolute inset-0 overflow-hidden z-0">
-        {/* Floating Corporate Shapes */}
-        <div className="absolute top-1/4 left-1/6 w-64 h-64 bg-gradient-to-r from-primary-500/10 to-blue-600/10 rounded-full blur-2xl animate-float-slow"></div>
-        <div className="absolute top-2/3 right-1/5 w-80 h-80 bg-gradient-to-r from-indigo-500/8 to-purple-600/8 rounded-full blur-3xl animate-float-medium"></div>
-        <div className="absolute bottom-1/3 left-1/2 w-72 h-72 bg-gradient-to-r from-cyan-500/6 to-blue-700/6 rounded-full blur-2xl animate-float-fast"></div>
+        {/* Large Floating Orbs with Complex Gradients */}
+        <div className="absolute top-1/4 left-1/6 w-80 h-80 bg-gradient-to-br from-primary-400/20 via-blue-500/15 to-indigo-600/10 rounded-full blur-3xl animate-float-complex"></div>
+        <div className="absolute top-2/3 right-1/5 w-96 h-96 bg-gradient-to-tr from-purple-500/15 via-pink-400/10 to-indigo-600/8 rounded-full blur-3xl animate-float-reverse-complex"></div>
+        <div className="absolute bottom-1/3 left-1/2 w-72 h-72 bg-gradient-to-r from-cyan-400/18 via-blue-500/12 to-teal-600/8 rounded-full blur-2xl animate-float-diagonal"></div>
 
-        {/* Corporate Grid Pattern */}
-        <div className="absolute inset-0 opacity-[0.02]">
+        {/* Medium Orbs with Pulsing Effects */}
+        <div className="absolute top-10 right-32 w-48 h-48 bg-gradient-to-br from-emerald-400/25 via-green-500/15 to-teal-600/10 rounded-full blur-2xl animate-pulse-breathe"></div>
+        <div className="absolute bottom-20 left-20 w-56 h-56 bg-gradient-to-tr from-orange-400/20 via-red-500/12 to-pink-600/8 rounded-full blur-2xl animate-float-wobble"></div>
+
+        {/* Small Accent Orbs */}
+        <div className="absolute top-1/3 right-1/4 w-32 h-32 bg-gradient-to-br from-yellow-400/30 via-orange-500/20 to-red-600/15 rounded-full blur-xl animate-spin-wobble"></div>
+        <div className="absolute bottom-1/4 left-1/3 w-40 h-40 bg-gradient-to-tr from-violet-400/25 via-purple-500/18 to-indigo-600/12 rounded-full blur-xl animate-bounce-float"></div>
+
+        {/* Animated Grid Pattern */}
+        <div className="absolute inset-0 opacity-[0.03] animate-grid-shift">
           <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
             <defs>
-              <pattern id="corporateGrid" width="20" height="20" patternUnits="userSpaceOnUse">
-                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="white" strokeWidth="0.5"/>
-                <circle cx="0" cy="0" r="1" fill="white" opacity="0.3"/>
+              <pattern id="dynamicGrid" width="25" height="25" patternUnits="userSpaceOnUse">
+                <path d="M 25 0 L 0 0 0 25" fill="none" stroke="white" strokeWidth="0.3" opacity="0.6"/>
+                <circle cx="0" cy="0" r="1.5" fill="white" opacity="0.4">
+                  <animate attributeName="opacity" values="0.2;0.8;0.2" dur="3s" repeatCount="indefinite"/>
+                </circle>
+                <circle cx="12.5" cy="12.5" r="0.8" fill="cyan" opacity="0.3">
+                  <animate attributeName="opacity" values="0.1;0.6;0.1" dur="4s" repeatCount="indefinite"/>
+                </circle>
               </pattern>
             </defs>
-            <rect width="100" height="100" fill="url(#corporateGrid)" />
+            <rect width="100" height="100" fill="url(#dynamicGrid)" />
           </svg>
         </div>
 
-        {/* Modern Geometric Elements */}
-        <div className="absolute top-20 right-20 w-24 h-24 border border-white/10 rounded-lg rotate-45 animate-spin-slow"></div>
-        <div className="absolute bottom-32 left-16 w-16 h-16 bg-white/5 backdrop-blur-sm rounded-full animate-pulse-slow"></div>
-        <div className="absolute top-1/2 right-10 w-32 h-1 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-slide-right"></div>
+        {/* Complex Geometric Elements */}
+        <div className="absolute top-16 right-16 w-28 h-28 border-2 border-white/15 rounded-2xl rotate-45 animate-spin-complex"></div>
+        <div className="absolute top-32 left-32 w-20 h-20 bg-gradient-to-br from-white/10 to-transparent backdrop-blur-sm rounded-full animate-pulse-glow"></div>
+        <div className="absolute bottom-24 right-24 w-36 h-2 bg-gradient-to-r from-transparent via-white/25 via-cyan-400/20 to-transparent animate-slide-wave"></div>
+        <div className="absolute top-1/2 left-8 w-24 h-24 border border-blue-300/20 rounded-full animate-ripple-expand"></div>
 
-        {/* Subtle Light Rays */}
-        <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-white/10 to-transparent animate-fade-in-out"></div>
-        <div className="absolute top-0 right-1/3 w-px h-full bg-gradient-to-b from-transparent via-white/8 to-transparent animate-fade-in-out-delayed"></div>
+        {/* Dynamic Light Rays */}
+        <div className="absolute top-0 left-1/5 w-0.5 h-full bg-gradient-to-b from-transparent via-white/15 via-blue-400/10 to-transparent animate-light-sweep"></div>
+        <div className="absolute top-0 right-1/4 w-0.5 h-full bg-gradient-to-b from-transparent via-white/12 via-purple-400/8 to-transparent animate-light-sweep-reverse"></div>
+        <div className="absolute top-0 left-1/2 w-px h-full bg-gradient-to-b from-transparent via-cyan-400/15 to-transparent animate-light-pulse"></div>
+
+        {/* Floating Particles */}
+        <div className="absolute inset-0">
+          {[...Array(25)].map((_, i) => (
+            <div
+              key={i}
+              className={`absolute rounded-full animate-particle-float ${
+                i % 4 === 0 ? 'w-1 h-1 bg-white/50' :
+                i % 4 === 1 ? 'w-2 h-2 bg-blue-300/40' :
+                i % 4 === 2 ? 'w-1.5 h-1.5 bg-cyan-300/45' :
+                'w-0.5 h-0.5 bg-purple-300/35'
+              }`}
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 6}s`,
+                animationDuration: `${5 + Math.random() * 4}s`
+              }}
+            ></div>
+          ))}
+        </div>
       </div>
 
       <div className="w-full max-w-md z-10">
         {/* Logo ve Başlık - Mobil görünümde sorun yaşanmaması için düzenlenmiş yapı */}
         <div className="flex flex-col items-center justify-center mb-8">
-          {/* Logo - Artık başlıktan ayrı bir konumda */}
-          <div className={`mb-6 bg-white/10 p-3 rounded-full shadow-lg backdrop-blur-sm transition-all duration-700 ease-out ${animationComplete ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}`}>
-            <svg className="w-12 h-12 md:w-16 md:h-16 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
-            </svg>
+          {/* Spectacular Logo with Multiple Effects */}
+          <div className={`relative mb-6 transition-all duration-1000 ease-out ${animationComplete ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}`}>
+            {/* Outer Glow Ring */}
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-400/30 via-purple-400/20 to-cyan-400/30 rounded-full blur-xl animate-pulse-glow-ring"></div>
+
+            {/* Middle Ring */}
+            <div className="absolute inset-2 bg-gradient-to-br from-white/20 via-blue-300/15 to-purple-300/20 rounded-full blur-lg animate-spin-slow"></div>
+
+            {/* Logo Container */}
+            <div className="relative bg-gradient-to-br from-white/15 via-blue-100/10 to-purple-100/15 backdrop-blur-lg p-4 rounded-full shadow-2xl border border-white/20 animate-float-gentle">
+              {/* Inner Glow */}
+              <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/20 to-blue-500/20 rounded-full animate-pulse-inner"></div>
+
+              {/* Logo Icon */}
+              <svg className="relative w-14 h-14 md:w-18 md:h-18 text-white drop-shadow-lg animate-icon-glow" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
+              </svg>
+
+              {/* Sparkle Effects */}
+              <div className="absolute top-1 right-1 w-2 h-2 bg-white rounded-full animate-sparkle-1"></div>
+              <div className="absolute bottom-2 left-2 w-1.5 h-1.5 bg-cyan-300 rounded-full animate-sparkle-2"></div>
+              <div className="absolute top-3 left-1 w-1 h-1 bg-blue-300 rounded-full animate-sparkle-3"></div>
+            </div>
           </div>
-          
-          {/* Başlık - Animasyonlar korundu */}
-          <div className="text-center">
-            <h1 className={`text-2xl md:text-3xl font-bold text-white mb-2 transition-all duration-1000 ease-out ${animationComplete ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10'}`}>
-              T.C. ADALET BAKANLIĞI
+
+          {/* Dynamic Title with Spectacular Effects */}
+          <div className="text-center relative">
+            {/* Background Glow for Title */}
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent blur-2xl animate-title-glow"></div>
+
+            {/* Main Title */}
+            <h1 className={`relative text-2xl md:text-4xl font-bold mb-3 transition-all duration-1200 ease-out ${animationComplete ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-12'}`}>
+              <span className="bg-gradient-to-r from-white via-blue-100 to-cyan-100 bg-clip-text text-transparent animate-text-shimmer">
+                T.C. ADALET BAKANLIĞI
+              </span>
+              {/* Text Shadow Effect */}
+              <span className="absolute inset-0 bg-gradient-to-r from-blue-400/30 via-purple-400/20 to-cyan-400/30 bg-clip-text text-transparent blur-sm animate-text-glow"></span>
             </h1>
-            <h2 className={`text-base md:text-xl font-semibold text-white/80 transition-all duration-1000 delay-300 ease-out ${animationComplete ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10'}`}>
-              Personel Tayin Talebi Yönetim Sistemi
+
+            {/* Subtitle with Typewriter Effect */}
+            <h2 className={`relative text-base md:text-xl font-semibold transition-all duration-1200 delay-400 ease-out ${animationComplete ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-8'}`}>
+              <span className="bg-gradient-to-r from-white/90 via-blue-100/80 to-cyan-100/90 bg-clip-text text-transparent animate-subtitle-reveal">
+                Personel Tayin Talebi Yönetim Sistemi
+              </span>
             </h2>
+
+            {/* Decorative Elements */}
+            <div className={`flex justify-center mt-4 space-x-2 transition-all duration-1000 delay-600 ease-out ${animationComplete ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}`}>
+              <div className="w-8 h-0.5 bg-gradient-to-r from-transparent via-white/60 to-transparent animate-line-expand"></div>
+              <div className="w-2 h-2 bg-white/60 rounded-full animate-pulse-dot"></div>
+              <div className="w-8 h-0.5 bg-gradient-to-r from-transparent via-white/60 to-transparent animate-line-expand-reverse"></div>
+            </div>
           </div>
         </div>
         
@@ -333,35 +406,240 @@ const Login = () => {
         </div>
       </div>
       
-      {/* CSS Animasyonları */}
+      {/* Ultra Dynamic CSS Animasyonları */}
       <style>{`
+        /* Background Animations */
         @keyframes gradient-shift {
           0% { background-position: 0% 50%; }
           50% { background-position: 100% 50%; }
           100% { background-position: 0% 50%; }
         }
-        
+
         .bg-gradient-animate {
           background-size: 200% 200%;
           animation: gradient-shift 8s ease infinite;
         }
-        
-        @keyframes shake {
-          0%, 100% { transform: translateX(0); }
-          10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-          20%, 40%, 60%, 80% { transform: translateX(5px); }
+
+        /* Complex Float Animations */
+        @keyframes float-complex {
+          0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+          25% { transform: translate(10px, -15px) rotate(2deg) scale(1.05); }
+          50% { transform: translate(-5px, -25px) rotate(-1deg) scale(0.95); }
+          75% { transform: translate(-15px, -10px) rotate(1deg) scale(1.02); }
         }
-        
-        @keyframes fade-in {
-          from { opacity: 0; transform: translateY(-10px); }
-          to { opacity: 1; transform: translateY(0); }
+
+        @keyframes float-reverse-complex {
+          0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+          25% { transform: translate(-12px, 18px) rotate(-2deg) scale(0.98); }
+          50% { transform: translate(8px, 30px) rotate(1.5deg) scale(1.03); }
+          75% { transform: translate(18px, 12px) rotate(-1deg) scale(0.97); }
         }
-        
-        @keyframes ripple {
-          0% { transform: scale(0); opacity: 1; }
-          60% { transform: scale(1.8); opacity: 0.3; }
-          100% { transform: scale(2); opacity: 0; }
+
+        @keyframes float-diagonal {
+          0%, 100% { transform: translate(0, 0) rotate(0deg); }
+          50% { transform: translate(20px, -20px) rotate(3deg); }
         }
+
+        @keyframes pulse-breathe {
+          0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.6; }
+          50% { transform: scale(1.1) rotate(2deg); opacity: 0.8; }
+        }
+
+        @keyframes float-wobble {
+          0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+          25% { transform: translate(8px, -12px) rotate(1deg) scale(1.02); }
+          50% { transform: translate(-6px, -18px) rotate(-1.5deg) scale(0.98); }
+          75% { transform: translate(-10px, -8px) rotate(0.5deg) scale(1.01); }
+        }
+
+        @keyframes spin-wobble {
+          0% { transform: rotate(0deg) scale(1); }
+          25% { transform: rotate(90deg) scale(1.05); }
+          50% { transform: rotate(180deg) scale(0.95); }
+          75% { transform: rotate(270deg) scale(1.02); }
+          100% { transform: rotate(360deg) scale(1); }
+        }
+
+        @keyframes bounce-float {
+          0%, 100% { transform: translateY(0) scale(1); }
+          50% { transform: translateY(-15px) scale(1.05); }
+        }
+
+        /* Grid and Geometric Animations */
+        @keyframes grid-shift {
+          0%, 100% { transform: translate(0, 0); }
+          50% { transform: translate(2px, 2px); }
+        }
+
+        @keyframes spin-complex {
+          0% { transform: rotate(0deg) scale(1); }
+          25% { transform: rotate(90deg) scale(1.1); }
+          50% { transform: rotate(180deg) scale(0.9); }
+          75% { transform: rotate(270deg) scale(1.05); }
+          100% { transform: rotate(360deg) scale(1); }
+        }
+
+        @keyframes pulse-glow {
+          0%, 100% { opacity: 0.4; transform: scale(1); }
+          50% { opacity: 0.8; transform: scale(1.1); }
+        }
+
+        @keyframes slide-wave {
+          0% { transform: translateX(-100%); }
+          50% { transform: translateX(0%); }
+          100% { transform: translateX(100%); }
+        }
+
+        @keyframes ripple-expand {
+          0% { transform: scale(0.8); opacity: 1; }
+          100% { transform: scale(1.5); opacity: 0; }
+        }
+
+        /* Light and Ray Animations */
+        @keyframes light-sweep {
+          0% { opacity: 0; transform: translateY(-100%); }
+          50% { opacity: 1; transform: translateY(0%); }
+          100% { opacity: 0; transform: translateY(100%); }
+        }
+
+        @keyframes light-sweep-reverse {
+          0% { opacity: 0; transform: translateY(100%); }
+          50% { opacity: 1; transform: translateY(0%); }
+          100% { opacity: 0; transform: translateY(-100%); }
+        }
+
+        @keyframes light-pulse {
+          0%, 100% { opacity: 0.3; }
+          50% { opacity: 0.8; }
+        }
+
+        /* Particle Animations */
+        @keyframes particle-float {
+          0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.3; }
+          25% { transform: translate(10px, -20px) scale(1.2); opacity: 0.7; }
+          50% { transform: translate(-15px, -40px) scale(0.8); opacity: 1; }
+          75% { transform: translate(5px, -60px) scale(1.1); opacity: 0.5; }
+        }
+
+        /* Logo Spectacular Animations */
+        @keyframes pulse-glow-ring {
+          0%, 100% { transform: scale(1); opacity: 0.3; }
+          50% { transform: scale(1.2); opacity: 0.6; }
+        }
+
+        @keyframes spin-slow {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+
+        @keyframes float-gentle {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-8px); }
+        }
+
+        @keyframes pulse-inner {
+          0%, 100% { opacity: 0.2; transform: scale(1); }
+          50% { opacity: 0.4; transform: scale(1.05); }
+        }
+
+        @keyframes icon-glow {
+          0%, 100% { filter: drop-shadow(0 0 5px rgba(255,255,255,0.3)); }
+          50% { filter: drop-shadow(0 0 15px rgba(255,255,255,0.6)) drop-shadow(0 0 25px rgba(59,130,246,0.4)); }
+        }
+
+        @keyframes sparkle-1 {
+          0%, 100% { opacity: 0; transform: scale(0); }
+          50% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes sparkle-2 {
+          0%, 100% { opacity: 0; transform: scale(0) rotate(0deg); }
+          50% { opacity: 1; transform: scale(1) rotate(180deg); }
+        }
+
+        @keyframes sparkle-3 {
+          0%, 100% { opacity: 0; transform: scale(0); }
+          33% { opacity: 1; transform: scale(1); }
+          66% { opacity: 0; transform: scale(0); }
+        }
+
+        /* Title Spectacular Animations */
+        @keyframes title-glow {
+          0%, 100% { opacity: 0.1; transform: scale(1); }
+          50% { opacity: 0.3; transform: scale(1.05); }
+        }
+
+        @keyframes text-shimmer {
+          0% { background-position: -200% 0; }
+          100% { background-position: 200% 0; }
+        }
+
+        @keyframes text-glow {
+          0%, 100% { opacity: 0.2; }
+          50% { opacity: 0.5; }
+        }
+
+        @keyframes subtitle-reveal {
+          0% { opacity: 0; transform: translateY(10px); }
+          100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes line-expand {
+          0% { width: 0; opacity: 0; }
+          50% { width: 2rem; opacity: 1; }
+          100% { width: 2rem; opacity: 0.6; }
+        }
+
+        @keyframes line-expand-reverse {
+          0% { width: 0; opacity: 0; }
+          50% { width: 2rem; opacity: 1; }
+          100% { width: 2rem; opacity: 0.6; }
+        }
+
+        @keyframes pulse-dot {
+          0%, 100% { opacity: 0.6; transform: scale(1); }
+          50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* Animation Classes */
+        .animate-float-complex { animation: float-complex 8s ease-in-out infinite; }
+        .animate-float-reverse-complex { animation: float-reverse-complex 10s ease-in-out infinite; }
+        .animate-float-diagonal { animation: float-diagonal 6s ease-in-out infinite; }
+        .animate-pulse-breathe { animation: pulse-breathe 4s ease-in-out infinite; }
+        .animate-float-wobble { animation: float-wobble 7s ease-in-out infinite; }
+        .animate-spin-wobble { animation: spin-wobble 12s linear infinite; }
+        .animate-bounce-float { animation: bounce-float 3s ease-in-out infinite; }
+        .animate-grid-shift { animation: grid-shift 15s ease-in-out infinite; }
+        .animate-spin-complex { animation: spin-complex 20s linear infinite; }
+        .animate-pulse-glow { animation: pulse-glow 3s ease-in-out infinite; }
+        .animate-slide-wave { animation: slide-wave 4s ease-in-out infinite; }
+        .animate-ripple-expand { animation: ripple-expand 2s ease-out infinite; }
+        .animate-light-sweep { animation: light-sweep 6s ease-in-out infinite; }
+        .animate-light-sweep-reverse { animation: light-sweep-reverse 8s ease-in-out infinite; }
+        .animate-light-pulse { animation: light-pulse 3s ease-in-out infinite; }
+        .animate-particle-float { animation: particle-float 8s ease-in-out infinite; }
+
+        /* Logo Animation Classes */
+        .animate-pulse-glow-ring { animation: pulse-glow-ring 3s ease-in-out infinite; }
+        .animate-spin-slow { animation: spin-slow 30s linear infinite; }
+        .animate-float-gentle { animation: float-gentle 4s ease-in-out infinite; }
+        .animate-pulse-inner { animation: pulse-inner 2s ease-in-out infinite; }
+        .animate-icon-glow { animation: icon-glow 3s ease-in-out infinite; }
+        .animate-sparkle-1 { animation: sparkle-1 2s ease-in-out infinite; }
+        .animate-sparkle-2 { animation: sparkle-2 3s ease-in-out infinite 0.5s; }
+        .animate-sparkle-3 { animation: sparkle-3 4s ease-in-out infinite 1s; }
+
+        /* Title Animation Classes */
+        .animate-title-glow { animation: title-glow 4s ease-in-out infinite; }
+        .animate-text-shimmer {
+          background-size: 200% auto;
+          animation: text-shimmer 3s linear infinite;
+        }
+        .animate-text-glow { animation: text-glow 2s ease-in-out infinite; }
+        .animate-subtitle-reveal { animation: subtitle-reveal 1s ease-out; }
+        .animate-line-expand { animation: line-expand 2s ease-out infinite; }
+        .animate-line-expand-reverse { animation: line-expand-reverse 2s ease-out infinite 1s; }
+        .animate-pulse-dot { animation: pulse-dot 2s ease-in-out infinite; }
         
         @keyframes float-slow {
           0%, 100% { transform: translateY(0px) translateX(0px) rotate(0deg); }

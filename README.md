@@ -82,13 +82,13 @@ docker-compose up -d --build
 
 Bu komut:
 - PostgreSQL veritabanını başlatır
-
 > **Not:** Backend konteyneri (`tayin-backend`) için veritabanı bağlantı bilgileri (`ConnectionStrings__DefaultConnection`) `dockerfiles/entrypoint.sh` dosyası içerisinde tanımlanmıştır. Varsayılan olarak `Host=postgres;Database=tayin;Username=postgres;Password=root` şeklindedir.
 - Backend API'yi build edip çalıştırır (veritabanı bağlantısını bekler)
 - Frontend uygulamasını build edip çalıştırır
 - Tüm bileşenleri Docker ağında birbirine bağlar
 
 **Erişim Bilgileri:**
+- "docker ps" komutunu terminalde çalıştırarak projenin hangi portta çalıştığını görebilirsiniz.
 - Backend API: http://localhost:5000
 - Frontend: http://localhost:3000
 - PostgreSQL: localhost:5432 (Docker içinde tayin-postgres konteynerinde)

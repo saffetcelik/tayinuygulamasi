@@ -208,6 +208,34 @@ const APIDokumantasyon = () => {
         </div>
       </div>
 
+      {/* JWT Token Kullanım Rehberi - Minimal */}
+      <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg border border-amber-200 p-4">
+        <div className="flex items-center">
+          <div className="bg-amber-500 p-2 rounded-lg mr-3 flex-shrink-0">
+            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+          </div>
+          <div className="flex-1">
+            <h3 className="text-base font-bold text-amber-800 mb-2">
+              🔐 API Test Rehberi
+            </h3>
+            <div className="text-sm text-amber-700 space-y-1">
+              <p>
+                <strong>1.</strong> <code className="bg-amber-100 px-1 py-0.5 rounded text-xs">/api/Admin/login</code> ile giriş yapın
+                <strong className="mx-2">→</strong>
+                <strong>2.</strong> Token'ı kopyalayın
+                <strong className="mx-2">→</strong>
+                <strong>3.</strong> <strong>"Authorize"</strong> butonuna tıklayıp <code className="bg-amber-100 px-1 py-0.5 rounded text-xs">Bearer &#123;token&#125;</code> yapıştırın
+              </p>
+              <p className="text-xs text-amber-600">
+                💡 Token süresi: 8 saat | Artık tüm API'leri test edebilirsiniz
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Swagger Iframe */}
       <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
         <div className="bg-gray-50 px-6 py-4 border-b border-gray-200">

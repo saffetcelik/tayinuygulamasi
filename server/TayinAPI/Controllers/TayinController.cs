@@ -13,7 +13,7 @@ namespace TayinAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    // [Authorize] - JWT sorunu çözülünceye kadar kaldırıldı
+    [Authorize] // JWT token gerekli
     public class TayinController : ControllerBase
     {
         private readonly TayinDbContext _context;

@@ -7,6 +7,8 @@ using TayinAPI.Services;
 
 namespace TayinAPI.Controllers
 {
+#if DEBUG
+    // Bu controller sadece development ortamında çalışır
     [Route("api/TestHata")]
     [ApiController]
     public class TestHataController : ControllerBase
@@ -116,4 +118,5 @@ namespace TayinAPI.Controllers
             return Ok(new { mesaj = "Log başarıyla oluşturuldu" });
         }
     }
+#endif
 }

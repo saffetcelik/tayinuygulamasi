@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Threading.Tasks;
 using TayinAPI.Data;
@@ -9,6 +10,7 @@ namespace TayinAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize] // Sadece yetkili kullanıcılar
     public class PasswordMigrationController : ControllerBase
     {
         private readonly TayinDbContext _context;

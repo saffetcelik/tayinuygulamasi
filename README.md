@@ -2,6 +2,11 @@
 
 Bu proje, ASP.NET Core backend ve React frontend kullanan MVC mimarisine uygun bir web uygulamasıdır.
 
+## 📖 Detaylı Dokümantasyon
+
+Projenin kurulum adımları, ekran görüntüleri ve tüm detaylı bilgileri için:
+**[📋 Proje Dokümantasyonu](https://saffetcelik.github.io/tayinuygulamasi/)**
+
 ## Proje Hakkında
 
 Tayin projesi, kullanıcı dostu arayüz tasarımı ve verimli bileşen kullanımına odaklanmış, mobil ve tablet cihazlarda uyumlu çalışacak şekilde tasarlanmıştır.

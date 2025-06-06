@@ -6,11 +6,23 @@ const APIDokumantasyon = () => {
   const [apiStatus, setApiStatus] = useState('checking');
   const [iframeKey, setIframeKey] = useState(0);
 
+  // API base URL'ini belirle (Docker ortamında nginx proxy kullanılır)
+  const getApiBaseUrl = () => {
+    // Docker ortamında nginx proxy üzerinden erişim
+    if (window.location.hostname !== 'localhost' || window.location.port === '3000') {
+      return window.location.origin; // nginx proxy kullan
+    }
+    // Development ortamında doğrudan backend'e erişim
+    return 'http://localhost:5000';
+  };
+
+  const apiBaseUrl = getApiBaseUrl();
+
   // API durumunu kontrol et
   const checkApiStatus = async () => {
     setApiStatus('checking');
     try {
-      const response = await fetch('http://localhost:5000/api/health');
+      const response = await fetch(`${apiBaseUrl}/api/health`);
       if (response.ok) {
         setApiStatus('online');
       } else {
@@ -34,7 +46,7 @@ const APIDokumantasyon = () => {
 
   // Swagger sayfasını yeni sekmede aç
   const openSwaggerInNewTab = () => {
-    window.open('http://localhost:5000/swagger', '_blank');
+    window.open(`${apiBaseUrl}/swagger`, '_blank');
   };
 
   const getStatusIcon = () => {
@@ -142,7 +154,7 @@ const APIDokumantasyon = () => {
           <div className="space-y-2">
             <div className="flex justify-between">
               <span className="text-gray-600">URL:</span>
-              <span className="font-mono text-sm">localhost:5000</span>
+              <span className="font-mono text-sm">{apiBaseUrl.replace('http://', '').replace('https://', '')}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-600">Protokol:</span>
@@ -244,7 +256,7 @@ const APIDokumantasyon = () => {
           ) : (
             <iframe
               key={iframeKey}
-              src="http://localhost:5000/swagger"
+              src={`${apiBaseUrl}/swagger`}
               className="w-full h-full border-0"
               title="Swagger API Dokümantasyonu"
               onLoad={() => setSwaggerLoaded(true)}

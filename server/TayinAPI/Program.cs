@@ -112,11 +112,13 @@ using (var scope = app.Services.CreateScope())
 }
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+// Swagger'ı tüm ortamlarda etkinleştir (geliştirme ve test amaçlı)
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Tayin API V1");
+    c.RoutePrefix = "swagger"; // swagger/ URL'si ile erişim
+});
 
 app.UseHttpsRedirection();
 

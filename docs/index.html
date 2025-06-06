@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adliye Tayin Uygulaması</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(45deg, #667eea, #764ba2, #f093fb, #f5576c);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(100px);
+        }
+
+        /* Floating particles */
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header Section */
+        .header {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(60px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .main-title {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 3rem;
+            font-weight: 300;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 8rem 0;
+            position: relative;
+        }
+
+        .section-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 3rem;
+            background: linear-gradient(135deg, #ffffff, #cccccc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-description {
+            font-size: 1.3rem;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 800px;
+            margin: 0 auto 4rem;
+        }
+
+        /* Glass Cards */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+
+        .card-description {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.7;
+        }
+
+        /* Grid Layouts */
+        .grid {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .grid-2 {
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        }
+
+        .grid-3 {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+
+        .grid-4 {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+
+        /* Tech Stack */
+        .tech-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            margin: 3rem 0;
+        }
+
+        .tech-badge {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            color: #ffffff;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .tech-badge:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.4), rgba(118, 75, 162, 0.4));
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Architecture Diagram */
+        .arch-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .arch-component {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            min-width: 200px;
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .arch-component:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 25px 50px rgba(102, 126, 234, 0.4);
+        }
+
+        .arch-arrow {
+            font-size: 2.5rem;
+            color: rgba(255, 255, 255, 0.6);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        /* Stats */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 500;
+        }
+
+        /* Installation Steps */
+        .steps-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .step {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .step-number {
+            min-width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .code-block {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            font-family: 'Fira Code', 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: #64ffda;
+            overflow-x: auto;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Demo Section */
+        .demo-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .demo-card {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            backdrop-filter: blur(20px);
+        }
+
+        .demo-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+
+        .user-info {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 0.5rem 0;
+            border-left: 4px solid #667eea;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 4rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 4rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .footer-link {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: #667eea;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .section {
+                padding: 4rem 0;
+            }
+            
+            .arch-container {
+                flex-direction: column;
+            }
+            
+            .arch-arrow {
+                transform: rotate(90deg);
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+        }
+
+        /* Scroll Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+
+    <!-- Header Section -->
+    <section class="header">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="main-title">Adliye Tayin Uygulaması</h1>
+                <p class="subtitle">
+                    Modern, kullanıcı dostu ve güvenli adliye personeli tayin talep sistemi. 
+                    ASP.NET Core ve React teknolojileri ile geliştirilmiş, tam özellikli web uygulaması.
+                </p>
+                <div class="cta-buttons">
+                    <a href="#features" class="btn btn-primary">
+                        🚀 Özellikleri Keşfet
+                    </a>
+                    <a href="#installation" class="btn btn-secondary">
+                        ⚡ Hızlı Kurulum
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="section">
+        <div class="container">
+            <div class="stats-container fade-in">
+                <div class="stat-card">
+                    <div class="stat-number">10+</div>
+                    <div class="stat-label">Temel Özellik</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">2</div>
+                    <div class="stat-label">Ana Modül</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Responsive</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">3</div>
+                    <div class="stat-label">Personel Türü</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="section">
+        <div class="container">
+            <h2 class="section-title fade-in">Özellikler</h2>
+            <p class="section-description fade-in">
+                Adliye personeli için tasarlanmış kapsamlı tayin yönetim sistemi
+            </p>
+            
+            <div class="grid grid-3 fade-in">
+                <div class="glass-card">
+                    <div class="card-icon">👤</div>
+                    <h3 class="card-title">Profil Yönetimi</h3>
+                    <p class="card-description">
+                        Kişisel bilgiler ve mevcut adliye bilgilerini görüntüleme ve düzenleme imkânı
+                    </p>
+                </div>
+                
+                <div class="glass-card">
+                    <div class="card-icon">🗺️</div>
+                    <h3 class="card-title">Türkiye Haritası</h3>
+                    <p class="card-description">
+                        Vektörel harita arayüzü ile şehir seçerek adliye tercihlerini yapabilme
+                    </p>
+                </div>
+                
+                <div class="glass-card">
+                    <div class="card-icon">🏛️</div>
+                    <h3 class="card-title">Adliye Seçimi</h3>
+                    <p class="card-description">
+                        Açılır menü üzerinden adliye seçimi yaparak tayin tercihlerini sıralayabilme
+                    </p>
+                </div>
+                
+                <div class="glass-card">
+                    <div class="card-icon">📋</div>
+                    <h3 class="card-title">Talep Takibi</h3>
+                    <p class="card-description">
+                        Mevcut tayin taleplerini listeleme, durumlarını görme ve iptal etme
+                    </p>
+                </div>
+                
+                <div class="glass-card">
+                    <div class="card-icon">👥</div>
+                    <h3 class="card-title">Admin Paneli</h3>
+                    <p class="card-description">
+                        Personel yönetimi, tayin onayları ve kapsamlı sistem yönetimi
+                    </p>
+                </div>
+                
+                <div class="glass-card">
+                    <div class="card-icon">📊</div>
+                    <h3 class="card-title">Log Yönetimi</h3>
+                    <p class="card-description">
+                        Detaylı sistem logları, filtreleme ve güvenlik takip sistemi
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture Section -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title fade-in">Sistem Mimarisi</h2>
+            <div class="arch-container fade-in">
+                <div class="arch-component">
+                    <h3>Frontend</h3>
+                    <p>React.js<br>Modern UI/UX<br>Responsive Design</p>
+                </div>
+                <div class="arch-arrow">→</div>
+                <div class="arch-component">
+                    <h3>Backend API</h3>
+                    <p>ASP.NET Core 8<br>RESTful API<br>JWT Security</p>
+                </div>
+                <div class="arch-arrow">→</div>
+                <div class="arch-component">
+                    <h3>Database</h3>
+                    <p>PostgreSQL<br>Entity Framework<br>Auto Migration</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technology Stack -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title fade-in">Teknoloji Stack</h2>
+            
+            <h3 style="text-align: center; margin: 2rem 0; color: rgba(255, 255, 255, 0.8); font-size: 1.5rem;">Backend</h3>
+            <div class="tech-grid fade-in">
+                <div class="tech-badge">ASP.NET Core 8.0</div>
+                <div class="tech-badge">Entity Framework</div>
+                <div class="tech-badge">PostgreSQL</div>
+                <div class="tech-badge">JWT Auth</div>
+                <div class="tech-badge">Swagger API</div>
+            </div>
+
+            <h3 style="text-align: center; margin: 2rem 0; color: rgba(255, 255, 255, 0.8); font-size: 1.5rem;">Frontend</h3>
+            <div class="tech-grid fade-in">
+                <div class="tech-badge">React.js</div>
+                <div class="tech-badge">React Router</div>
+                <div class="tech-badge">Bootstrap</div>
+                <div class="tech-badge">Axios</div>
+                <div class="tech-badge">React Maps</div>
+                <div class="tech-badge">SweetAlert2</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Installation Section -->
+    <section id="installation" class="section">
+        <div class="container">
+            <h2 class="section-title fade-in">Hızlı Kurulum</h2>
+            <p class="section-description fade-in">
+                Docker ile tek komutla çalıştırın veya manuel kurulum yapın
+            </p>
+            
+            <div class="steps-container fade-in">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div>
+                        <h3>Projeyi İndirin</h3>
+                        <div class="code-block">
+git clone https://github.com/saffetcelik/tayinuygulamasi.git
+cd tayinuygulamasi
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div>
+                        <h3>Docker ile Çalıştırın</h3>
+                        <div class="code-block">
+docker-compose up -d --build
+                        </div>
+                        <p style="color: rgba(255, 255, 255, 0.7); margin-top: 1rem;">
+                            Bu komut PostgreSQL, Backend API ve Frontend'i otomatik olarak başlatacak
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div>
+                        <h3>Uygulamaya Erişin</h3>
+                        <p style="color: rgba(255, 255, 255, 0.8);">
+                            • Frontend: <strong>http://localhost:3000</strong><br>
+                            • Backend API: <strong>http://localhost:5000</strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title fade-in">Demo Kullanıcıları</h2>
+            <p class="section-description fade-in">
+                Uygulamayı test etmek için hazır kullanıcı hesapları
+            </p>
+            
+            <div class="demo-cards fade-in">
+                <div class="demo-card">
+                    <div class="demo-title">👨‍💼 Admin Kullanıcısı</div>
+                    <div class="user-info">
+                        <strong>Kullanıcı Adı:</strong> admin<br>
+                        <strong>Şifre:</strong> 123
+                    </div>
+                </div>
+                
+                <div class="demo-card">
+                    <div class="demo-title">👨‍💻 Zabıt Katibi</div>
+                    <div class="user-info">
+                        <strong>Sicil No:</strong> 229301<br>
+                        <strong>Şifre:</strong> 123<br>
+                        <strong>Ad Soyad:</strong> Saffet Çelik
+                    </div>
+                </div>
+                
+                <div class="demo-card">
+                    <div class="demo-title">👩‍💼 Mübaşir</div>
+                    <div class="user-info">
+                        <strong>Sicil No:</strong> 229302<br>
+                        <strong>Şifre:</strong> 123<br>
+                        <strong>Ad Soyad:</strong> Zeynep Çelik
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="https://github.com/saffetcelik/tayinuygulamasi" class="footer-link">GitHub Repository</a>
+                <a href="https://github.com/saffetcelik/tayinuygulamasi/issues" class="footer-link">Issue Tracker</a>
+                <a href="#installation" class="footer-link">Documentation</a>
+            </div>
+            <p style="color: rgba(255, 255, 255, 0.5); margin-top: 2rem;">
+                © 2024 Adliye Tayin Uygulaması - Modern Tayin Yönetim Sistemi
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Create floating particles
+        function createParticles() {
+            const particleCount = 15;
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.width = Math.random() * 4 + 2 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                document.querySelector('.bg-animation').appendChild(particle);
+            }
+        }
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Initialize animations when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+            
+            // Observe elements for fade-in animation
+            document.querySelectorAll('.fade-in').forEach(el => {
+                observer.observe(el);
+            });
+
+            // Add hover effects to interactive elements
+            document.querySelectorAll('.glass-card, .tech-badge, .stat-card, .demo-card').forEach(element => {
+                element.addEventListener('mouseenter', function() {
+                    this.style.transform = this.style.transform.replace('scale(1)', 'scale(1.02)');
+                });
+                
+                element.addEventListener('mouseleave', function() {
+                    this.style.transform = this.style.transform.replace('scale(1.02)', 'scale(1)');
+                });
+            });
+        });
+
+        // Parallax effect for background
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallax = document.querySelector('.bg-animation');
+            const speed = scrolled * 0.5;
+            parallax.style.transform = `translateY(${speed}px)`;
+        });
+    </script>
+</body>
+</html>

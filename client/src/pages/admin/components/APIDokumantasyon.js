@@ -34,7 +34,7 @@ const APIDokumantasyon = () => {
 
   // Swagger sayfasını yeni sekmede aç
   const openSwaggerInNewTab = () => {
-    window.open('http://localhost:5000/swagger', '_blank');
+    window.open('http://localhost:5000/', '_blank');
   };
 
   const getStatusIcon = () => {
@@ -244,7 +244,7 @@ const APIDokumantasyon = () => {
           ) : (
             <iframe
               key={iframeKey}
-              src="http://localhost:5000/swagger"
+              src="http://localhost:5000/"
               className="w-full h-full border-0"
               title="Swagger API Dokümantasyonu"
               onLoad={() => setSwaggerLoaded(true)}

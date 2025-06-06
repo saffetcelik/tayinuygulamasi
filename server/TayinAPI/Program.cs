@@ -14,7 +14,44 @@ builder.Services.AddControllers();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    {
+        Title = "Tayin API",
+        Version = "v1",
+        Description = "Tayin Uygulaması API Dokümantasyonu",
+        Contact = new Microsoft.OpenApi.Models.OpenApiContact
+        {
+            Name = "Tayin API Support"
+        }
+    });
+
+    // JWT Bearer token desteği ekle
+    c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+    {
+        Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+        Name = "Authorization",
+        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+        Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+
+    c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+    {
+        {
+            new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+            {
+                Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                {
+                    Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    });
+});
 
 // PostgreSQL veritabanı bağlantısı ekle
 builder.Services.AddDbContext<TayinDbContext>(options =>
@@ -112,11 +149,39 @@ using (var scope = app.Services.CreateScope())
 }
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+// Swagger'ı hem Development hem de Production ortamında etkinleştir
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Tayin API v1");
+    c.RoutePrefix = string.Empty; // Root URL'de erişilebilir olacak (/)
+});
+
+// Global Exception Handler - Swagger'dan sonra gelsin
+app.UseExceptionHandler(errorApp =>
+{
+    errorApp.Run(async context =>
+    {
+        var exceptionFeature = context.Features.Get<Microsoft.AspNetCore.Diagnostics.IExceptionHandlerPathFeature>();
+        var exception = exceptionFeature?.Error;
+
+        // Hata loglanıyor
+        var logService = context.RequestServices.GetRequiredService<TayinAPI.Services.LogService>();
+        await logService.KaydetAsync(
+            "Sistem Hatası",
+            $"API'de beklenmeyen hata: {exception?.Message}",
+            null,
+            "Sistem",
+            false,
+            $"{exception?.GetType().Name}: {exception?.StackTrace}"
+        );
+
+        // Hata yanıtı
+        context.Response.StatusCode = 500;
+        context.Response.ContentType = "application/json";
+        await context.Response.WriteAsJsonAsync(new { hata = "İşlem sırasında beklenmeyen bir hata oluştu." });
+    });
+});
 
 app.UseHttpsRedirection();
 
@@ -129,31 +194,5 @@ app.UseAuthorization();
 
 // Controller'ları eşle
 app.MapControllers();
-
-// Global Exception Handler - Tüm yakalanmamış hataları loglar
-app.UseExceptionHandler(errorApp =>
-{
-    errorApp.Run(async context =>
-    {
-        var exceptionFeature = context.Features.Get<Microsoft.AspNetCore.Diagnostics.IExceptionHandlerPathFeature>();
-        var exception = exceptionFeature?.Error;
-        
-        // Hata loglanıyor
-        var logService = context.RequestServices.GetRequiredService<TayinAPI.Services.LogService>();
-        await logService.KaydetAsync(
-            "Sistem Hatası",
-            $"API'de beklenmeyen hata: {exception?.Message}", 
-            null, 
-            "Sistem", 
-            false, 
-            $"{exception?.GetType().Name}: {exception?.StackTrace}"
-        );
-        
-        // Hata yanıtı
-        context.Response.StatusCode = 500;
-        context.Response.ContentType = "application/json";
-        await context.Response.WriteAsJsonAsync(new { hata = "İşlem sırasında beklenmeyen bir hata oluştu." });
-    });
-});
 
 app.Run();

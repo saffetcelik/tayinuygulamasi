@@ -91,6 +91,7 @@ Bu komut:
 - Tüm bileşenleri Docker ağında birbirine bağlar
 
 **Erişim Bilgileri:**
+- "docker ps" komutunu terminalde çalıştırarak projenin hangi portta çalıştığını görebilirsiniz.
 - Backend API: http://localhost:5000
 - Frontend: http://localhost:3000
 - PostgreSQL: localhost:5432 (Docker içinde tayin-postgres konteynerinde)

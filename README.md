@@ -6,6 +6,24 @@ Bu proje, ASP.NET Core backend ve React frontend kullanan MVC mimarisine uygun b
 
 Tayin projesi, kullanıcı dostu arayüz tasarımı ve verimli bileşen kullanımına odaklanmış, mobil ve tablet cihazlarda uyumlu çalışacak şekilde tasarlanmıştır.
 
+### Kullanıcı Profil Özellikleri 
+
+- **Profil Yönetimi:** Kullanıcılar kişisel bilgilerini ve mevcut adliye bilgilerini görüntüleyebilir
+- **Vektörel Türkiye Haritası:** Modern harita arayüzü ile şehir seçerek adliye tercihlerini yapabilme
+- **Adliye Seçimi:** Açılır menü üzerinden adliye seçimi yaparak tayin tercihlerini sıralayabilme
+- **Tayin Talepleri Takibi:** Kullanıcılar mevcut tayin taleplerini listeleyebilir, durumlarını görebilir ve taleplerini iptal edebilir
+- **Sıkça Sorulan Sorular:** Kategorize edilmiş SSS bölümü ve arama özelliği ile bilgilere hızlı erişim
+- **Şifre Değiştirme:** Kullanıcılar ayarlar menüsü üzerinden güvenli şekilde şifrelerini değiştirebilir
+
+### Admin Panel Özellikleri
+
+- **Personel Yönetimi:** Tüm personel kayıtlarını görüntüleme, düzenleme, silme
+- **Tayin Talepleri Yönetimi:** Gelen tayin taleplerini inceleme, onaylama veya reddetme
+- **Log Yönetimi:** Sistem loglarını çeşitli kriterlere göre filtreleme ve görüntüleme
+  - Loglanan İşlemler: Kimlik doğrulama, başarılı başarısız login istekleri, tayin talepleri, sistem hataları
+  - Filtreleme Seçenekleri: Tarih, kullanıcı, işlem türü, başarı durumu
+- **Sıkça Sorulan Sorular Yönetimi:** SSS bölümü için soru ekleme, düzenleme, silme
+
 ## Teknolojiler
 
 ### Backend
@@ -19,11 +37,9 @@ Tayin projesi, kullanıcı dostu arayüz tasarımı ve verimli bileşen kullanı
 - React.js
 - React Router
 - Axios
-- Tailwind CSS
 - React Bootstrap
 - React Icons
 - React Simple Maps
-- Turkey Map React
 - SweetAlert2
 - React Toastify
 
@@ -56,7 +72,28 @@ git clone https://github.com/saffetcelik/tayinuygulamasi.git
 cd tayinuygulamasi
 ```
 
-### 2. PostgreSQL Kurulumu ve Veritabanı Ayarları
+### 2. Docker ile Çalıştırma (Önerilen)
+
+Docker ve Docker Compose kurulu olduğundan emin olun. Proje tek komutla Docker üzerinde çalıştırılabilir:
+
+```powershell
+docker-compose up -d --build
+```
+
+Bu komut:
+- PostgreSQL veritabanını başlatır
+> **Not:** Backend konteyneri (`tayin-backend`) için veritabanı bağlantı bilgileri (`ConnectionStrings__DefaultConnection`) `dockerfiles/entrypoint.sh` dosyası içerisinde tanımlanmıştır. Varsayılan olarak `Host=postgres;Database=tayin;Username=postgres;Password=root` şeklindedir.
+- Backend API'yi build edip çalıştırır (veritabanı bağlantısını bekler)
+- Frontend uygulamasını build edip çalıştırır
+- Tüm bileşenleri Docker ağında birbirine bağlar
+
+**Erişim Bilgileri:**
+- "docker ps" komutunu terminalde çalıştırarak projenin hangi portta çalıştığını görebilirsiniz.
+- Backend API: http://localhost:5000
+- Frontend: http://localhost:3000
+- PostgreSQL: localhost:5432 (Docker içinde tayin-postgres konteynerinde)
+
+### 3. PostgreSQL Kurulumu ve Veritabanı Ayarları (Docker Olmadan Manuel Kurulum)
 
 1. PostgreSQL'i indirin ve kurun: [PostgreSQL İndirme Sayfası](https://www.postgresql.org/download/)
 2. Kurulum sırasında veya sonrasında şu bilgileri not edin:
@@ -68,12 +105,12 @@ cd tayinuygulamasi
 ```json
 {
   "ConnectionStrings": {
-    "DefaultConnection": "Host=localhost;Port=5432;Database=TayinDB;Username=postgres;Password=şifreniz"
+    "DefaultConnection": "Host=localhost;Port=5432;Database=tayin;Username=postgres;Password=şifreniz"
   }
 }
 ```
 
-### 3. Backend (.NET Core) Kurulumu
+### 4. Backend (.NET Core) Kurulumu
 
 ```powershell
 cd server/TayinAPI
@@ -82,19 +119,26 @@ dotnet tool install --global dotnet-ef  # Entity Framework CLI aracını kur
 dotnet ef database update  # Veritabanını oluştur ve migrate et
 ```
 
-### 4. Frontend (React) Kurulumu
+> **Not:** Veritabanı migration işlemi sırasında otomatik olarak varsayılan başlangıç verileri oluşturulur. Bu veriler arasında:
+> - Rasgele personel kayıtları (farklı illerde görev yapan)
+> - Çeşitli durumlarda (Beklemede, İncelemede, Onaylandı, Reddedildi) tayin talepleri ve tercihleri
+> - Personellerin giriş, şifre değiştirme ve tayin taleplerine ait örnek log kayıtları 
+> - Kategorilere ayrılmış sıkça sorulan sorular bulunmaktadır. Böylece sistem ilk kurulumda demo kullanım için hazır hale gelir.
+>
+
+
+### 5. Frontend (React) Kurulumu
 
 ```powershell
 cd ../../client  # Kök dizinden client klasörüne git
 npm install
 ```
 
-### 5. Otomasyon ile Çalıştırma (Önerilen)
+### 6. Otomasyon ile Çalıştırma (Manuel Kurulum İçin)
 
 Kök dizinde bulunan PowerShell scriptini kullanarak hem backend hem de frontend tek bir komutla başlatılabilir:
 
-```powershell
-cd ../..  # Kök dizine dön
+``` kök dizinde start.ps1 dosyasını çalıştır
 ./start.ps1
 ```
 
@@ -104,7 +148,7 @@ Bu script şunları yapacaktır:
 - Tarayıcınızı otomatik olarak frontend adresine yönlendirir
 - Her iki uygulamanın loglarını konsolda gösterir
 
-### 6. Manuel Çalıştırma
+### 7. Manuel Çalıştırma
 
 Otomasyon scriptini kullanmak istemiyorsanız, backend ve frontend'i ayrı ayrı başlatabilirsiniz:
 
@@ -120,6 +164,46 @@ cd client
 npm start
 ```
 
+
+**Uygulama Erişim Linkleri:**
+- Kullanıcı Girişi: http://localhost:3001
+- Admin Panel Girişi: http://localhost:3001/admin/panel
+
+> **Varsayılan Kullanıcı Bilgileri:**
+>
+> **Admin Paneli Kullanıcısı:**
+> - Kullanıcı Adı: `admin`
+> - Şifre: `123`
+>
+> **Personel (Deneme) Kullanıcıları:**
+> 1. **Zabıt Katibi**
+>    - Sicil No: `229301`
+>    - Şifre: `123`
+>    - Ad Soyad: Saffet Çelik
+> 
+> 2. **Mübaşir**
+>    - Sicil No: `229302`
+>    - Şifre: `123`
+>    - Ad Soyad: Zeynep Çelik
+> 
+> 3. **Yazı İşleri Müdürü**
+>    - Sicil No: `229304`
+>    - Şifre: `123`
+>    - Ad Soyad: Ayşe Demir
+
+
+
+### Sistem Hatalarının Loglandığını Test Etme (Admin panelde Log Yönetimini test etmek için)
+- Aşağıdaki adresler üzerinden çeşitli hata senaryolarını test edebilirsiniz:
+  1. Manuel log oluşturma: `http://localhost:5000/api/TestHata/log-olustur?mesaj=Test%20Mesaj`
+  2. Sıfıra bölme hatası: `http://localhost:5000/api/TestHata/bolme-hatasi?sayi=0`
+  3. Veritabanı hatası: `http://localhost:5000/api/TestHata/veritabani-hatasi`
+  4. Bellek hatası: `http://localhost:5000/api/TestHata/bellek-hatasi`
+- Hata loglarını admin panelindeki Log Yönetimi bölümünden görüntüleyebilirsiniz
+- Frontend hatalarının yakalanması için Axios hata interceptor'ı eklenmiştir
+- Sistem hatalarının tümü otomatik olarak loglanır ve admin panelinde incelenebilir
+
+
 ## Sorun Giderme
 
 ### Veritabanı Bağlantı Hatası
@@ -131,10 +215,10 @@ npm start
 - .NET SDK'nın doğru sürümünün (8.0+) yüklü olduğunu kontrol edin: `dotnet --version`
 - Eksik paketleri yükleyin: `dotnet restore`
 
+
 ### Frontend Başlatma Sorunları
 - Node.js sürümünüzün 18+ olduğundan emin olun: `node --version`
 - npm paketlerini yeniden yükleyin: `npm ci`
-- OpenSSL sorunları için start.ps1 scriptini kullanın (otomatik olarak NODE_OPTIONS ayarlanır)
 
 ## Proje Yapısı
 

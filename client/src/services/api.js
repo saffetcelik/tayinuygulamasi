@@ -42,6 +42,56 @@ api.interceptors.request.use(
   }
 );
 
+// Hata yakalama interceptor'u
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    // Hata bilgilerini topla
+    const errorData = {
+      islemTuru: "Frontend Sistem Hatası",
+      detayBilgi: `API isteği başarısız: ${error?.config?.url || 'Bilinmeyen URL'}`,
+      kullaniciSicilNo: localStorage.getItem('userSicil') || 'Bilinmeyen Kullanıcı',
+      kullaniciAdi: null,
+      basariliMi: "Hayır",
+      hataBilgisi: JSON.stringify({
+        message: error?.message,
+        status: error?.response?.status,
+        statusText: error?.response?.statusText,
+        method: error?.config?.method,
+        url: error?.config?.url,
+        data: error?.config?.data,
+        time: new Date().toISOString()
+      })
+    };
+
+    // Sunucu hatası olduğunda loglama yap (5xx hatalar)
+    if (error?.response?.status >= 500) {
+      try {
+        // Log API'sine direkt axios ile istek yapalım (api instance değil - sonsuz döngüye girmemek için)
+        await axios.post(`${API_URL}/Log`, errorData, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('adminToken') || localStorage.getItem('token')}`
+          }
+        });
+        console.log('Sistem hatası loglandı:', errorData.detayBilgi);
+      } catch (logError) {
+        // Log kaydedilemezse local storage'a kaydet
+        console.error('Hata loglanırken ikincil hata oluştu:', logError);
+        const clientErrorLogs = JSON.parse(localStorage.getItem('clientErrorLogs') || '[]');
+        clientErrorLogs.push({
+          ...errorData,
+          timestamp: new Date().toISOString(),
+          logError: logError?.message
+        });
+        localStorage.setItem('clientErrorLogs', JSON.stringify(clientErrorLogs.slice(-20))); // Son 20 hatayı sakla
+      }
+    }
+
+    return Promise.reject(error);
+  }
+);
+
 // Kimlik doğrulama servisleri
 const authService = {
   // Giriş işlemi
@@ -295,6 +345,29 @@ const adminService = {
     }
   },
   
+  // İstatistikleri getir (Admin için)
+  getIstatistikler: async () => {
+    try {
+      const response = await api.get('/Admin/istatistikler');
+      const data = response.data;
+      return data || {
+        toplamKullanici: 0,
+        toplamTayinTalebi: 0,
+        kullaniciArtisYuzdesi: 0,
+        tayinArtisYuzdesi: 0
+      };
+    } catch (error) {
+      console.error('İstatistikler alınamadı:', error);
+      // Hata durumunda varsayılan boş istatistik dön
+      return {
+        toplamKullanici: 0,
+        toplamTayinTalebi: 0,
+        kullaniciArtisYuzdesi: 0,
+        tayinArtisYuzdesi: 0
+      };
+    }
+  },
+  
   // Tayin taleplerini getir (Admin için)
   getTayinTalepleri: async () => {
     try {
@@ -398,6 +471,89 @@ const adminService = {
       return response.data;
     } catch (error) {
       console.error(`Personel #${id} silinirken hata:`, error);
+      throw error;
+    }
+  },
+  
+  // Sık Sorulan Sorular yönetimi
+  
+  // Tüm sık sorulan soruları getir (aktif/pasif hepsi) - Admin için
+  getAllSSS: async () => {
+    try {
+      const response = await api.get('/Admin/sss');
+      const data = response.data;
+      return Array.isArray(data) ? data : 
+             (data && data.value && Array.isArray(data.value)) ? data.value : [];
+    } catch (error) {
+      console.error('Sık sorulan sorular alınamadı:', error);
+      throw error;
+    }
+  },
+  
+  // SSS kategorilerini getir
+  getSSSKategorileri: async () => {
+    try {
+      const response = await api.get('/Admin/sss/kategoriler');
+      const data = response.data;
+      return Array.isArray(data) ? data : 
+             (data && data.value && Array.isArray(data.value)) ? data.value : [];
+    } catch (error) {
+      console.error('SSS kategorileri alınamadı:', error);
+      throw error;
+    }
+  },
+  
+  // SSS detayını getir
+  getSSSById: async (id) => {
+    try {
+      const response = await api.get(`/Admin/sss/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error(`SSS #${id} detayları alınamadı:`, error);
+      throw error;
+    }
+  },
+  
+  // Yeni SSS ekle
+  createSSS: async (sssData) => {
+    try {
+      const response = await api.post('/Admin/sss', sssData);
+      return response.data;
+    } catch (error) {
+      console.error('SSS eklenirken hata:', error);
+      throw error;
+    }
+  },
+  
+  // SSS güncelle
+  updateSSS: async (id, sssData) => {
+    try {
+      const response = await api.put(`/Admin/sss/${id}`, sssData);
+      return response.data;
+    } catch (error) {
+      console.error(`SSS #${id} güncellenirken hata:`, error);
+      throw error;
+    }
+  },
+  
+  // SSS durumunu değiştir (aktif/pasif)
+  toggleSSSStatus: async (id) => {
+    try {
+      const response = await api.put(`/Admin/sss/${id}/durum`);
+      return response.data;
+    } catch (error) {
+      console.error(`SSS #${id} durumu değiştirilirken hata:`, error);
+      throw error;
+    }
+  },
+  
+  // SSS sil
+  deleteSSS: async (id) => {
+    try {
+      const response = await api.delete(`/Admin/sss/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error(`SSS #${id} silinirken hata:`, error);
       throw error;
     }
   },

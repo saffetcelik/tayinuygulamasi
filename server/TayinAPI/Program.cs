@@ -64,20 +64,50 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 var app = builder.Build();
 
-// Veritabanını başlat ve temel verileri oluştur
+// Veritabanını başlat, migration'ları uygula ve temel verileri oluştur
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
+    var logger = services.GetRequiredService<ILogger<Program>>();
     try 
     {
         var context = services.GetRequiredService<TayinDbContext>();
-        Console.WriteLine("Veritabani Basliyor...");
-        await DbInitializer.InitializeAsync(context);
-        Console.WriteLine("Veritabani Basariyla Basladi.");
+        
+        logger.LogInformation("Veritabanına bağlanılıyor...");
+        Console.WriteLine("Veritabanına bağlanılıyor...");
+        
+        // Veritabanı bağlantısını kontrol et
+        if (context.Database.CanConnect())
+        {
+            logger.LogInformation("Veritabanı bağlantısı başarılı.");
+            Console.WriteLine("Veritabanı bağlantısı başarılı.");
+            
+            // Eksik migration'ları uygula
+            logger.LogInformation("Veritabanı migration'ları uygulanıyor...");
+            Console.WriteLine("Veritabanı migration'ları uygulanıyor...");
+            context.Database.Migrate();
+            logger.LogInformation("Migration'lar başarıyla uygulandı.");
+            Console.WriteLine("Migration'lar başarıyla uygulandı.");
+            
+            // Veritabanı başlangıç verilerini ekle
+            logger.LogInformation("Veritabanı başlangıç verileri ekleniyor...");
+            Console.WriteLine("Veritabanı başlangıç verileri ekleniyor...");
+            await DbInitializer.InitializeAsync(context);
+            logger.LogInformation("Veritabanı başlangıç verileri başarıyla eklendi.");
+            Console.WriteLine("Veritabanı başlangıç verileri başarıyla eklendi.");
+        }
+        else
+        {
+            var errorMessage = "Veritabanına bağlanılamadı! Bağlantı ayarlarını kontrol edin.";
+            logger.LogError(errorMessage);
+            Console.WriteLine(errorMessage);
+        }
     }
     catch (Exception ex)
     {
-        Console.WriteLine($"Veritabani Basiliyorken Hata: {ex.Message}");
+        Console.WriteLine($"Veritabani hazırlanırken hata oluştu: {ex.Message}");
+        // Daha detaylı hata bilgisi
+        Console.WriteLine($"Hata detayları: {ex.ToString()}");
     }
 }
 
@@ -99,5 +129,31 @@ app.UseAuthorization();
 
 // Controller'ları eşle
 app.MapControllers();
+
+// Global Exception Handler - Tüm yakalanmamış hataları loglar
+app.UseExceptionHandler(errorApp =>
+{
+    errorApp.Run(async context =>
+    {
+        var exceptionFeature = context.Features.Get<Microsoft.AspNetCore.Diagnostics.IExceptionHandlerPathFeature>();
+        var exception = exceptionFeature?.Error;
+        
+        // Hata loglanıyor
+        var logService = context.RequestServices.GetRequiredService<TayinAPI.Services.LogService>();
+        await logService.KaydetAsync(
+            "Sistem Hatası",
+            $"API'de beklenmeyen hata: {exception?.Message}", 
+            null, 
+            "Sistem", 
+            false, 
+            $"{exception?.GetType().Name}: {exception?.StackTrace}"
+        );
+        
+        // Hata yanıtı
+        context.Response.StatusCode = 500;
+        context.Response.ContentType = "application/json";
+        await context.Response.WriteAsJsonAsync(new { hata = "İşlem sırasında beklenmeyen bir hata oluştu." });
+    });
+});
 
 app.Run();

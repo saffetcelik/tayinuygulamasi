@@ -33,8 +33,13 @@ const LogEntryItem = ({ log, onShowDetail }) => {
           <span className="text-gray-500 text-xs flex items-center"><Clock size={12} className="mr-1"/>{formatDate(log.islemZamani)}</span>
         </div>
         <button
-            onClick={() => onShowDetail(log)}
-            className="text-xs bg-blue-600 hover:bg-blue-700 text-white py-1 px-3 rounded-md transition-colors duration-150 flex items-center self-start sm:self-center"
+            onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Detay butonuna tıklandı, Log ID:', log.id);
+                onShowDetail(log);
+            }}
+            className="text-xs bg-blue-600 hover:bg-blue-700 text-white py-1 px-3 rounded-md transition-colors duration-150 flex items-center self-start sm:self-center cursor-pointer"
         >
             <FileText size={12} className="mr-1"/> Detay
         </button>
@@ -56,46 +61,52 @@ const LogDetailModal = ({ log, show, onClose }) => {
   if (!show || !log) return null;
   const style = statusStyles[log.basariliMi] || statusStyles['Belirsiz'];
 
+  console.log('Log detay modalı açılıyor');
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 transition-opacity duration-300">
-      <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold text-gray-800 flex items-center">
-            {style.icon} <span className="ml-2">Log Detayı</span>
-          </h2>
-          <button onClick={onClose} className="text-gray-500 hover:text-gray-700 transition-colors">
-            <XCircle size={24} />
-          </button>
-        </div>
-        <div className="space-y-3 text-sm">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-2">
-            <p><strong className="text-gray-600 w-28 inline-block">ID:</strong> <span className="text-gray-800">{log.id}</span></p>
-            <p><strong className="text-gray-600 w-28 inline-block">İşlem Türü:</strong> <span className="text-gray-800">{log.islemTuru}</span></p>
-            <p><strong className="text-gray-600 w-28 inline-block">Tarih:</strong> <span className="text-gray-800">{formatDate(log.islemZamani)}</span></p>
-            <p><strong className="text-gray-600 w-28 inline-block">Durum:</strong> <span className={`${style.color} font-semibold`}>{log.basariliMi}</span></p>
-            <p><strong className="text-gray-600 w-28 inline-block">Kullanıcı:</strong> <span className="text-gray-800">{log.kullaniciAdi || '-'}</span></p>
-            <p><strong className="text-gray-600 w-28 inline-block">Sicil No:</strong> <span className="text-gray-800">{log.kullaniciSicilNo || '-'}</span></p>
-            <p><strong className="text-gray-600 w-28 inline-block">IP Adresi:</strong> <span className="text-gray-800">{log.ipAdresi || '-'}</span></p>
-            <p><strong className="text-gray-600 w-28 inline-block">Tarayıcı:</strong> <span className="text-gray-800 break-all">{log.tarayiciBilgisi || '-'}</span></p>
+    <div 
+      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center transition-opacity duration-300" 
+      style={{ zIndex: 9999, overflow: 'hidden' }}
+    >
+      <div className="relative w-full h-full max-w-2xl mx-auto flex items-center justify-center py-6 px-4 sm:px-6 lg:px-8">
+        <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-semibold text-gray-800 flex items-center">
+              {style.icon} <span className="ml-2">Log Detayı</span>
+            </h2>
+            <button onClick={onClose} className="text-gray-500 hover:text-gray-700 transition-colors">
+              <XCircle size={24} />
+            </button>
           </div>
-          <div>
-            <h6 className="text-gray-700 font-semibold mt-3 mb-1">Detay Bilgi:</h6>
-            <p className="p-3 bg-gray-100 rounded text-gray-800 text-xs whitespace-pre-wrap break-all border border-gray-200">{log.detayBilgi || '-'}</p>
-          </div>
-          {log.hataBilgisi && (
-            <div>
-              <h6 className="text-red-600 font-semibold mt-3 mb-1">Hata Bilgisi:</h6>
-              <p className="p-3 bg-red-50 rounded text-red-600 text-xs whitespace-pre-wrap break-all border border-red-200">{log.hataBilgisi}</p>
+          <div className="space-y-3 text-sm">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-2">
+              <p><strong className="text-gray-600 w-28 inline-block">ID:</strong> <span className="text-gray-800">{log.id}</span></p>
+              <p><strong className="text-gray-600 w-28 inline-block">İşlem Türü:</strong> <span className="text-gray-800">{log.islemTuru}</span></p>
+              <p><strong className="text-gray-600 w-28 inline-block">Tarih:</strong> <span className="text-gray-800">{formatDate(log.islemZamani)}</span></p>
+              <p><strong className="text-gray-600 w-28 inline-block">Durum:</strong> <span className={`${style.color} font-semibold`}>{log.basariliMi}</span></p>
+              <p><strong className="text-gray-600 w-28 inline-block">Kullanıcı:</strong> <span className="text-gray-800">{log.kullaniciAdi || '-'}</span></p>
+              <p><strong className="text-gray-600 w-28 inline-block">Sicil No:</strong> <span className="text-gray-800">{log.kullaniciSicilNo || '-'}</span></p>
+              <p><strong className="text-gray-600 w-28 inline-block">IP Adresi:</strong> <span className="text-gray-800">{log.ipAdresi || '-'}</span></p>
+              <p><strong className="text-gray-600 w-28 inline-block">Tarayıcı:</strong> <span className="text-gray-800 break-all">{log.tarayiciBilgisi || '-'}</span></p>
             </div>
-          )}
-        </div>
-        <div className="mt-6 text-right">
-          <button
-            onClick={onClose}
-            className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md transition-colors"
-          >
-            Kapat
-          </button>
+            <div>
+              <h6 className="text-gray-700 font-semibold mt-3 mb-1">Detay Bilgi:</h6>
+              <p className="p-3 bg-gray-100 rounded text-gray-800 text-xs whitespace-pre-wrap break-all border border-gray-200">{log.detayBilgi || '-'}</p>
+            </div>
+            {log.hataBilgisi && (
+              <div>
+                <h6 className="text-red-600 font-semibold mt-3 mb-1">Hata Bilgisi:</h6>
+                <p className="p-3 bg-red-50 rounded text-red-600 text-xs whitespace-pre-wrap break-all border border-red-200">{log.hataBilgisi}</p>
+              </div>
+            )}
+          </div>
+          <div className="mt-6 text-right">
+            <button
+              onClick={onClose}
+              className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md transition-colors"
+            >
+              Kapat
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -309,20 +320,6 @@ const LogPanel = () => {
 
   return (
     <div id="logPanelTop" className="bg-gray-100 min-h-screen p-4 md:p-6 font-sans text-gray-800">
-      <header className="mb-6 flex justify-between items-center">
-        <div>
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Sistem Logları Yönetimi</h1>
-            <p className="text-sm text-gray-600">Uygulama loglarını filtreleyin ve inceleyin.</p>
-        </div>
-        <button
-            onClick={() => { fetchLogs(); fetchLogOzeti(); }}
-            disabled={loading || loadingOzeti}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md flex items-center transition-colors disabled:opacity-50"
-        >
-            <RefreshCw size={16} className={`mr-2 ${loading || loadingOzeti ? 'animate-spin' : ''}`} />
-            Yenile
-        </button>
-      </header>
 
       {/* Log Özeti */}
       {loadingOzeti ? (
@@ -391,6 +388,15 @@ const LogPanel = () => {
             <button type="submit" disabled={loading} className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md flex items-center justify-center transition-colors disabled:opacity-50">
               {loading && <Loader2 size={16} className="animate-spin mr-2" />}
               Filtrele
+            </button>
+            <button
+              type="button"
+              onClick={() => { fetchLogs(); fetchLogOzeti(); }}
+              disabled={loading || loadingOzeti}
+              className="w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-md flex items-center justify-center transition-colors disabled:opacity-50"
+            >
+              <RefreshCw size={16} className={`mr-2 ${loading || loadingOzeti ? 'animate-spin' : ''}`} />
+              Yenile
             </button>
           </div>
         </form>

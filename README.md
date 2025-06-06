@@ -65,16 +65,18 @@ Tayin projesi, kullanıcı dostu arayüz tasarımı ve verimli bileşen kullanı
 
 ## Kurulum Adımları
 
-### 1. Projeyi Klonlama
+### 1. Projeyi Klonlama 
+
+Projeyi klonlamak için bilgisayarınızda git kurulu olması gerekmektedir.
 
 ```powershell
 git clone https://github.com/saffetcelik/tayinuygulamasi.git
-cd tayinuygulamasi
+cd tayinuygulamasi # Proje dizinine girin docker komutunu çalıştırmak için proje dizininde olmak gerekir.
 ```
 
 ### 2. Docker ile Çalıştırma (Önerilen)
 
-Docker ve Docker Compose kurulu olduğundan emin olun. Proje tek komutla Docker üzerinde çalıştırılabilir:
+Docker ve Docker Compose kurulu olduğundan emin olun. Proje tek komutla Docker üzerinde çalıştırılabilir, tüm bağımlılıklar otomatik olarak yüklenir ve proje başlatılır.
 
 ```powershell
 docker-compose up -d --build
@@ -82,8 +84,8 @@ docker-compose up -d --build
 
 Bu komut:
 - PostgreSQL veritabanını başlatır
-
 > **Not:** Backend konteyneri (`tayin-backend`) için veritabanı bağlantı bilgileri (`ConnectionStrings__DefaultConnection`) `dockerfiles/entrypoint.sh` dosyası içerisinde tanımlanmıştır. Varsayılan olarak `Host=postgres;Database=tayin;Username=postgres;Password=root` şeklindedir.
+- PostreSQL veritabanı için migration'ları uygular ve temel verileri ekler
 - Backend API'yi build edip çalıştırır (veritabanı bağlantısını bekler)
 - Frontend uygulamasını build edip çalıştırır
 - Tüm bileşenleri Docker ağında birbirine bağlar
@@ -92,6 +94,19 @@ Bu komut:
 - Backend API: http://localhost:5000
 - Frontend: http://localhost:3000
 - PostgreSQL: localhost:5432 (Docker içinde tayin-postgres konteynerinde)
+
+> **Varsayılan Kullanıcı Bilgileri:**
+>
+> **Admin Paneli Kullanıcısı:**
+> - Kullanıcı Adı: `admin`
+> - Şifre: `123`
+>
+> **Personel (Deneme) Kullanıcıları:**
+> 1. **Zabıt Katibi**
+>    - Sicil No: `229301`
+>    - Şifre: `123`
+>    - Ad Soyad: Saffet Çelik
+> 
 
 ### 3. PostgreSQL Kurulumu ve Veritabanı Ayarları (Docker Olmadan Manuel Kurulum)
 

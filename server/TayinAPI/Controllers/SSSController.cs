@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using TayinAPI.Data;
 using TayinAPI.Models;
 
@@ -20,8 +21,9 @@ namespace TayinAPI.Controllers
             _context = context;
         }
 
-        // GET: api/SSS
+        // GET: api/SSS - Public endpoint (herkes erişebilir)
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<SikcaSorulanSoru>>> GetSikcaSorulanSorular()
         {
             return await _context.SikcaSorulanSorular

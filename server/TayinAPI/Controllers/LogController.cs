@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,7 @@ namespace TayinAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize] // Sadece yetkili kullanıcılar log görüntüleyebilir
     public class LogController : ControllerBase
     {
         private readonly TayinDbContext _context;

@@ -9,6 +9,7 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 using TayinAPI.Data;
 using TayinAPI.Models;
 using TayinAPI.DTOs;
@@ -114,6 +115,7 @@ namespace TayinAPI.Controllers
 
         // Tüm tayin taleplerini getir - yeni endpoint
         [HttpGet("tayin-talepleri")]
+        [Authorize] // JWT token gerekli
         public async Task<IActionResult> GetTayinTalepleri()
         {
             var tayinTalepleri = await _context.TayinTalepleri
@@ -152,6 +154,7 @@ namespace TayinAPI.Controllers
 
         // Tayin talebi durumunu güncelle
         [HttpPut("tayin-talebi/{id}/durum")]
+        [Authorize] // JWT token gerekli
         public async Task<IActionResult> UpdateTayinTalebiDurum(int id, [FromBody] TayinTalebiDurumDTO durumDto)
         {
             var tayinTalebi = await _context.TayinTalepleri.FindAsync(id);
@@ -172,6 +175,7 @@ namespace TayinAPI.Controllers
 
         // Tüm personelleri getir
         [HttpGet("personeller")]
+        [Authorize] // JWT token gerekli
         public async Task<IActionResult> GetPersoneller()
         {
             try
@@ -210,6 +214,7 @@ namespace TayinAPI.Controllers
 
         // Personel detaylarını getir
         [HttpGet("personel/{id}")]
+        [Authorize] // JWT token gerekli
         public async Task<IActionResult> GetPersonelById(int id)
         {
             try
@@ -263,6 +268,7 @@ namespace TayinAPI.Controllers
 
         // Personel bilgilerini güncelle
         [HttpPut("personel/{id}")]
+        [Authorize] // JWT token gerekli
         public async Task<IActionResult> UpdatePersonel(int id, [FromBody] PersonelGuncelleDTO personelDTO)
         {
             try
@@ -312,6 +318,7 @@ namespace TayinAPI.Controllers
 
         // Personel sil
         [HttpDelete("personel/{id}")]
+        [Authorize] // JWT token gerekli
         public async Task<IActionResult> DeletePersonel(int id)
         {
             try
@@ -349,6 +356,7 @@ namespace TayinAPI.Controllers
         
         // Tüm sık sorulan soruları getir (aktif/pasif hepsi)
         [HttpGet("sss")]
+        [Authorize] // JWT token gerekli
         public async Task<IActionResult> GetAllSikcaSorulanSorular()
         {
             try
@@ -379,6 +387,7 @@ namespace TayinAPI.Controllers
 
         // Sık sorulan soru kategorilerini getir
         [HttpGet("sss/kategoriler")]
+        [Authorize] // JWT token gerekli
         public async Task<IActionResult> GetSSSKategorileri()
         {
             try
@@ -399,6 +408,7 @@ namespace TayinAPI.Controllers
 
         // Sık sorulan soru detayını getir
         [HttpGet("sss/{id}")]
+        [Authorize] // JWT token gerekli
         public async Task<IActionResult> GetSSSById(int id)
         {
             try
@@ -419,6 +429,7 @@ namespace TayinAPI.Controllers
 
         // Yeni sık sorulan soru ekle
         [HttpPost("sss")]
+        [Authorize] // JWT token gerekli
         public async Task<IActionResult> CreateSSS([FromBody] SikcaSorulanSoru sss)
         {
             try
@@ -449,6 +460,7 @@ namespace TayinAPI.Controllers
 
         // Sık sorulan soru güncelle
         [HttpPut("sss/{id}")]
+        [Authorize] // JWT token gerekli
         public async Task<IActionResult> UpdateSSS(int id, [FromBody] SikcaSorulanSoru sss)
         {
             try
@@ -493,6 +505,7 @@ namespace TayinAPI.Controllers
 
         // Sık sorulan soru durumunu değiştir (aktif/pasif)
         [HttpPut("sss/{id}/durum")]
+        [Authorize] // JWT token gerekli
         public async Task<IActionResult> ToggleSSSStatus(int id)
         {
             try
@@ -519,6 +532,7 @@ namespace TayinAPI.Controllers
 
         // Sık sorulan soru sil
         [HttpDelete("sss/{id}")]
+        [Authorize] // JWT token gerekli
         public async Task<IActionResult> DeleteSSS(int id)
         {
             try

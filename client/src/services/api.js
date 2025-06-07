@@ -19,14 +19,14 @@ api.interceptors.request.use(
       config.url.startsWith('/Admin') ||
       config.url.startsWith('/Log')
     );
-    
+
     // Admin isteği için admin token'ını kullan
     if (isAdminRequest) {
       const adminToken = localStorage.getItem('adminToken');
       if (adminToken) {
         config.headers['Authorization'] = `Bearer ${adminToken}`;
       }
-    } 
+    }
     // Normal kullanıcı isteği için normal token'ı kullan
     else {
       const token = localStorage.getItem('token');
@@ -34,7 +34,7 @@ api.interceptors.request.use(
         config.headers['Authorization'] = `Bearer ${token}`;
       }
     }
-    
+
     return config;
   },
   (error) => {
@@ -314,9 +314,11 @@ const adminService = {
   adminLogin: async (kullaniciAdi, sifre) => {
     try {
       const response = await api.post('/Admin/login', { KullaniciAdi: kullaniciAdi, Sifre: sifre });
-      if (response.data.token) {
+
+      if (response.data.Token || response.data.token) {
+        const token = response.data.Token || response.data.token;
         localStorage.setItem('isAdminAuthenticated', 'true');
-        localStorage.setItem('adminToken', response.data.token);
+        localStorage.setItem('adminToken', token);
         localStorage.setItem('adminKullaniciAdi', kullaniciAdi);
       }
       return response.data;

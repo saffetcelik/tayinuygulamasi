@@ -7,7 +7,7 @@ using TayinAPI.Services;
 
 namespace TayinAPI.Controllers
 {
-    [Route("api/TestHata")]
+    [Route("api/[controller]")]
     [ApiController]
     public class TestHataController : ControllerBase
     {

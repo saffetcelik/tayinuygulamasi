@@ -984,28 +984,54 @@
                     </div>
 
                     <p class="text-gray-600 mb-6">
-                        Tek komutla tüm bağımlılıkları otomatik yükler ve sistemi başlatır
+                        Hazır Docker imajı ile tek komutla çalıştırın veya kaynak koddan derleyin
                     </p>
 
                     <!-- Steps -->
                     <div class="space-y-4 mb-6">
-                        <div class="flex gap-4">
-                            <div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">1</div>
-                            <div class="bg-gray-900 text-green-400 p-4 rounded-xl font-mono text-sm overflow-x-auto flex-1">
-                                <div>git clone https://github.com/saffetcelik/tayinuygulamasi.git</div>
-                                <div>cd tayinuygulamasi</div>
+                        <!-- En Kolay Yöntem -->
+                        <div class="bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-xl border-2 border-green-200 mb-4">
+                            <div class="flex items-center gap-3 mb-3">
+                                <span class="bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold">EN KOLAY</span>
+                                <span class="text-green-700 font-semibold">Tek Tık ile Çalıştır</span>
                             </div>
+                            <div class="flex gap-4">
+                                <div class="w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">⚡</div>
+                                <div class="bg-gray-900 text-green-400 p-4 rounded-xl font-mono text-sm overflow-x-auto flex-1">
+                                    <div class="text-yellow-300 mb-1"># Doğrudan Docker imajından çalıştır</div>
+                                    <div>docker run -p 3000:3000 -p 5000:5000 saffetcelikdocker/tayin-app:latest</div>
+                                </div>
+                            </div>
+                            <p class="text-sm text-green-700 mt-2 ml-12">
+                                ✅ Hiçbir kurulum gerektirmez • ✅ Anında çalışır • ✅ Tüm bağımlılıklar dahil
+                            </p>
                         </div>
-                        <div class="flex gap-4">
-                            <div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">2</div>
-                            <div class="bg-gray-900 text-green-400 p-4 rounded-xl font-mono text-sm overflow-x-auto flex-1">
-                                docker-compose up -d --build
+
+                        <!-- Alternatif Yöntem -->
+                        <div class="border-t border-gray-200 pt-4">
+                            <p class="text-sm text-gray-600 mb-3 font-medium">Alternatif: Kaynak koddan çalıştırma</p>
+                            <div class="flex gap-4 mb-3">
+                                <div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">1</div>
+                                <div class="bg-gray-900 text-green-400 p-4 rounded-xl font-mono text-sm overflow-x-auto flex-1">
+                                    <div>git clone https://github.com/saffetcelik/tayinuygulamasi.git</div>
+                                    <div>cd tayinuygulamasi</div>
+                                </div>
+                            </div>
+                            <div class="flex gap-4">
+                                <div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">2</div>
+                                <div class="bg-gray-900 text-green-400 p-4 rounded-xl font-mono text-sm overflow-x-auto flex-1">
+                                    docker-compose up -d --build
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Features -->
                     <div class="space-y-2 mb-6">
+                        <div class="flex items-center gap-2 text-sm text-gray-600">
+                            <span class="text-green-500">✅</span>
+                            <span>Tek komutla anında çalışır</span>
+                        </div>
                         <div class="flex items-center gap-2 text-sm text-gray-600">
                             <span class="text-green-500">✅</span>
                             <span>PostgreSQL otomatik kurulum</span>
@@ -1021,6 +1047,10 @@
                         <div class="flex items-center gap-2 text-sm text-gray-600">
                             <span class="text-green-500">✅</span>
                             <span>Tüm servisler başlar</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-gray-600">
+                            <span class="text-green-500">✅</span>
+                            <span>Hazır Docker imajı</span>
                         </div>
                     </div>
                 </div>
@@ -1091,16 +1121,27 @@
                 <h3 class="text-3xl font-bold text-gray-800 text-center mb-8">
                     🚀 Hızlı Erişim
                 </h3>
+                <p class="text-center text-gray-600 mb-8">
+                    Docker imajı için <strong>3000</strong> portunu, manuel kurulum için <strong>3001</strong> portunu kullanın
+                </p>
                 <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                     <div class="bg-white rounded-2xl p-6 border border-gray-200 hover-lift corporate-shadow text-center">
                         <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-2xl mx-auto mb-4">
                             👤
                         </div>
                         <h4 class="font-semibold text-gray-800 mb-2">Kullanıcı Paneli</h4>
-                        <a href="http://localhost:3001" target="_blank"
-                           class="text-blue-600 hover:text-blue-800 text-sm font-mono break-all transition-colors">
-                            localhost:3001
-                        </a>
+                        <div class="space-y-2">
+                            <a href="http://localhost:3000" target="_blank"
+                               class="block text-blue-600 hover:text-blue-800 text-sm font-mono transition-colors">
+                                localhost:3000
+                            </a>
+                            <p class="text-xs text-gray-500">(Docker imajı)</p>
+                            <a href="http://localhost:3001" target="_blank"
+                               class="block text-blue-600 hover:text-blue-800 text-sm font-mono transition-colors">
+                                localhost:3001
+                            </a>
+                            <p class="text-xs text-gray-500">(Manuel kurulum)</p>
+                        </div>
                     </div>
 
                     <div class="bg-white rounded-2xl p-6 border border-gray-200 hover-lift corporate-shadow text-center">
@@ -1108,10 +1149,18 @@
                             👨‍💼
                         </div>
                         <h4 class="font-semibold text-gray-800 mb-2">Admin Paneli</h4>
-                        <a href="http://localhost:3001/admin/panel" target="_blank"
-                           class="text-blue-600 hover:text-blue-800 text-sm font-mono break-all transition-colors">
-                            localhost:3001/admin/panel
-                        </a>
+                        <div class="space-y-2">
+                            <a href="http://localhost:3000/admin/panel" target="_blank"
+                               class="block text-blue-600 hover:text-blue-800 text-sm font-mono transition-colors">
+                                localhost:3000/admin/panel
+                            </a>
+                            <p class="text-xs text-gray-500">(Docker imajı)</p>
+                            <a href="http://localhost:3001/admin/panel" target="_blank"
+                               class="block text-blue-600 hover:text-blue-800 text-sm font-mono transition-colors">
+                                localhost:3001/admin/panel
+                            </a>
+                            <p class="text-xs text-gray-500">(Manuel kurulum)</p>
+                        </div>
                     </div>
 
                     <div class="bg-white rounded-2xl p-6 border border-gray-200 hover-lift corporate-shadow text-center">
@@ -1230,6 +1279,52 @@
                 </h3>
 
                 <div class="max-w-4xl mx-auto">
+                    <!-- Step 0 - Recommended -->
+                    <div class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl p-8 border-2 border-green-200 corporate-shadow mb-8">
+                        <div class="flex items-start gap-6">
+                            <div class="w-12 h-12 bg-green-500 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">
+                                ⚡
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex items-center gap-3 mb-4">
+                                    <h4 class="text-xl font-bold text-gray-800">En Kolay Yöntem: Docker İmajından Çalıştır</h4>
+                                    <span class="bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold">ÖNERİLEN</span>
+                                </div>
+                                <p class="text-gray-600 mb-4">Hiçbir kurulum gerektirmeden doğrudan Docker imajından çalıştırın:</p>
+                                <div class="bg-gray-900 text-green-400 p-4 rounded-lg font-mono text-sm overflow-x-auto">
+                                    <div class="text-yellow-300 mb-1"># Tek komutla çalıştır</div>
+                                    <div>docker run -p 3000:3000 -p 5000:5000 saffetcelikdocker/tayin-app:latest</div>
+                                </div>
+                                <div class="mt-4 p-4 bg-green-100 rounded-lg border border-green-200">
+                                    <p class="text-sm text-green-800 font-medium mb-2">✅ Bu yöntemin avantajları:</p>
+                                    <ul class="text-sm text-green-700 space-y-1">
+                                        <li>• Hiçbir bağımlılık kurulumu gerektirmez</li>
+                                        <li>• Anında çalışmaya başlar</li>
+                                        <li>• PostgreSQL, .NET ve React otomatik yüklenir</li>
+                                        <li>• Demo veriler hazır gelir</li>
+                                    </ul>
+                                    <div class="mt-4 pt-3 border-t border-green-200">
+                                        <p class="text-sm text-green-800 font-medium mb-2">🚀 Çalıştırdıktan sonra erişim:</p>
+                                        <div class="grid grid-cols-2 gap-2">
+                                            <a href="http://localhost:3000" target="_blank" class="text-xs bg-green-600 text-white px-3 py-2 rounded-lg text-center hover:bg-green-700 transition-colors">
+                                                👤 Kullanıcı Paneli
+                                            </a>
+                                            <a href="http://localhost:3000/admin/panel" target="_blank" class="text-xs bg-green-600 text-white px-3 py-2 rounded-lg text-center hover:bg-green-700 transition-colors">
+                                                👨‍💼 Admin Paneli
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Alternative Methods Header -->
+                    <div class="text-center mb-8">
+                        <h4 class="text-lg font-semibold text-gray-600 mb-2">Alternatif Kurulum Yöntemleri</h4>
+                        <p class="text-sm text-gray-500">Geliştirme veya özelleştirme yapmak istiyorsanız aşağıdaki yöntemleri kullanabilirsiniz</p>
+                    </div>
+
                     <!-- Step 1 -->
                     <div class="bg-white rounded-2xl p-8 border border-gray-200 corporate-shadow mb-8">
                         <div class="flex items-start gap-6">
@@ -1331,12 +1426,14 @@
                                         <a href="http://localhost:3001" target="_blank" class="text-blue-600 hover:text-blue-800 font-mono text-sm">
                                             http://localhost:3001
                                         </a>
+                                        <p class="text-xs text-blue-600 mt-1">(Manuel kurulum için)</p>
                                     </div>
                                     <div class="bg-orange-50 p-4 rounded-lg border border-orange-200">
                                         <h5 class="font-semibold text-orange-800 mb-2">👨‍💼 Admin Paneli</h5>
                                         <a href="http://localhost:3001/admin/panel" target="_blank" class="text-orange-600 hover:text-orange-800 font-mono text-sm">
                                             http://localhost:3001/admin/panel
                                         </a>
+                                        <p class="text-xs text-orange-600 mt-1">(Manuel kurulum için)</p>
                                     </div>
                                 </div>
                             </div>
@@ -1637,10 +1734,16 @@
                         <div class="text-xs text-gray-600">• Tüm İşlemler</div>
                     </div>
 
-                    <a href="http://localhost:3001/admin/panel" target="_blank"
-                       class="block w-full bg-gradient-to-r from-orange-400 to-red-500 text-white text-center py-3 rounded-xl font-semibold hover-lift transition-all duration-300">
-                        Admin Paneli →
-                    </a>
+                    <div class="space-y-2">
+                        <a href="http://localhost:3000/admin/panel" target="_blank"
+                           class="block w-full bg-gradient-to-r from-orange-400 to-red-500 text-white text-center py-3 rounded-xl font-semibold hover-lift transition-all duration-300">
+                            Admin Paneli (Docker) →
+                        </a>
+                        <a href="http://localhost:3001/admin/panel" target="_blank"
+                           class="block w-full bg-gradient-to-r from-orange-300 to-red-400 text-white text-center py-2 rounded-xl font-medium hover-lift transition-all duration-300">
+                            Admin Paneli (Manuel) →
+                        </a>
+                    </div>
                 </div>
 
                 <!-- Staff User 1 -->
@@ -1677,10 +1780,16 @@
                         <div class="text-xs text-gray-600">• Harita ile Talep</div>
                     </div>
 
-                    <a href="http://localhost:3001" target="_blank"
-                       class="block w-full bg-primary-gradient text-white text-center py-3 rounded-xl font-semibold hover-lift transition-all duration-300">
-                        Kullanıcı Girişi →
-                    </a>
+                    <div class="space-y-2">
+                        <a href="http://localhost:3000" target="_blank"
+                           class="block w-full bg-primary-gradient text-white text-center py-3 rounded-xl font-semibold hover-lift transition-all duration-300">
+                            Kullanıcı Girişi (Docker) →
+                        </a>
+                        <a href="http://localhost:3001" target="_blank"
+                           class="block w-full bg-blue-400 text-white text-center py-2 rounded-xl font-medium hover-lift transition-all duration-300">
+                            Kullanıcı Girişi (Manuel) →
+                        </a>
+                    </div>
                 </div>
 
                 <!-- Staff User 2 -->
@@ -1717,10 +1826,16 @@
                         <div class="text-xs text-gray-600">• Harita ile Talep</div>
                     </div>
 
-                    <a href="http://localhost:3001" target="_blank"
-                       class="block w-full bg-gradient-to-r from-green-400 to-emerald-500 text-white text-center py-3 rounded-xl font-semibold hover-lift transition-all duration-300">
-                        Kullanıcı Girişi →
-                    </a>
+                    <div class="space-y-2">
+                        <a href="http://localhost:3000" target="_blank"
+                           class="block w-full bg-gradient-to-r from-green-400 to-emerald-500 text-white text-center py-3 rounded-xl font-semibold hover-lift transition-all duration-300">
+                            Kullanıcı Girişi (Docker) →
+                        </a>
+                        <a href="http://localhost:3001" target="_blank"
+                           class="block w-full bg-green-400 text-white text-center py-2 rounded-xl font-medium hover-lift transition-all duration-300">
+                            Kullanıcı Girişi (Manuel) →
+                        </a>
+                    </div>
                 </div>
 
                 <!-- Staff User 3 -->
@@ -1757,10 +1872,16 @@
                         <div class="text-xs text-gray-600">• Harita ile Talep</div>
                     </div>
 
-                    <a href="http://localhost:3001" target="_blank"
-                       class="block w-full bg-gradient-to-r from-purple-400 to-violet-500 text-white text-center py-3 rounded-xl font-semibold hover-lift transition-all duration-300">
-                        Kullanıcı Girişi →
-                    </a>
+                    <div class="space-y-2">
+                        <a href="http://localhost:3000" target="_blank"
+                           class="block w-full bg-gradient-to-r from-purple-400 to-violet-500 text-white text-center py-3 rounded-xl font-semibold hover-lift transition-all duration-300">
+                            Kullanıcı Girişi (Docker) →
+                        </a>
+                        <a href="http://localhost:3001" target="_blank"
+                           class="block w-full bg-purple-400 text-white text-center py-2 rounded-xl font-medium hover-lift transition-all duration-300">
+                            Kullanıcı Girişi (Manuel) →
+                        </a>
+                    </div>
                 </div>
             </div>
 

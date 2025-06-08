@@ -168,7 +168,7 @@ cd ../../client  # Kök dizinden client klasörüne git
 npm install
 ```
 
-#### 3.4. Otomasyon ile Çalıştırma (Manuel Kurulum İçin)
+#### 3.4. Otomasyon ile Çalıştırma (Manuel Kurulum Sonrası Backend ve Frontendin Aynı anda Çalıştırılması için )
 
 Kök dizinde bulunan PowerShell scriptini kullanarak hem backend hem de frontend tek bir komutla başlatılabilir:
 
@@ -180,7 +180,6 @@ Bu script şunları yapacaktır:
 - Backend API'yi http://localhost:5000 adresinde başlatır
 - Frontend'i http://localhost:3001 adresinde başlatır
 - Tarayıcınızı otomatik olarak frontend adresine yönlendirir
-- Her iki uygulamanın loglarını konsolda gösterir
 
 #### 3.5. Manuel Çalıştırma
 

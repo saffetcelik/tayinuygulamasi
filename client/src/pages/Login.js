@@ -12,7 +12,6 @@ const Login = () => {
   const [sicilNoError, setSicilNoError] = useState('');
   const [animationComplete, setAnimationComplete] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [focusedField, setFocusedField] = useState('');
   const navigate = useNavigate();
   
   // Sayfa yüklendiğinde animasyon efekti ve cookie kontrolü
@@ -112,7 +111,7 @@ const Login = () => {
       document.querySelector('.login-btn').classList.add('animate-ripple');
       
       // Gerçek API isteği yapılıyor
-      const response = await authService.login(sicilNo, sifre, beniHatirla);
+      await authService.login(sicilNo, sifre, beniHatirla);
       
       // Başarılı giriş
       toast.success('Giriş başarılı! Yönlendiriliyorsunuz...');
@@ -298,8 +297,6 @@ const Login = () => {
                     type="text"
                     value={sicilNo}
                     onChange={handleSicilNoChange}
-                    onFocus={() => setFocusedField('sicilNo')}
-                    onBlur={() => setFocusedField('')}
                     className={`block w-full pl-10 pr-3 py-3 border-0 focus:ring-0 transition-all duration-200 bg-transparent ${sicilNoError ? 'border-red-500 text-red-600' : ''}`}
                     placeholder="Sicil numaranızı giriniz (6 haneli)"
                     maxLength={6}
@@ -332,8 +329,6 @@ const Login = () => {
                     type={showPassword ? "text" : "password"}
                     value={sifre}
                     onChange={(e) => setSifre(e.target.value)}
-                    onFocus={() => setFocusedField('sifre')}
-                    onBlur={() => setFocusedField('')}
                     className="block w-full pl-10 pr-12 py-3 border-0 focus:ring-0 transition-all duration-200 bg-transparent"
                     placeholder="Şifrenizi giriniz"
                     required

@@ -24,7 +24,7 @@ const PersonelDuzenleModal = ({ personelId, isOpen, onClose, onSave }) => {
     if (isOpen && personelId) {
       loadPersonelData();
     }
-  }, [isOpen, personelId]);
+  }, [isOpen, personelId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const loadPersonelData = async () => {
     setLoading(true);

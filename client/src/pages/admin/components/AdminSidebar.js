@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { Users, FileText, BarChart2, Activity, Shield, Settings, LogOut, Database, Home, Calendar, ChevronRight, LogIn, HelpCircle, TestTube, BookOpen } from 'lucide-react';
+import { Users, BarChart2, Activity, LogOut, Calendar, ChevronRight, HelpCircle, TestTube, BookOpen } from 'lucide-react';
 
 const AdminSidebar = ({ activeTab, setActiveTab, mobileMenuOpen, setMobileMenuOpen, istatistikler = {}, onLogout }) => {
   const sidebarRef = useRef(null);

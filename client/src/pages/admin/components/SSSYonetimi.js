@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { adminService } from '../../../services/api';
-import { HelpCircle, Edit2, Trash2, Plus, Search, Check, X, Save, ChevronUp, ChevronDown } from 'lucide-react';
+import { HelpCircle, Edit2, Trash2, Plus, Search, Check, X, Save } from 'lucide-react';
 import Swal from 'sweetalert2';
 
 const SSSYonetimi = () => {

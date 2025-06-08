@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { AlertTriangle, Info, XCircle, Search, ChevronDown, ChevronRight, Server, Clock, RefreshCw, ListFilter, CalendarDays, UserCircle, CheckCircle, XOctagon, FileText, Loader2, ChevronLeft, ChevronUp } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { AlertTriangle, XCircle, Clock, RefreshCw, ListFilter, CheckCircle, XOctagon, FileText, Loader2 } from 'lucide-react';
 import { adminService } from '../../../services/api';
 
 // Tarih formatlama
@@ -136,7 +136,7 @@ const LogPanel = () => {
   useEffect(() => {
     fetchLogs();
     fetchLogOzeti();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const fetchLogs = async () => {
     try {

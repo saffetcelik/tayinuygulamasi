@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { authService } from '../services/api';
-import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 const Ayarlar = () => {
@@ -8,7 +7,6 @@ const Ayarlar = () => {
   const [yeniSifre, setYeniSifre] = useState('');
   const [yeniSifreTekrar, setYeniSifreTekrar] = useState('');
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
 
   const handleSifreDegistir = async (e) => {
     e.preventDefault();
@@ -32,7 +30,7 @@ const Ayarlar = () => {
     setLoading(true);
     
     try {
-      const response = await authService.changePassword(mevcutSifre, yeniSifre);
+      await authService.changePassword(mevcutSifre, yeniSifre);
       toast.success('Şifreniz başarıyla değiştirildi');
       setMevcutSifre('');
       setYeniSifre('');

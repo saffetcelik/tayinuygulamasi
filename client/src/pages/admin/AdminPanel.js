@@ -60,7 +60,7 @@ const AdminPanel = () => {
         clearInterval(refreshInterval);
       }
     };
-  }, [adminInfo]); // Sadece adminInfo değiştiğinde çalışır
+  }, [adminInfo]); // eslint-disable-line react-hooks/exhaustive-deps
   
   // Tayin taleplerini getir
   const fetchTayinTalepleri = async (showLoading = true, showNotification = false) => {
@@ -79,15 +79,11 @@ const AdminPanel = () => {
     }
   };
   
-  // Personel listesini getir
-  const [personeller, setPersoneller] = useState([]);
-  
   // Personelleri getir
   const fetchPersoneller = async (showLoading = false) => {
     try {
       const data = await adminService.getPersoneller();
-      setPersoneller(data);
-      
+
       // İstatistikleri güncelle
       setIstatistikler(prev => ({
         ...prev,

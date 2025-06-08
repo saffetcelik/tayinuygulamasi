@@ -28,6 +28,10 @@ Tayin projesi, kullanıcı dostu arayüz tasarımı ve verimli bileşen kullanı
   - Loglanan İşlemler: Kimlik doğrulama, başarılı başarısız login istekleri, tayin talepleri, sistem hataları
   - Filtreleme Seçenekleri: Tarih, kullanıcı, işlem türü, başarı durumu
 - **Sıkça Sorulan Sorular Yönetimi:** SSS bölümü için soru ekleme, düzenleme, silme
+- **Sistem Testleri:** Hata senaryolarını test etme ve log kayıtlarını kontrol etme
+- **API Dokümantasyonu:** Tüm API endpoint'lerini ve kullanım örneklerini görüntüleme
+- **İstatistikler:** Tayin taleplerine ilişkin istatistikleri görüntüleme
+
 
 ## Teknolojiler
 
@@ -90,7 +94,7 @@ Bu komut:
 - Backend API: http://localhost:5000  
  
 
-### 2. Alternatif çalıştırma yöntemi - Kaynak Koddan Docker ile Çalıştırma
+### 2. Alternatif  Kaynak Koddan Docker ile Çalıştırma
 
 Kaynak kodu indirip Docker ile çalıştırmak istiyorsanız:
 
@@ -149,8 +153,8 @@ Bu komut:
 ```powershell
 cd server/TayinAPI
 dotnet restore
-dotnet tool install --global dotnet-ef  # Entity Framework CLI aracını kur
-dotnet ef database update  # Veritabanını oluştur ve migrate et
+dotnet tool install --global dotnet-ef  # Entity Framework CLI aracını kurun
+dotnet ef database update  # Veritabanını oluştur ve migrate edin
 ```
 
 > **Not:** Veritabanı migration işlemi sırasında otomatik olarak varsayılan başlangıç verileri oluşturulur. Bu veriler arasında:
@@ -164,7 +168,7 @@ dotnet ef database update  # Veritabanını oluştur ve migrate et
 #### 3.3. Frontend (React) Kurulumu
 
 ```powershell
-cd ../../client  # Kök dizinden client klasörüne git
+cd ../../client  # Kök dizinden client klasörüne girin
 npm install
 ```
 
@@ -226,7 +230,7 @@ npm start
 
 
 
-### Sistem Hatalarının Loglandığını Test Etme (Admin panelde Log Yönetimini test etmek için)
+### Sistem Hatalarının Loglandığını Test Etme (Admin Paneldeki Sistem Testleri Bölümünden Test Edilebilir)
 - Aşağıdaki adresler üzerinden çeşitli hata senaryolarını test edebilirsiniz:
   1. Manuel log oluşturma: `http://localhost:5000/api/TestHata/log-olustur?mesaj=Test%20Mesaj`
   2. Sıfıra bölme hatası: `http://localhost:5000/api/TestHata/bolme-hatasi?sayi=0`

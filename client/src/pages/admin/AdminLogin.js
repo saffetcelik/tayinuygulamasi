@@ -10,7 +10,6 @@ const AdminLogin = () => {
   const [error, setError] = useState('');
   const [animationComplete, setAnimationComplete] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [focusedField, setFocusedField] = useState('');
   const navigate = useNavigate();
   
   // Sayfa yüklendiğinde animasyon efekti
@@ -176,8 +175,6 @@ const AdminLogin = () => {
                     type="text"
                     value={kullaniciAdi}
                     onChange={(e) => setKullaniciAdi(e.target.value)}
-                    onFocus={() => setFocusedField('kullaniciAdi')}
-                    onBlur={() => setFocusedField('')}
                     className="block w-full pl-10 pr-3 py-3 border-0 focus:ring-0 transition-all duration-200 bg-transparent"
                     placeholder="Kullanıcı adınızı giriniz"
                     required
@@ -201,8 +198,6 @@ const AdminLogin = () => {
                     type={showPassword ? "text" : "password"}
                     value={sifre}
                     onChange={(e) => setSifre(e.target.value)}
-                    onFocus={() => setFocusedField('sifre')}
-                    onBlur={() => setFocusedField('')}
                     className="block w-full pl-10 pr-12 py-3 border-0 focus:ring-0 transition-all duration-200 bg-transparent"
                     placeholder="Şifrenizi giriniz"
                     required

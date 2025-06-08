@@ -8,12 +8,6 @@ import { toast } from 'react-toastify';
 import './TayinTalebiForm.css';
 
 const TayinTalebiForm = ({ setActiveTab }) => {
-  // Sayfa yüklendikten sonra document.body'yi erişilebilir yapmak için state
-  const [mounted, setMounted] = useState(false);
-  
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   const [talep, setTalep] = useState({
     talepTuru: '',

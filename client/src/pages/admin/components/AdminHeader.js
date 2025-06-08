@@ -1,11 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Bell, Search, HelpCircle, Settings, LogOut, User, ChevronDown, Menu, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 
 const AdminHeader = ({ adminInfo, onLogout, mobileMenuOpen, setMobileMenuOpen }) => {
   const [profilMenuOpen, setProfilMenuOpen] = useState(false);
-  const [notificationsOpen, setNotificationsOpen] = useState(false);
   const profilMenuRef = useRef(null);
-  const notificationsRef = useRef(null);
   
   // Dışarıya tıklandığında açık menüleri kapat
   useEffect(() => {
@@ -13,16 +11,13 @@ const AdminHeader = ({ adminInfo, onLogout, mobileMenuOpen, setMobileMenuOpen })
       if (profilMenuRef.current && !profilMenuRef.current.contains(event.target)) {
         setProfilMenuOpen(false);
       }
-      if (notificationsRef.current && !notificationsRef.current.contains(event.target)) {
-        setNotificationsOpen(false);
-      }
     };
-    
+
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [profilMenuRef, notificationsRef]);
+  }, [profilMenuRef]);
 
   return (
     <header className="bg-white text-slate-700 fixed w-full top-0 left-0 z-20 shadow-sm border-b border-slate-200 md:pl-72">

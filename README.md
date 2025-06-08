@@ -70,16 +70,38 @@ Tayin projesi, kullanıcı dostu arayüz tasarımı ve verimli bileşen kullanı
 
 ## Kurulum Adımları
 
-### 1. Projeyi Klonlama 
+### 1. Hızlı Başlangıç - Docker İmajı ile Çalıştırma (En Kolay Yöntem - Önerilen)
 
-Projeyi klonlamak için bilgisayarınızda git kurulu olması gerekmektedir.
+Projeyi tek komutla çalıştırmanın en hızlı yolu hazır Docker imajını kullanmaktır. Docker ve Docker Compose kurulu olduğundan emin olun Bu yöntemle herhangi ek bir kurulum yapmadan direkt projeyi çalıştırabilirsiniz:
+
+```powershell
+docker run -p 3000:3000 -p 5000:5000 saffetcelikdocker/tayin-app:latest
+```
+
+Bu komut:
+- Hazır Docker imajını indirir
+- PostgreSQL veritabanını başlatır
+- Backend API'yi çalıştırır (port 5000)
+- Frontend uygulamasını çalıştırır (port 3000)
+- Tüm bağımlılıkları otomatik olarak yükler
+
+**Erişim Bilgileri:**
+- Frontend: http://localhost:3000 (Varsayılan Kullanıcı ve Admin giriş bilgileri aşağıda verilmiştir.)
+- Backend API: http://localhost:5000  
+ 
+
+### 2. Alternatif çalıştırma yöntemi - Kaynak Koddan Docker ile Çalıştırma
+
+Kaynak kodu indirip Docker ile çalıştırmak istiyorsanız:
+
+#### 2.1. Projeyi Klonlama
 
 ```powershell
 git clone https://github.com/saffetcelik/tayinuygulamasi.git
 cd tayinuygulamasi # Proje dizinine girin docker komutunu çalıştırmak için proje dizininde olmak gerekir.
 ```
 
-### 2. Docker ile Çalıştırma (Önerilen)
+#### 2.2. Docker Compose ile Çalıştırma
 
 Docker ve Docker Compose kurulu olduğundan emin olun. Proje tek komutla Docker üzerinde çalıştırılabilir, tüm bağımlılıklar otomatik olarak yüklenir ve proje başlatılır.
 
@@ -89,32 +111,23 @@ docker-compose up -d --build
 
 Bu komut:
 - PostgreSQL veritabanını başlatır
-> **Not:** Backend konteyneri (`tayin-backend`) için veritabanı bağlantı bilgileri (`ConnectionStrings__DefaultConnection`) `dockerfiles/entrypoint.sh` dosyası içerisinde tanımlanmıştır. Varsayılan olarak `Host=postgres;Database=tayin;Username=postgres;Password=root` şeklindedir.
 - PostreSQL veritabanı için migration'ları uygular ve temel verileri ekler
 - Backend API'yi build edip çalıştırır (veritabanı bağlantısını bekler)
 - Frontend uygulamasını build edip çalıştırır
 - Tüm bileşenleri Docker ağında birbirine bağlar
 
+> **Not:** Backend konteyneri (`tayin-backend`) için veritabanı bağlantı bilgileri (`ConnectionStrings__DefaultConnection`) `dockerfiles/entrypoint.sh` dosyası içerisinde tanımlanmıştır. Varsayılan olarak `Host=postgres;Database=tayin;Username=postgres;Password=root` şeklindedir.
+
 **Erişim Bilgileri:**
 - "docker ps" komutunu terminalde çalıştırarak projenin hangi portta çalıştığını görebilirsiniz.
 - Backend API: http://localhost:5000
-- Frontend: http://localhost:3000
+- Frontend: http://localhost:3000 (Varsayılan Kullanıcı ve Admin giriş bilgileri aşağıda verilmiştir.)
 - PostgreSQL: localhost:5432 (Docker içinde tayin-postgres konteynerinde)
 
-> **Varsayılan Kullanıcı Bilgileri:**
->
-> **Admin Paneli Kullanıcısı:**
-> - Kullanıcı Adı: `admin`
-> - Şifre: `123`
->
-> **Personel (Deneme) Kullanıcıları:**
-> 1. **Zabıt Katibi**
->    - Sicil No: `229301`
->    - Şifre: `123`
->    - Ad Soyad: Saffet Çelik
-> 
 
-### 3. PostgreSQL Kurulumu ve Veritabanı Ayarları (Docker Olmadan Manuel Kurulum)
+### 3. Manuel Kurulum (Docker Olmadan)
+
+#### 3.1. PostgreSQL Kurulumu ve Veritabanı Ayarları
 
 1. PostgreSQL'i indirin ve kurun: [PostgreSQL İndirme Sayfası](https://www.postgresql.org/download/)
 2. Kurulum sırasında veya sonrasında şu bilgileri not edin:
@@ -131,7 +144,7 @@ Bu komut:
 }
 ```
 
-### 4. Backend (.NET Core) Kurulumu
+#### 3.2. Backend (.NET Core) Kurulumu
 
 ```powershell
 cd server/TayinAPI
@@ -148,14 +161,14 @@ dotnet ef database update  # Veritabanını oluştur ve migrate et
 >
 
 
-### 5. Frontend (React) Kurulumu
+#### 3.3. Frontend (React) Kurulumu
 
 ```powershell
 cd ../../client  # Kök dizinden client klasörüne git
 npm install
 ```
 
-### 6. Otomasyon ile Çalıştırma (Manuel Kurulum İçin)
+#### 3.4. Otomasyon ile Çalıştırma (Manuel Kurulum İçin)
 
 Kök dizinde bulunan PowerShell scriptini kullanarak hem backend hem de frontend tek bir komutla başlatılabilir:
 
@@ -169,7 +182,7 @@ Bu script şunları yapacaktır:
 - Tarayıcınızı otomatik olarak frontend adresine yönlendirir
 - Her iki uygulamanın loglarını konsolda gösterir
 
-### 7. Manuel Çalıştırma
+#### 3.5. Manuel Çalıştırma
 
 Otomasyon scriptini kullanmak istemiyorsanız, backend ve frontend'i ayrı ayrı başlatabilirsiniz:
 

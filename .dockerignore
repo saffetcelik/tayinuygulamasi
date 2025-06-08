@@ -1,0 +1,30 @@
+# Git
+.git
+.gitignore
+README.md
+
+# Node modules
+client/node_modules
+client/build
+
+# .NET
+server/TayinAPI/bin
+server/TayinAPI/obj
+server/TayinAPI/appsettings.Development.json
+
+# IDE
+.vs
+.vscode
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+docker-compose.yml
+docker-compose.override.yml
+
+# Logs
+*.log

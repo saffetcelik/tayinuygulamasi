@@ -357,3 +357,7 @@ Desktop.ini
 
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
+.dockerignore
+build-and-push.ps1
+build-and-push.sh
+Dockerfile

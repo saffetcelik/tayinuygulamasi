@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { Users, BarChart2, Activity, LogOut, Calendar, ChevronRight, HelpCircle, TestTube, BookOpen } from 'lucide-react';
+import { Users, BarChart2, Activity, LogOut, Calendar, ChevronRight, HelpCircle, TestTube, BookOpen, Monitor } from 'lucide-react';
 
 const AdminSidebar = ({ activeTab, setActiveTab, mobileMenuOpen, setMobileMenuOpen, istatistikler = {}, onLogout }) => {
   const sidebarRef = useRef(null);
@@ -195,6 +195,27 @@ const AdminSidebar = ({ activeTab, setActiveTab, mobileMenuOpen, setMobileMenuOp
                   <TestTube size={18} />
                 </div>
                 <span className="font-medium text-sm">Sistem Testleri</span>
+                <ChevronRight size={16} className="ml-auto opacity-50 group-hover:opacity-80 group-hover:translate-x-0.5 transition-all duration-200" />
+              </button>
+            </li>
+
+            <li>
+              <button
+                onClick={() => handleTabChange('sistem-sagligi')}
+                className={`flex items-center w-full px-4 py-3 rounded-xl transition-all duration-200 group ${
+                  activeTab === 'sistem-sagligi'
+                  ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg'
+                  : 'text-slate-300 hover:bg-slate-700/50 hover:text-white'
+                }`}
+              >
+                <div className={`p-1.5 rounded-lg mr-3 transition-all duration-200 ${
+                  activeTab === 'sistem-sagligi'
+                  ? 'bg-white/20'
+                  : 'bg-slate-600/40 group-hover:bg-slate-500/40'
+                }`}>
+                  <Monitor size={18} />
+                </div>
+                <span className="font-medium text-sm">Sistem Sağlığı</span>
                 <ChevronRight size={16} className="ml-auto opacity-50 group-hover:opacity-80 group-hover:translate-x-0.5 transition-all duration-200" />
               </button>
             </li>

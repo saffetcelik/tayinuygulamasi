@@ -443,6 +443,17 @@ const adminService = {
       throw error;
     }
   },
+
+  // Tüm logları temizle
+  temizleLoglar: async () => {
+    try {
+      const response = await api.delete('/Log/temizle');
+      return response.data;
+    } catch (error) {
+      console.error('Loglar temizlenirken hata:', error);
+      throw error;
+    }
+  },
   
   // Personel detaylarını getir
   getPersonelById: async (id) => {
@@ -559,6 +570,83 @@ const adminService = {
       throw error;
     }
   },
+
+  // Sistem sağlığı endpoint'leri
+  getSystemHealth: async () => {
+    try {
+      console.log('API çağrısı yapılıyor: /SystemHealth');
+      const response = await api.get('/SystemHealth');
+      console.log('API yanıtı alındı:', response);
+      return response.data;
+    } catch (error) {
+      console.error('Sistem sağlığı API hatası:', error);
+      console.error('Hata response:', error.response);
+      console.error('Hata status:', error.response?.status);
+      console.error('Hata data:', error.response?.data);
+      throw error.response ? error.response.data : error;
+    }
+  },
+
+  getSystemInfo: async () => {
+    try {
+      const response = await api.get('/SystemHealth/system-info');
+      return response.data;
+    } catch (error) {
+      console.error('Sistem bilgileri alınamadı:', error);
+      throw error.response ? error.response.data : 'Sistem bilgileri alınamadı';
+    }
+  },
+
+  getDatabaseHealth: async () => {
+    try {
+      const response = await api.get('/SystemHealth/database-health');
+      return response.data;
+    } catch (error) {
+      console.error('Veritabanı sağlığı kontrol edilemedi:', error);
+      throw error.response ? error.response.data : 'Veritabanı sağlığı kontrol edilemedi';
+    }
+  },
+
+  getApiHealth: async () => {
+    try {
+      const response = await api.get('/SystemHealth/api-health');
+      return response.data;
+    } catch (error) {
+      console.error('API sağlığı kontrol edilemedi:', error);
+      throw error.response ? error.response.data : 'API sağlığı kontrol edilemedi';
+    }
+  },
+
+  getPerformanceMetrics: async () => {
+    try {
+      const response = await api.get('/SystemHealth/performance-metrics');
+      return response.data;
+    } catch (error) {
+      console.error('Performans metrikleri alınamadı:', error);
+      throw error.response ? error.response.data : 'Performans metrikleri alınamadı';
+    }
+  },
+
+  getRecentErrors: async () => {
+    try {
+      const response = await api.get('/SystemHealth/recent-errors');
+      return response.data;
+    } catch (error) {
+      console.error('Son hatalar alınamadı:', error);
+      throw error.response ? error.response.data : 'Son hatalar alınamadı';
+    }
+  },
+
+  // Test hata endpoint'leri
+  testHata: async (endpoint) => {
+    try {
+      const response = await api.get(`/TestHata/${endpoint}`);
+      return response.data;
+    } catch (error) {
+      console.error('Test hatası gerçekleştirilemedi:', error);
+      throw error.response ? error.response.data : 'Test hatası gerçekleştirilemedi';
+    }
+  }
 };
 
 export { authService, personelService, tayinService, sssService, adminService };

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { AlertTriangle, XCircle, Clock, RefreshCw, ListFilter, CheckCircle, XOctagon, FileText, Loader2 } from 'lucide-react';
+import { AlertTriangle, XCircle, Clock, RefreshCw, ListFilter, CheckCircle, XOctagon, FileText, Loader2, Trash2 } from 'lucide-react';
 import { adminService } from '../../../services/api';
+import { toast } from 'react-toastify';
 
 // Tarih formatlama
 const formatDate = (dateString) => {
@@ -128,7 +129,8 @@ const LogPanel = () => {
   const [loadingOzeti, setLoadingOzeti] = useState(true);
   const [selectedLog, setSelectedLog] = useState(null);
   const [showLogModal, setShowLogModal] = useState(false);
-  
+  const [clearingLogs, setClearingLogs] = useState(false);
+
   // Sayfalama için state değişkenleri
   const [currentPage, setCurrentPage] = useState(1);
   const [logsPerPage, setLogsPerPage] = useState(5); // Sayfa başına 5 log varsayılan olarak
@@ -195,6 +197,31 @@ const LogPanel = () => {
   const showLogDetail = (log) => {
     setSelectedLog(log);
     setShowLogModal(true);
+  };
+
+  const handleClearLogs = async () => {
+    const confirmClear = window.confirm(
+      'Tüm sistem kayıtları silinecek. Bu işlem geri alınamaz. Devam etmek istediğinizden emin misiniz?'
+    );
+
+    if (!confirmClear) return;
+
+    try {
+      setClearingLogs(true);
+      const response = await adminService.temizleLoglar();
+
+      toast.success(`${response.silinenKayitSayisi} sistem kaydı başarıyla temizlendi!`);
+
+      // Verileri yenile
+      await fetchLogs();
+      await fetchLogOzeti();
+
+    } catch (error) {
+      console.error('Loglar temizlenirken hata:', error);
+      toast.error('Loglar temizlenirken bir hata oluştu!');
+    } finally {
+      setClearingLogs(false);
+    }
   };
 
   // Sayfalama hesaplamaları
@@ -397,6 +424,15 @@ const LogPanel = () => {
             >
               <RefreshCw size={16} className={`mr-2 ${loading || loadingOzeti ? 'animate-spin' : ''}`} />
               Yenile
+            </button>
+            <button
+              type="button"
+              onClick={handleClearLogs}
+              disabled={clearingLogs || loading}
+              className="w-full sm:w-auto bg-red-600 hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-600 text-white font-medium py-2 px-4 rounded-md flex items-center justify-center transition-colors disabled:opacity-50"
+            >
+              <Trash2 size={16} className={`mr-2 ${clearingLogs ? 'animate-spin' : ''}`} />
+              {clearingLogs ? 'Temizleniyor...' : 'Logları Temizle'}
             </button>
           </div>
         </form>

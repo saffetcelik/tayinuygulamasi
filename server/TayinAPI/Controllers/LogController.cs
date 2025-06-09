@@ -121,5 +121,46 @@ namespace TayinAPI.Controllers
                 return StatusCode(500, $"Log detayu0131 alu0131nu0131rken hata oluu015ftu: {ex.Message}");
             }
         }
+
+        // Tüm logları temizle endpoint'i
+        [HttpDelete("temizle")]
+        public async Task<IActionResult> TemizleLoglar()
+        {
+            try
+            {
+                var adminKullaniciAdi = HttpContext.User?.Identity?.Name ?? "Admin";
+                var silinecekLogSayisi = await _context.Loglar.CountAsync();
+
+                // Tüm logları sil
+                _context.Loglar.RemoveRange(_context.Loglar);
+                await _context.SaveChangesAsync();
+
+                // Bu işlemi logla
+                var temizlemeLog = new Log
+                {
+                    IslemTuru = "Sistem Yönetimi",
+                    DetayBilgi = $"Tüm sistem kayıtları temizlendi. Silinen kayıt sayısı: {silinecekLogSayisi}",
+                    KullaniciSicilNo = null,
+                    KullaniciAdi = adminKullaniciAdi,
+                    BasariliMi = "Evet",
+                    HataBilgisi = null,
+                    IslemZamani = DateTime.UtcNow
+                };
+
+                _context.Loglar.Add(temizlemeLog);
+                await _context.SaveChangesAsync();
+
+                return Ok(new
+                {
+                    Message = "Tüm sistem kayıtları başarıyla temizlendi",
+                    SilinenKayitSayisi = silinecekLogSayisi,
+                    IslemZamani = DateTime.UtcNow
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "Loglar temizlenirken hata oluştu", Error = ex.Message });
+            }
+        }
     }
 }

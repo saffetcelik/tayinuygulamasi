@@ -11,6 +11,7 @@ import PersonelListesi from './components/PersonelListesi';
 import SSSYonetimi from './components/SSSYonetimi';
 import SistemTestleri from './components/SistemTestleri';
 import APIDokumantasyon from './components/APIDokumantasyon';
+import SistemSagligi from './components/SistemSagligi';
 
 const AdminPanel = () => {
   const navigate = useNavigate();
@@ -208,6 +209,7 @@ const AdminPanel = () => {
                     {activeTab === 'logs' && 'Sistem Kayıtları'}
                     {activeTab === 'sss' && 'Sık Sorulan Sorular Yönetimi'}
                     {activeTab === 'sistem-testleri' && 'Sistem Testleri'}
+                    {activeTab === 'sistem-sagligi' && 'Sistem Sağlığı Monitörü'}
                     {activeTab === 'api-dokumantasyon' && 'API Dokümantasyonu'}
                   </h1>
                   <p className="text-gray-600 dark:text-gray-400">
@@ -216,6 +218,7 @@ const AdminPanel = () => {
                     {activeTab === 'istatistikler' && 'Tayin taleplerine ilişkin istatistikleri inceleyebilirsiniz'}
                     {activeTab === 'logs' && 'Sistem üzerinde gerçekleştirilen işlemlerin kayıtlarını görüntüleyebilirsiniz'}
                     {activeTab === 'sistem-testleri' && 'Sistem hatalarını test edebilir ve log kayıtlarını kontrol edebilirsiniz'}
+                    {activeTab === 'sistem-sagligi' && 'Sistem performansını ve sağlığını gerçek zamanlı olarak izleyebilirsiniz'}
                     {activeTab === 'api-dokumantasyon' && 'API endpoint\'lerini ve kullanım örneklerini görüntüleyebilirsiniz'}
                     {activeTab === 'sss' && 'Sık sorulan soruları ekleyebilir, düzenleyebilir ve silebilirsiniz'}
                   </p>
@@ -413,6 +416,10 @@ const AdminPanel = () => {
 
             {activeTab === 'sistem-testleri' && (
               <SistemTestleri />
+            )}
+
+            {activeTab === 'sistem-sagligi' && (
+              <SistemSagligi />
             )}
 
             {activeTab === 'api-dokumantasyon' && (

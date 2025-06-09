@@ -1,4 +1,4 @@
-# Tayin Projesi
+# Personel Tayin Uygulaması
 
 Bu proje, ASP.NET Core backend ve React frontend kullanan MVC mimarisine uygun bir web uygulamasıdır.
 
@@ -25,9 +25,17 @@ Tayin projesi, kullanıcı dostu arayüz tasarımı ve verimli bileşen kullanı
 
 - **Personel Yönetimi:** Tüm personel kayıtlarını görüntüleme, düzenleme, silme
 - **Tayin Talepleri Yönetimi:** Gelen tayin taleplerini inceleme, onaylama veya reddetme
-- **Log Yönetimi:** Sistem loglarını çeşitli kriterlere göre filtreleme ve görüntüleme
-  - Loglanan İşlemler: Kimlik doğrulama, başarılı başarısız login istekleri, tayin talepleri, sistem hataları
-  - Filtreleme Seçenekleri: Tarih, kullanıcı, işlem türü, başarı durumu
+- **Sistem Sağlığı Monitörü:** Enterprise-grade sistem izleme ve sağlık kontrolü
+  - **Gerçek Zamanlı İzleme:** Sistem durumu, veritabanı bağlantısı, API servisleri
+  - **Performans Metrikleri:** CPU kullanımı, bellek tüketimi, thread sayısı
+  - **Hata Takibi:** Son 24 saat içindeki sistem hatalarını sayfalama ile görüntüleme
+  - **Otomatik Yenileme:** 30 saniyede bir otomatik sistem durumu güncelleme
+  - **Veritabanı İstatistikleri:** Tablo kayıt sayıları ve veritabanı yanıt süreleri
+- **Log Yönetimi:** Kapsamlı sistem kayıtları yönetimi ve analizi
+  - **Loglanan İşlemler:** Kimlik doğrulama, başarılı/başarısız login istekleri, tayin talepleri, sistem hataları
+  - **Filtreleme Seçenekleri:** Tarih, kullanıcı, işlem türü, başarı durumu
+  - **Log Temizleme:** Tüm sistem kayıtlarını güvenli şekilde temizleme özelliği
+  - **Sayfalama:** Büyük log dosyalarını verimli şekilde görüntüleme
 - **Sıkça Sorulan Sorular Yönetimi:** SSS bölümü için soru ekleme, düzenleme, silme
 - **Sistem Testleri:** Hata senaryolarını test etme ve log kayıtlarını kontrol etme
 - **API Dokümantasyonu:** Tüm API endpoint'lerini ve kullanım örneklerini görüntüleme
@@ -55,12 +63,31 @@ Tayin projesi, kullanıcı dostu arayüz tasarımı ve verimli bileşen kullanı
 
 ## Özellikler
 
-- MVC mimarisine uygun yapı
-- JWT tabanlı kimlik doğrulama ve yetkilendirme
-- Responsive tasarım (mobil ve tablet uyumlu)
-- Kullanıcı dostu arayüz
-- Kapsamlı karanlık mod desteği
-- RESTful API
+- **Cross-Platform Uyumluluk:** Windows, Linux (Ubuntu, ZorinOS) ve macOS desteği
+- **Test Edilen Platformlar:** Ubuntu 22.04, ZorinOS 17, Windows 10/11
+- **MVC Mimarisi:** Temiz ve sürdürülebilir kod yapısı
+- **JWT Kimlik Doğrulama:** Güvenli token tabanlı yetkilendirme
+- **Enterprise-Grade Monitoring:** Gerçek zamanlı sistem sağlığı izleme
+- **Responsive Tasarım:** Mobil, tablet ve masaüstü uyumlu
+- **Modern UI/UX:** Kullanıcı dostu arayüz ve kapsamlı karanlık mod
+- **RESTful API:** Standartlara uygun API tasarımı
+- **Docker Desteği:** Kolay deployment ve platform bağımsızlığı
+
+## Platform Uyumluluğu
+
+Bu proje **cross-platform** olarak tasarlanmış olup, aşağıdaki işletim sistemlerinde başarıyla test edilmiştir:
+
+### ✅ Test Edilen Platformlar
+- **Windows:** Windows 10, Windows 11
+- **Linux:** Ubuntu 22.04 LTS, ZorinOS 17
+- **Container:** Docker (Linux/Windows containers)
+
+### 🔧 Platform Bağımsız Teknolojiler
+- **.NET 8.0:** Cross-platform runtime desteği
+- **React.js:** Tarayıcı tabanlı, platform bağımsız frontend
+- **PostgreSQL:** Çoklu platform veritabanı desteği
+- **Docker:** Konteyner tabanlı deployment
+
 
 ## Kurulum Gereksinimleri
 
@@ -73,6 +100,7 @@ Tayin projesi, kullanıcı dostu arayüz tasarımı ve verimli bileşen kullanı
 ### İsteğe Bağlı Araçlar
 - Visual Studio 2022 veya Visual Studio Code
 - pgAdmin (PostgreSQL yönetimi için)
+- Docker Desktop (konteyner deployment için)
 
 ## Kurulum Adımları
 
@@ -140,6 +168,7 @@ Bu komut:
    - Kullanıcı adı (varsayılan: postgres)
    - Şifre (kurulum sırasında belirlenir)
    - Port (varsayılan: 5432)
+   - Veritabanı oluşturun. ("C:\Program Files\PostgreSQL\17\bin\psql.exe" -U postgres -c "CREATE DATABASE tayin;") 
 3. `server/TayinAPI/appsettings.json` dosyasını açın ve veritabanı bağlantı dizesini güncelleyin:
 
 ```json
@@ -237,15 +266,44 @@ npm start
 
 
 
-### Sistem Hatalarının Loglandığını Test Etme (Admin Paneldeki Sistem Testleri Bölümünden Test Edilebilir)
-- Aşağıdaki adresler üzerinden çeşitli hata senaryolarını test edebilirsiniz:
-  1. Manuel log oluşturma: `http://localhost:5000/api/TestHata/log-olustur?mesaj=Test%20Mesaj`
-  2. Sıfıra bölme hatası: `http://localhost:5000/api/TestHata/bolme-hatasi?sayi=0`
-  3. Veritabanı hatası: `http://localhost:5000/api/TestHata/veritabani-hatasi`
-  4. Bellek hatası: `http://localhost:5000/api/TestHata/bellek-hatasi`
-- Hata loglarını admin panelindeki Log Yönetimi bölümünden görüntüleyebilirsiniz
-- Frontend hatalarının yakalanması için Axios hata interceptor'ı eklenmiştir
-- Sistem hatalarının tümü otomatik olarak loglanır ve admin panelinde incelenebilir
+## Sistem İzleme ve Sağlık Kontrolü
+
+### 🔍 Sistem Sağlığı Monitörü
+Admin panelindeki **Sistem Sağlığı** bölümü, enterprise-grade izleme özellikleri sunar:
+
+#### Gerçek Zamanlı İzleme
+- **Sistem Durumu:** Genel uygulama sağlığı (Sağlıklı/Uyarı/Hata)
+- **Veritabanı Bağlantısı:** PostgreSQL bağlantı durumu ve yanıt süreleri
+- **API Servisleri:** Tüm endpoint'lerin durumu ve erişilebilirliği
+- **Otomatik Yenileme:** 30 saniyede bir güncellenme
+
+#### Performans Metrikleri
+- **CPU Kullanımı:** Gerçek zamanlı işlemci yükü
+- **Bellek Tüketimi:** Çalışma belleği, özel bellek, sanal bellek
+- **Thread Sayısı:** Aktif iş parçacığı sayısı
+- **Uptime:** Uygulama çalışma süresi
+
+#### Hata Yönetimi
+- **Son 24 Saat Hataları:** Sistem hatalarının sayfalama ile görüntülenmesi
+- **Hata Filtreleme:** Sadece sistem/veritabanı hataları (kullanıcı hataları hariç)
+- **Detaylı Log Analizi:** Sistem Kayıtları menüsü üzerinden kapsamlı hata inceleme
+
+### 📊 Veritabanı İstatistikleri
+- Personel, Adliye, Tayin Talebi, Log, Admin, SSS tablo kayıt sayıları
+- Veritabanı yanıt süreleri ve performans metrikleri
+
+### 🧪 Sistem Testleri (Admin Paneldeki Sistem Testleri Bölümünden Test Edilebilir)
+Çeşitli hata senaryolarını test edebilirsiniz:
+1. **Manuel log oluşturma:** `http://localhost:5000/api/TestHata/log-olustur?mesaj=Test%20Mesaj`
+2. **Sıfıra bölme hatası:** `http://localhost:5000/api/TestHata/bolme-hatasi?sayi=0`
+3. **Veritabanı hatası:** `http://localhost:5000/api/TestHata/veritabani-hatasi`
+4. **Bellek hatası:** `http://localhost:5000/api/TestHata/bellek-hatasi`
+
+### 📋 Log Yönetimi
+- **Kapsamlı Filtreleme:** Tarih, kullanıcı, işlem türü, başarı durumu
+- **Sayfalama:** Büyük log dosyalarını verimli görüntüleme
+- **Log Temizleme:** Güvenli toplu silme işlemi
+- **Otomatik Loglama:** Tüm sistem olayları otomatik kaydedilir
 
 
 ## Sorun Giderme

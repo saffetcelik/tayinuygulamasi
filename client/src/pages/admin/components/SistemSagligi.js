@@ -2,15 +2,12 @@ import React, { useState, useEffect } from 'react';
 import {
   Monitor,
   Database,
-  Cpu,
-  MemoryStick,
   Activity,
   AlertTriangle,
   CheckCircle,
   RefreshCw,
   Clock,
   Server,
-  HardDrive,
   Wifi,
   Loader2,
   ChevronLeft,
@@ -75,7 +72,7 @@ const SistemSagligi = () => {
         setRefreshInterval(null);
       }
     }
-  }, [autoRefresh]);
+  }, [autoRefresh, refreshInterval]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Component unmount olduğunda interval'i temizle
   useEffect(() => {

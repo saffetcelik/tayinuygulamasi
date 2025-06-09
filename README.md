@@ -2,6 +2,12 @@
 
 Bu proje, ASP.NET Core backend ve React frontend kullanan MVC mimarisine uygun bir web uygulamasıdır.
 
+## 📸 Ekran Görüntüleri
+
+![Uygulama Demo](ss.gif)
+
+*Personel Tayin Uygulaması - Kullanıcı arayüzü ve temel özellikler*
+
 ## 📖 Detaylı Dokümantasyon
 
 Projenin kurulum adımları, ekran görüntüleri ve tüm detaylı bilgileri için:

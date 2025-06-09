@@ -91,8 +91,8 @@ namespace TayinAPI.Data
         private static string GenerateRandomPhoneNumber()
         {
             Random random = new Random();
-            // Format: 5xxxxxxxxx (10 digits)
-            return $"5{random.Next(100000000, 999999999)}";
+            // Format: 535000xxxx (test amaçlı telefon numaraları)
+            return $"535000{random.Next(1000, 9999)}";
         }
 
         private static async Task InitializePersonellerAsync(TayinDbContext context)
@@ -156,9 +156,24 @@ namespace TayinAPI.Data
                         Email = "saffet.celik@adalet.gov.tr",
                         MevcutAdliyeId = adliyeler[random.Next(adliyeler.Count)].Id,
                         Unvan = "Zabıt Katibi",
-                        Telefon = GenerateRandomPhoneNumber(),
+                        Telefon = "5350001001",
                         DogumTarihi = GenerateRandomBirthDate(),
                         BaslamaTarihi = simdi.AddYears(-5),
+                        CreatedAt = simdi,
+                        UpdatedAt = simdi
+                    },
+                    new Personel
+                    {
+                        SicilNo = "229302",
+                        Sifre = BCrypt.Net.BCrypt.HashPassword("123"),
+                        Ad = "Zeynep",
+                        Soyad = "Çelik",
+                        Email = "zeynep.celik@adalet.gov.tr",
+                        MevcutAdliyeId = adliyeler[random.Next(adliyeler.Count)].Id,
+                        Unvan = "Mübaşir",
+                        Telefon = "5350001002",
+                        DogumTarihi = GenerateRandomBirthDate(),
+                        BaslamaTarihi = simdi.AddYears(-3),
                         CreatedAt = simdi,
                         UpdatedAt = simdi
                     },
@@ -171,7 +186,7 @@ namespace TayinAPI.Data
                         Email = "ayse.demir@adalet.gov.tr",
                         MevcutAdliyeId = adliyeler[random.Next(adliyeler.Count)].Id,
                         Unvan = "Yazı İşleri Müdürü",
-                        Telefon = GenerateRandomPhoneNumber(),
+                        Telefon = "5350002002",
                         DogumTarihi = GenerateRandomBirthDate(),
                         BaslamaTarihi = simdi.AddYears(-4),
                         CreatedAt = simdi,
@@ -186,7 +201,7 @@ namespace TayinAPI.Data
                         Email = "ahmet.ozturk@adalet.gov.tr",
                         MevcutAdliyeId = adliyeler[random.Next(adliyeler.Count)].Id,
                         Unvan = "Mübaşir",
-                        Telefon = GenerateRandomPhoneNumber(),
+                        Telefon = "5350003003",
                         DogumTarihi = GenerateRandomBirthDate(),
                         BaslamaTarihi = simdi.AddYears(-5),
                         CreatedAt = simdi,

@@ -97,21 +97,21 @@ const SistemTestleri = () => {
   return (
     <div className="space-y-6">
       {/* Başlık ve Açıklama */}
-      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-100">
+      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl p-6 border border-blue-100 dark:border-blue-700">
         <div className="flex items-center mb-4">
           <div className="bg-blue-500 p-3 rounded-xl mr-4">
             <TestTube className="w-6 h-6 text-white" />
           </div>
           <div>
-            <h2 className="text-xl font-bold text-gray-800">Sistem Test Araçları</h2>
-            <p className="text-gray-600 text-sm">Sistem hatalarını test ederek log kayıtlarının doğru çalıştığını kontrol edin</p>
+            <h2 className="text-xl font-bold text-gray-800 dark:text-gray-200">Sistem Test Araçları</h2>
+            <p className="text-gray-600 dark:text-gray-400 text-sm">Sistem hatalarını test ederek log kayıtlarının doğru çalıştığını kontrol edin</p>
           </div>
         </div>
-        
-        <div className="bg-white rounded-lg p-4 border border-blue-200">
+
+        <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-blue-200 dark:border-blue-700">
           <div className="flex items-start space-x-3">
             <AlertTriangle className="w-5 h-5 text-amber-500 mt-0.5 flex-shrink-0" />
-            <div className="text-sm text-gray-700">
+            <div className="text-sm text-gray-700 dark:text-gray-300">
               <p className="font-medium mb-1">Önemli Bilgi:</p>
               <p>Bu testler sistem hatalarını simüle eder ve log kayıtları oluşturur. Test sonuçlarını "Sistem Logları" bölümünden kontrol edebilirsiniz.</p>
             </div>
@@ -127,7 +127,7 @@ const SistemTestleri = () => {
           const sonuc = testSonuclari[test.id];
 
           return (
-            <div key={test.id} className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-xl transition-all duration-300">
+            <div key={test.id} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-xl transition-all duration-300">
               <div className="p-6">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center space-x-3">
@@ -135,8 +135,8 @@ const SistemTestleri = () => {
                       <Icon className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                      <h3 className="font-bold text-gray-800 text-lg">{test.baslik}</h3>
-                      <p className="text-gray-600 text-sm">{test.aciklama}</p>
+                      <h3 className="font-bold text-gray-800 dark:text-gray-200 text-lg">{test.baslik}</h3>
+                      <p className="text-gray-600 dark:text-gray-400 text-sm">{test.aciklama}</p>
                     </div>
                   </div>
                   {sonuc && getDurumIkonu(sonuc.durum)}
@@ -145,9 +145,9 @@ const SistemTestleri = () => {
                 {/* Test Sonucu */}
                 {sonuc && (
                   <div className={`mb-4 p-3 rounded-lg border ${
-                    sonuc.durum === 'basarili' 
-                      ? 'bg-green-50 border-green-200 text-green-800' 
-                      : 'bg-red-50 border-red-200 text-red-800'
+                    sonuc.durum === 'basarili'
+                      ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-700 text-green-800 dark:text-green-400'
+                      : 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-700 text-red-800 dark:text-red-400'
                   }`}>
                     <p className="text-sm font-medium">
                       {sonuc.durum === 'basarili' ? 'Test Başarılı:' : 'Test Hatası:'}
@@ -162,7 +162,7 @@ const SistemTestleri = () => {
                   disabled={yukleniyor_durum}
                   className={`w-full flex items-center justify-center space-x-2 py-3 px-4 rounded-lg font-medium transition-all duration-200 ${
                     yukleniyor_durum
-                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                      ? 'bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed'
                       : `${getRenkSinifi(test.renk)} hover:opacity-90 text-white shadow-md hover:shadow-lg transform hover:-translate-y-0.5`
                   }`}
                 >
@@ -185,10 +185,10 @@ const SistemTestleri = () => {
       </div>
 
       {/* Tüm Testleri Çalıştır */}
-      <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6">
         <div className="text-center">
-          <h3 className="text-lg font-bold text-gray-800 mb-2">Toplu Test İşlemi</h3>
-          <p className="text-gray-600 text-sm mb-4">Tüm sistem testlerini sırayla çalıştırır</p>
+          <h3 className="text-lg font-bold text-gray-800 dark:text-gray-200 mb-2">Toplu Test İşlemi</h3>
+          <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">Tüm sistem testlerini sırayla çalıştırır</p>
           
           <button
             onClick={async () => {

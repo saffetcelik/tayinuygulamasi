@@ -3,6 +3,7 @@ module.exports = {
   content: [
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
+  darkMode: 'class', // Karanlık mod için class stratejisi
   theme: {
     extend: {
       colors: {

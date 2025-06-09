@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { sssService } from '../services/api';
+import '../components/TayinTalebiForm.css'; // Modern gradient title için
 
 const SSSPage = () => {
   const [sorular, setSorular] = useState([]);
@@ -105,7 +106,7 @@ const SSSPage = () => {
           <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-primary-500 border-t-transparent"></div>
           <div className="absolute inset-0 rounded-full border-4 border-primary-100"></div>
         </div>
-        <span className="mt-4 text-gray-600 font-medium">Sık sorulan sorular yükleniyor...</span>
+        <span className="mt-4 text-gray-600 dark:text-gray-300 font-medium">Sık sorulan sorular yükleniyor...</span>
       </div>
     );
   }
@@ -113,47 +114,47 @@ const SSSPage = () => {
   return (
     <div className="space-y-8">
       {error && (
-        <div className="bg-gradient-to-r from-red-50 to-red-100/50 border border-red-200 p-6 rounded-xl shadow-sm">
+        <div className="bg-gradient-to-r from-red-50 to-red-100/50 dark:from-red-900/20 dark:to-red-800/20 border border-red-200 dark:border-red-700 p-6 rounded-xl shadow-sm">
           <div className="flex items-center">
-            <div className="bg-red-100 p-3 rounded-xl mr-4">
-              <svg className="h-6 w-6 text-red-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <div className="bg-red-100 dark:bg-red-800/30 p-3 rounded-xl mr-4">
+              <svg className="h-6 w-6 text-red-600 dark:text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
               </svg>
             </div>
             <div>
-              <h3 className="text-lg font-semibold text-red-800">Hata Oluştu</h3>
-              <p className="text-red-700 mt-1">{error}</p>
+              <h3 className="text-lg font-semibold text-red-800 dark:text-red-300">Hata Oluştu</h3>
+              <p className="text-red-700 dark:text-red-400 mt-1">{error}</p>
             </div>
           </div>
         </div>
       )}
 
       {/* Modern Arama ve Filtreleme */}
-      <div className="bg-gradient-to-br from-white to-gray-50/30 rounded-2xl border border-gray-200/50 shadow-lg p-6">
+      <div className="bg-gradient-to-br from-white to-gray-50/30 dark:from-gray-800 dark:to-gray-700/30 rounded-2xl border border-gray-200/50 dark:border-gray-600/50 shadow-lg p-6">
         <div className="flex items-center mb-4">
-          <div className="bg-primary-100 p-3 rounded-xl mr-4">
-            <svg className="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="bg-primary-100 dark:bg-primary-900/30 p-3 rounded-xl mr-4">
+            <svg className="w-6 h-6 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
             </svg>
           </div>
           <div>
-            <h3 className="text-lg font-bold text-gray-800">Arama ve Filtreleme</h3>
-            <p className="text-sm text-gray-600">Sorular arasında arama yapın veya kategoriye göre filtreleyin</p>
+            <h3 className="text-lg font-bold modern-gradient-title">Arama ve Filtreleme</h3>
+            <p className="text-sm text-gray-600 dark:text-gray-300">Sorular arasında arama yapın veya kategoriye göre filtreleyin</p>
           </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           <div className="lg:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Arama</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Arama</label>
             <div className="relative">
               <input
                 type="text"
                 placeholder="Soru veya cevaplarda arayın..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 border border-gray-300 bg-white rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all duration-200 hover:border-gray-400"
+                className="w-full pl-12 pr-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all duration-200 hover:border-gray-400 dark:hover:border-gray-500"
               />
-              <div className="absolute left-4 top-3.5 text-gray-400">
+              <div className="absolute left-4 top-3.5 text-gray-400 dark:text-gray-500">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
@@ -161,7 +162,7 @@ const SSSPage = () => {
               {searchTerm && (
                 <button
                   onClick={() => setSearchTerm('')}
-                  className="absolute right-3 top-3.5 text-gray-400 hover:text-gray-600"
+                  className="absolute right-3 top-3.5 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-400"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -172,19 +173,19 @@ const SSSPage = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Kategori</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Kategori</label>
             <div className="relative">
               <select
                 value={selectedKategori}
                 onChange={(e) => setSelectedKategori(e.target.value)}
-                className="w-full py-3 px-4 border border-gray-300 bg-white rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all duration-200 appearance-none hover:border-gray-400"
+                className="w-full py-3 px-4 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all duration-200 appearance-none hover:border-gray-400 dark:hover:border-gray-500"
               >
                 <option value="">Tüm Kategoriler</option>
                 {kategoriler.map((kategori, index) => (
                   <option key={index} value={kategori}>{kategori}</option>
                 ))}
               </select>
-              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500 dark:text-gray-400">
                 <svg className="fill-current h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                   <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
                 </svg>
@@ -195,25 +196,25 @@ const SSSPage = () => {
       </div>
 
       {/* Modern Sonuç Özeti */}
-      <div className="bg-gradient-to-r from-gray-50 to-gray-100/50 border border-gray-200 p-4 rounded-xl">
+      <div className="bg-gradient-to-r from-gray-50 to-gray-100/50 dark:from-gray-700 dark:to-gray-800/50 border border-gray-200 dark:border-gray-600 p-4 rounded-xl">
         <div className="flex items-center">
-          <div className="bg-gray-100 p-2 rounded-lg mr-3">
-            <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="bg-gray-100 dark:bg-gray-600 p-2 rounded-lg mr-3">
+            <svg className="w-5 h-5 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
             </svg>
           </div>
           <div>
             {filteredSorular.length === 0 ? (
               <div>
-                <p className="text-gray-800 font-medium">Aramanıza uygun soru bulunamadı</p>
-                <p className="text-gray-600 text-sm">Farklı anahtar kelimeler deneyebilir veya kategori filtresini değiştirebilirsiniz.</p>
+                <p className="text-gray-800 dark:text-gray-200 font-medium">Aramanıza uygun soru bulunamadı</p>
+                <p className="text-gray-600 dark:text-gray-300 text-sm">Farklı anahtar kelimeler deneyebilir veya kategori filtresini değiştirebilirsiniz.</p>
               </div>
             ) : (
               <div>
-                <p className="text-gray-800 font-medium">
+                <p className="text-gray-800 dark:text-gray-200 font-medium">
                   {filteredSorular.length} adet soru bulundu
                 </p>
-                <p className="text-gray-600 text-sm">
+                <p className="text-gray-600 dark:text-gray-300 text-sm">
                   {selectedKategori && `"${selectedKategori}" kategorisinde`}
                   {searchTerm && ` "${searchTerm}" araması için`}
                   {!selectedKategori && !searchTerm && 'Tüm kategorilerden'}
@@ -230,13 +231,13 @@ const SSSPage = () => {
           {filteredSorular.map((soru) => (
             <div
               key={soru.id}
-              className="bg-gradient-to-br from-white to-gray-50/30 rounded-2xl border border-gray-200/50 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden"
+              className="bg-gradient-to-br from-white to-gray-50/30 dark:from-gray-800 dark:to-gray-700/30 rounded-2xl border border-gray-200/50 dark:border-gray-600/50 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden"
             >
               <button
                 className={`w-full text-left p-6 flex justify-between items-start gap-4 transition-all duration-200 ${
                   expandedQuestions[soru.id]
-                    ? 'bg-gradient-to-r from-primary-50 to-blue-50'
-                    : 'hover:bg-gray-50/50'
+                    ? 'bg-gradient-to-r from-primary-50 to-blue-50 dark:from-primary-900/20 dark:to-blue-900/20'
+                    : 'hover:bg-gray-50/50 dark:hover:bg-gray-700/50'
                 }`}
                 onClick={() => toggleQuestion(soru.id)}
               >
@@ -246,15 +247,15 @@ const SSSPage = () => {
                       {soru.kategori}
                     </span>
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-900 leading-relaxed">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 leading-relaxed">
                     {highlightText(soru.soru, searchTerm)}
                   </h3>
                 </div>
                 <div className="flex-shrink-0 ml-4">
                   <div className={`p-2 rounded-lg transition-all duration-200 ${
                     expandedQuestions[soru.id]
-                      ? 'bg-primary-100 text-primary-600'
-                      : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
+                      ? 'bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400'
+                      : 'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}>
                     <svg
                       className={`w-5 h-5 transform ${expandedQuestions[soru.id] ? 'rotate-180' : ''} transition-transform duration-200`}
@@ -269,17 +270,17 @@ const SSSPage = () => {
               </button>
 
               {expandedQuestions[soru.id] && (
-                <div className="px-6 pb-6 bg-white border-t border-gray-200/50">
+                <div className="px-6 pb-6 bg-white dark:bg-gray-800 border-t border-gray-200/50 dark:border-gray-600/50">
                   <div className="pt-4">
                     <div className="flex items-start">
-                      <div className="bg-green-100 p-2 rounded-lg mr-4 mt-1">
-                        <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <div className="bg-green-100 dark:bg-green-900/30 p-2 rounded-lg mr-4 mt-1">
+                        <svg className="w-5 h-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                       </div>
                       <div className="flex-1">
-                        <h4 className="text-sm font-semibold text-gray-800 mb-2">Cevap:</h4>
-                        <div className="prose max-w-none text-gray-700 leading-relaxed">
+                        <h4 className="text-sm font-semibold text-gray-800 dark:text-gray-200 mb-2">Cevap:</h4>
+                        <div className="prose max-w-none text-gray-700 dark:text-gray-300 leading-relaxed">
                           <p>{highlightText(soru.cevap, searchTerm)}</p>
                         </div>
                       </div>

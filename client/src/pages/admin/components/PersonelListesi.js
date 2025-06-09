@@ -130,17 +130,17 @@ const PersonelListesi = () => {
     return (
       <div className="p-4 flex justify-center items-center">
         <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-blue-500 border-t-transparent"></div>
-        <span className="ml-2 text-blue-500">Yükleniyor...</span>
+        <span className="ml-2 text-blue-500 dark:text-blue-400">Yükleniyor...</span>
       </div>
     );
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
       {/* Başlık ve Arama */}
-      <div className="p-6 border-b border-gray-200">
+      <div className="p-6 border-b border-gray-200 dark:border-gray-700">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4 md:mb-0">Personel Listesi</h2>
+          <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4 md:mb-0">Personel Listesi</h2>
           <button 
             onClick={fetchPersoneller}
             className="flex items-center justify-center px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
@@ -155,22 +155,22 @@ const PersonelListesi = () => {
         {/* Filtreleme Araçları */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
-            <label htmlFor="search" className="block text-sm font-medium text-gray-700 mb-1">Ara</label>
+            <label htmlFor="search" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Ara</label>
             <input
               type="text"
               id="search"
               placeholder="İsim, soyisim veya sicil no"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-lg focus:ring-blue-500 focus:border-blue-500"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
           
           <div>
-            <label htmlFor="adliye" className="block text-sm font-medium text-gray-700 mb-1">Adliye</label>
+            <label htmlFor="adliye" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Adliye</label>
             <select
               id="adliye"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-lg focus:ring-blue-500 focus:border-blue-500"
               value={selectedAdliye}
               onChange={(e) => setSelectedAdliye(e.target.value)}
             >
@@ -182,10 +182,10 @@ const PersonelListesi = () => {
           </div>
           
           <div>
-            <label htmlFor="unvan" className="block text-sm font-medium text-gray-700 mb-1">Unvan</label>
+            <label htmlFor="unvan" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Unvan</label>
             <select
               id="unvan"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-lg focus:ring-blue-500 focus:border-blue-500"
               value={selectedUnvan}
               onChange={(e) => setSelectedUnvan(e.target.value)}
             >
@@ -202,38 +202,38 @@ const PersonelListesi = () => {
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
-            <tr className="bg-gray-50 text-left">
-              <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Sicil No</th>
-              <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Ad Soyad</th>
-              <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Unvan</th>
-              <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Adliye</th>
-              <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">İletişim</th>
-              <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Başlama Tarihi</th>
-              <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">İşlemler</th>
+            <tr className="bg-gray-50 dark:bg-gray-700 text-left">
+              <th className="px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Sicil No</th>
+              <th className="px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Ad Soyad</th>
+              <th className="px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Unvan</th>
+              <th className="px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Adliye</th>
+              <th className="px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">İletişim</th>
+              <th className="px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Başlama Tarihi</th>
+              <th className="px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">İşlemler</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200">
+          <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
             {filteredPersoneller.length > 0 ? (
               filteredPersoneller.map((personel) => (
-                <tr key={personel.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{personel.sicilNo}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{personel.ad} {personel.soyad}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{personel.unvan}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <tr key={personel.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">{personel.sicilNo}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{personel.ad} {personel.soyad}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{personel.unvan}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                     {personel.mevcutAdliye ? personel.mevcutAdliye.adliyeAdi : '-'}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                     <div>{personel.email || '-'}</div>
                     <div>{personel.telefon || '-'}</div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                     {personel.baslamaTarihi ? new Date(personel.baslamaTarihi).toLocaleDateString('tr-TR') : '-'}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     <div className="flex space-x-2">
                       <button
                         onClick={(e) => handleEditPersonel(e, personel.id)}
-                        className="inline-flex items-center px-3 py-1 border border-blue-500 text-blue-500 rounded-md hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-300 cursor-pointer"
+                        className="inline-flex items-center px-3 py-1 border border-blue-500 dark:border-blue-400 text-blue-500 dark:text-blue-400 rounded-md hover:bg-blue-50 dark:hover:bg-blue-900/20 focus:outline-none focus:ring-2 focus:ring-blue-300 cursor-pointer"
                       >
                         <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -242,7 +242,7 @@ const PersonelListesi = () => {
                       </button>
                       <button
                         onClick={() => handleDeletePersonel(personel.id, `${personel.ad} ${personel.soyad}`)}
-                        className="inline-flex items-center px-3 py-1 border border-red-500 text-red-500 rounded-md hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-300"
+                        className="inline-flex items-center px-3 py-1 border border-red-500 dark:border-red-400 text-red-500 dark:text-red-400 rounded-md hover:bg-red-50 dark:hover:bg-red-900/20 focus:outline-none focus:ring-2 focus:ring-red-300"
                       >
                         <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -255,7 +255,7 @@ const PersonelListesi = () => {
               ))
             ) : (
               <tr>
-                <td colSpan="7" className="px-6 py-4 text-center text-sm text-gray-500">
+                <td colSpan="7" className="px-6 py-4 text-center text-sm text-gray-500 dark:text-gray-400">
                   {loading ? 'Yükleniyor...' : 'Personel bulunamadı'}
                 </td>
               </tr>
@@ -265,10 +265,10 @@ const PersonelListesi = () => {
       </div>
       
       {/* Sonuç Sayısı */}
-      <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
-        <p className="text-sm text-gray-700">
+      <div className="px-6 py-4 bg-gray-50 dark:bg-gray-700 border-t border-gray-200 dark:border-gray-600">
+        <p className="text-sm text-gray-700 dark:text-gray-300">
           Toplam <span className="font-medium">{filteredPersoneller.length}</span> personel gösteriliyor.
-          {searchTerm || selectedAdliye || selectedUnvan ? 
+          {searchTerm || selectedAdliye || selectedUnvan ?
             ` (Filtre uygulandı: ${personeller.length} personel içinden)` : ''}
         </p>
       </div>

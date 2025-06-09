@@ -34,12 +34,29 @@ div[style*="position: fixed"] {
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Dark mode container */
+.dark .modern-turkey-map-container {
+  background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+  border: 1px solid rgba(75, 85, 99, 0.8);
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.3),
+    0 2px 4px -1px rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(255, 255, 255, 0.02);
+}
+
 .modern-turkey-map-container:hover {
   box-shadow:
     0 10px 15px -3px rgba(0, 0, 0, 0.1),
     0 4px 6px -2px rgba(0, 0, 0, 0.05),
     0 0 0 1px rgba(59, 130, 246, 0.1);
   transform: translateY(-2px);
+}
+
+.dark .modern-turkey-map-container:hover {
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.4),
+    0 4px 6px -2px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(59, 130, 246, 0.2);
 }
 
 /* Legacy container for backward compatibility */
@@ -69,6 +86,11 @@ div[style*="position: fixed"] {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.8) 100%);
   border-bottom: 1px solid rgba(226, 232, 240, 0.6);
   backdrop-filter: blur(10px);
+}
+
+.dark .modern-map-header {
+  background: linear-gradient(135deg, rgba(31, 41, 55, 0.9) 0%, rgba(17, 24, 39, 0.8) 100%);
+  border-bottom: 1px solid rgba(75, 85, 99, 0.6);
 }
 
 .header-content {
@@ -117,11 +139,23 @@ div[style*="position: fixed"] {
   background-clip: text;
 }
 
+.dark .header-title {
+  color: #f1f5f9;
+  background: linear-gradient(135deg, #f1f5f9 0%, #60a5fa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
 .header-subtitle {
   font-size: 0.875rem;
   color: #64748b;
   margin: 0;
   font-weight: 500;
+}
+
+.dark .header-subtitle {
+  color: #9ca3af;
 }
 
 .map-stats {
@@ -133,6 +167,11 @@ div[style*="position: fixed"] {
   border-radius: 0.75rem;
   border: 1px solid rgba(226, 232, 240, 0.6);
   backdrop-filter: blur(10px);
+}
+
+.dark .map-stats {
+  background: rgba(31, 41, 55, 0.8);
+  border: 1px solid rgba(75, 85, 99, 0.6);
 }
 
 .stat-item {
@@ -155,6 +194,10 @@ div[style*="position: fixed"] {
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+}
+
+.dark .stat-label {
+  color: #9ca3af;
 }
 
 .stat-divider {
@@ -194,6 +237,10 @@ div[style*="position: fixed"] {
   background: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(10px);
   overflow: hidden;
+}
+
+.dark .modern-map-wrapper {
+  background: rgba(31, 41, 55, 0.6);
 }
 
 .map-background-pattern {

@@ -66,28 +66,28 @@ const APIDokumantasyon = () => {
   const getStatusColor = () => {
     switch (apiStatus) {
       case 'online':
-        return 'text-green-600 bg-green-50 border-green-200';
+        return 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-700';
       case 'offline':
-        return 'text-red-600 bg-red-50 border-red-200';
+        return 'text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-700';
       case 'checking':
-        return 'text-blue-600 bg-blue-50 border-blue-200';
+        return 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-700';
       default:
-        return 'text-gray-600 bg-gray-50 border-gray-200';
+        return 'text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600';
     }
   };
 
   return (
     <div className="space-y-6">
       {/* Başlık ve Durum */}
-      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-100">
+      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl p-6 border border-blue-100 dark:border-blue-700">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center">
             <div className="bg-blue-500 p-3 rounded-xl mr-4">
               <BookOpen className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-gray-800">API Dokümantasyonu</h2>
-              <p className="text-gray-600 text-sm">Swagger/OpenAPI arayüzü ile API endpoint'lerini keşfedin</p>
+              <h2 className="text-xl font-bold text-gray-800 dark:text-gray-200">API Dokümantasyonu</h2>
+              <p className="text-gray-600 dark:text-gray-400 text-sm">Swagger/OpenAPI arayüzü ile API endpoint'lerini keşfedin</p>
             </div>
           </div>
           
@@ -129,87 +129,87 @@ const APIDokumantasyon = () => {
 
       {/* API Bilgileri */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6">
           <div className="flex items-center mb-4">
-            <div className="bg-blue-100 p-3 rounded-lg mr-3">
-              <Server className="w-6 h-6 text-blue-600" />
+            <div className="bg-blue-100 dark:bg-blue-900/30 p-3 rounded-lg mr-3">
+              <Server className="w-6 h-6 text-blue-600 dark:text-blue-400" />
             </div>
             <div>
-              <h3 className="font-bold text-gray-800">API Sunucusu</h3>
-              <p className="text-gray-600 text-sm">Backend API durumu</p>
+              <h3 className="font-bold text-gray-800 dark:text-gray-200">API Sunucusu</h3>
+              <p className="text-gray-600 dark:text-gray-400 text-sm">Backend API durumu</p>
             </div>
           </div>
           <div className="space-y-2">
             <div className="flex justify-between">
-              <span className="text-gray-600">URL:</span>
-              <span className="font-mono text-sm">localhost:5000</span>
+              <span className="text-gray-600 dark:text-gray-400">URL:</span>
+              <span className="font-mono text-sm text-gray-900 dark:text-gray-100">localhost:5000</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-600">Protokol:</span>
-              <span className="font-mono text-sm">HTTP</span>
+              <span className="text-gray-600 dark:text-gray-400">Protokol:</span>
+              <span className="font-mono text-sm text-gray-900 dark:text-gray-100">HTTP</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-600">Versiyon:</span>
-              <span className="font-mono text-sm">v1.0</span>
+              <span className="text-gray-600 dark:text-gray-400">Versiyon:</span>
+              <span className="font-mono text-sm text-gray-900 dark:text-gray-100">v1.0</span>
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6">
           <div className="flex items-center mb-4">
-            <div className="bg-green-100 p-3 rounded-lg mr-3">
-              <Globe className="w-6 h-6 text-green-600" />
+            <div className="bg-green-100 dark:bg-green-900/30 p-3 rounded-lg mr-3">
+              <Globe className="w-6 h-6 text-green-600 dark:text-green-400" />
             </div>
             <div>
-              <h3 className="font-bold text-gray-800">Swagger UI</h3>
-              <p className="text-gray-600 text-sm">Interaktif API dokümantasyonu</p>
+              <h3 className="font-bold text-gray-800 dark:text-gray-200">Swagger UI</h3>
+              <p className="text-gray-600 dark:text-gray-400 text-sm">Interaktif API dokümantasyonu</p>
             </div>
           </div>
           <div className="space-y-2">
             <div className="flex justify-between">
-              <span className="text-gray-600">Swagger URL:</span>
-              <span className="font-mono text-sm">/swagger</span>
+              <span className="text-gray-600 dark:text-gray-400">Swagger URL:</span>
+              <span className="font-mono text-sm text-gray-900 dark:text-gray-100">/swagger</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-600">JSON URL:</span>
-              <span className="font-mono text-sm">/swagger/v1/swagger.json</span>
+              <span className="text-gray-600 dark:text-gray-400">JSON URL:</span>
+              <span className="font-mono text-sm text-gray-900 dark:text-gray-100">/swagger/v1/swagger.json</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-600">Format:</span>
-              <span className="font-mono text-sm">OpenAPI 3.0</span>
+              <span className="text-gray-600 dark:text-gray-400">Format:</span>
+              <span className="font-mono text-sm text-gray-900 dark:text-gray-100">OpenAPI 3.0</span>
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6">
           <div className="flex items-center mb-4">
-            <div className="bg-purple-100 p-3 rounded-lg mr-3">
-              <Database className="w-6 h-6 text-purple-600" />
+            <div className="bg-purple-100 dark:bg-purple-900/30 p-3 rounded-lg mr-3">
+              <Database className="w-6 h-6 text-purple-600 dark:text-purple-400" />
             </div>
             <div>
-              <h3 className="font-bold text-gray-800">Veritabanı</h3>
-              <p className="text-gray-600 text-sm">PostgreSQL bağlantısı</p>
+              <h3 className="font-bold text-gray-800 dark:text-gray-200">Veritabanı</h3>
+              <p className="text-gray-600 dark:text-gray-400 text-sm">PostgreSQL bağlantısı</p>
             </div>
           </div>
           <div className="space-y-2">
             <div className="flex justify-between">
-              <span className="text-gray-600">Tür:</span>
-              <span className="font-mono text-sm">PostgreSQL</span>
+              <span className="text-gray-600 dark:text-gray-400">Tür:</span>
+              <span className="font-mono text-sm text-gray-900 dark:text-gray-100">PostgreSQL</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-600">Host:</span>
-              <span className="font-mono text-sm">localhost</span>
+              <span className="text-gray-600 dark:text-gray-400">Host:</span>
+              <span className="font-mono text-sm text-gray-900 dark:text-gray-100">localhost</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-600">Veritabanı:</span>
-              <span className="font-mono text-sm">tayin</span>
+              <span className="text-gray-600 dark:text-gray-400">Veritabanı:</span>
+              <span className="font-mono text-sm text-gray-900 dark:text-gray-100">tayin</span>
             </div>
           </div>
         </div>
       </div>
 
       {/* JWT Token Kullanım Rehberi - Minimal */}
-      <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg border border-amber-200 p-4">
+      <div className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 rounded-lg border border-amber-200 dark:border-amber-700 p-4">
         <div className="flex items-center">
           <div className="bg-amber-500 p-2 rounded-lg mr-3 flex-shrink-0">
             <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -217,18 +217,18 @@ const APIDokumantasyon = () => {
             </svg>
           </div>
           <div className="flex-1">
-            <h3 className="text-base font-bold text-amber-800 mb-2">
+            <h3 className="text-base font-bold text-amber-800 dark:text-amber-300 mb-2">
               🔐 API Test Rehberi
             </h3>
-            <div className="text-sm text-amber-700 space-y-1">
+            <div className="text-sm text-amber-700 dark:text-amber-400 space-y-1">
               <p>
-                <strong>1.</strong> <code className="bg-amber-100 px-1 py-0.5 rounded text-xs">/api/Admin/login</code> ile giriş yapın
+                <strong>1.</strong> <code className="bg-amber-100 dark:bg-amber-900/30 px-1 py-0.5 rounded text-xs">/api/Admin/login</code> ile giriş yapın
                 <strong className="mx-2">→</strong>
                 <strong>2.</strong> Token'ı kopyalayın
                 <strong className="mx-2">→</strong>
-                <strong>3.</strong> <strong>"Authorize"</strong> butonuna tıklayıp <code className="bg-amber-100 px-1 py-0.5 rounded text-xs">Bearer &#123;token&#125;</code> yapıştırın
+                <strong>3.</strong> <strong>"Authorize"</strong> butonuna tıklayıp <code className="bg-amber-100 dark:bg-amber-900/30 px-1 py-0.5 rounded text-xs">Bearer &#123;token&#125;</code> yapıştırın
               </p>
-              <p className="text-xs text-amber-600">
+              <p className="text-xs text-amber-600 dark:text-amber-500">
                 💡 Token süresi: 8 saat | Artık tüm API'leri test edebilirsiniz
               </p>
             </div>
@@ -237,13 +237,13 @@ const APIDokumantasyon = () => {
       </div>
 
       {/* Swagger Iframe */}
-      <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
-        <div className="bg-gray-50 px-6 py-4 border-b border-gray-200">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <div className="bg-gray-50 dark:bg-gray-700 px-6 py-4 border-b border-gray-200 dark:border-gray-600">
           <div className="flex items-center justify-between">
-            <h3 className="font-bold text-gray-800">Swagger UI - API Dokümantasyonu</h3>
+            <h3 className="font-bold text-gray-800 dark:text-gray-200">Swagger UI - API Dokümantasyonu</h3>
             <div className="flex items-center space-x-2">
               {!swaggerLoaded && (
-                <div className="flex items-center space-x-2 text-blue-600">
+                <div className="flex items-center space-x-2 text-blue-600 dark:text-blue-400">
                   <RefreshCw className="w-4 h-4 animate-spin" />
                   <span className="text-sm">Yükleniyor...</span>
                 </div>
@@ -254,11 +254,11 @@ const APIDokumantasyon = () => {
         
         <div className="relative" style={{ height: '800px' }}>
           {apiStatus === 'offline' ? (
-            <div className="flex items-center justify-center h-full bg-gray-50">
+            <div className="flex items-center justify-center h-full bg-gray-50 dark:bg-gray-700">
               <div className="text-center">
                 <AlertCircle className="w-16 h-16 text-red-400 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">API Sunucusu Çevrimdışı</h3>
-                <p className="text-gray-600 mb-4">
+                <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">API Sunucusu Çevrimdışı</h3>
+                <p className="text-gray-600 dark:text-gray-400 mb-4">
                   Swagger dokümantasyonunu görüntülemek için API sunucusunun çalışıyor olması gerekir.
                 </p>
                 <button
@@ -283,22 +283,22 @@ const APIDokumantasyon = () => {
       </div>
 
       {/* Kullanım Bilgileri */}
-      <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
-        <h3 className="font-bold text-gray-800 mb-4">Kullanım Bilgileri</h3>
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6">
+        <h3 className="font-bold text-gray-800 dark:text-gray-200 mb-4">Kullanım Bilgileri</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <h4 className="font-medium text-gray-800 mb-2">API Endpoint'leri</h4>
-            <ul className="space-y-1 text-sm text-gray-600">
-              <li>• <code className="bg-gray-100 px-2 py-1 rounded">/api/Admin</code> - Admin işlemleri</li>
-              <li>• <code className="bg-gray-100 px-2 py-1 rounded">/api/Personel</code> - Personel işlemleri</li>
-              <li>• <code className="bg-gray-100 px-2 py-1 rounded">/api/TayinTalebi</code> - Tayin talepleri</li>
-              <li>• <code className="bg-gray-100 px-2 py-1 rounded">/api/Log</code> - Sistem logları</li>
-              <li>• <code className="bg-gray-100 px-2 py-1 rounded">/api/Health</code> - Sistem sağlığı</li>
+            <h4 className="font-medium text-gray-800 dark:text-gray-200 mb-2">API Endpoint'leri</h4>
+            <ul className="space-y-1 text-sm text-gray-600 dark:text-gray-400">
+              <li>• <code className="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">/api/Admin</code> - Admin işlemleri</li>
+              <li>• <code className="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">/api/Personel</code> - Personel işlemleri</li>
+              <li>• <code className="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">/api/TayinTalebi</code> - Tayin talepleri</li>
+              <li>• <code className="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">/api/Log</code> - Sistem logları</li>
+              <li>• <code className="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">/api/Health</code> - Sistem sağlığı</li>
             </ul>
           </div>
           <div>
-            <h4 className="font-medium text-gray-800 mb-2">Kimlik Doğrulama</h4>
-            <ul className="space-y-1 text-sm text-gray-600">
+            <h4 className="font-medium text-gray-800 dark:text-gray-200 mb-2">Kimlik Doğrulama</h4>
+            <ul className="space-y-1 text-sm text-gray-600 dark:text-gray-400">
               <li>• JWT Bearer Token kullanılır</li>
               <li>• Admin ve Personel için ayrı token'lar</li>
               <li>• Token süresi: 8 saat</li>

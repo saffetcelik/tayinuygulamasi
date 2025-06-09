@@ -1,9 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Sun, Moon } from 'lucide-react';
+import { useDarkMode } from '../../../context/DarkModeContext';
 
 const AdminHeader = ({ adminInfo, onLogout, mobileMenuOpen, setMobileMenuOpen }) => {
   const [profilMenuOpen, setProfilMenuOpen] = useState(false);
   const profilMenuRef = useRef(null);
+  const { isDarkMode, toggleDarkMode } = useDarkMode();
   
   // Dışarıya tıklandığında açık menüleri kapat
   useEffect(() => {
@@ -20,12 +22,12 @@ const AdminHeader = ({ adminInfo, onLogout, mobileMenuOpen, setMobileMenuOpen })
   }, [profilMenuRef]);
 
   return (
-    <header className="bg-white text-slate-700 fixed w-full top-0 left-0 z-20 shadow-sm border-b border-slate-200 md:pl-72">
+    <header className="bg-white dark:bg-gray-800 text-slate-700 dark:text-gray-300 fixed w-full top-0 left-0 z-20 shadow-sm border-b border-slate-200 dark:border-gray-700 md:pl-72">
       <div className="px-4 py-2.5 flex justify-between items-center">
         {/* Hamburger menü butonu - Mobil görünüm için */}
         <div className="flex items-center">
-          <button 
-            className="md:hidden p-2 rounded-lg hover:bg-slate-100 transition-colors"
+          <button
+            className="md:hidden p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-gray-700 transition-colors"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Menüyü Aç/Kapat"
           >
@@ -40,13 +42,25 @@ const AdminHeader = ({ adminInfo, onLogout, mobileMenuOpen, setMobileMenuOpen })
         </div>
 
         {/* Sağ taraf araçları */}
-        <div className="flex items-center">
+        <div className="flex items-center space-x-3">
+          {/* Karanlık Mod Butonu */}
+          <button
+            onClick={toggleDarkMode}
+            className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-all duration-200 group"
+            aria-label={isDarkMode ? 'Açık moda geç' : 'Karanlık moda geç'}
+          >
+            {isDarkMode ? (
+              <Sun className="w-5 h-5 text-yellow-500 group-hover:text-yellow-400 transition-colors" />
+            ) : (
+              <Moon className="w-5 h-5 text-gray-600 group-hover:text-gray-700 transition-colors" />
+            )}
+          </button>
 
           {/* Kullanıcı bilgisi */}
           <div className="relative" ref={profilMenuRef}>
-            <button 
+            <button
               onClick={() => setProfilMenuOpen(!profilMenuOpen)}
-              className="flex items-center bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-lg px-3 py-2 transition-all duration-300 shadow-sm hover:shadow-md border border-white/10"
+              className="flex items-center bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg px-3 py-2 transition-all duration-300 shadow-sm hover:shadow-md border border-gray-200 dark:border-gray-600"
               aria-label="Profil Menüsü"
             >
               <div className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-full p-1.5 mr-2 shadow-lg">
@@ -55,8 +69,8 @@ const AdminHeader = ({ adminInfo, onLogout, mobileMenuOpen, setMobileMenuOpen })
                 </svg>
               </div>
               <div className="text-sm">
-                <div className="font-medium">{adminInfo?.adSoyad || 'Admin'}</div>
-                <div className="text-xs text-white/80">{adminInfo?.rol || 'Yönetici'}</div>
+                <div className="font-medium text-gray-900 dark:text-gray-100">{adminInfo?.adSoyad || 'Admin'}</div>
+                <div className="text-xs text-gray-600 dark:text-gray-400">{adminInfo?.rol || 'Yönetici'}</div>
               </div>
               <svg className={`w-4 h-4 ml-2 transition-transform ${profilMenuOpen ? 'rotate-180' : ''}`} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -65,7 +79,7 @@ const AdminHeader = ({ adminInfo, onLogout, mobileMenuOpen, setMobileMenuOpen })
 
             {/* Profil açılır menü */}
             {profilMenuOpen && (
-              <div className="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-2xl overflow-hidden z-50 border border-gray-100 animate-fadeIn">
+              <div className="absolute right-0 mt-2 w-64 bg-white dark:bg-gray-800 rounded-xl shadow-2xl overflow-hidden z-50 border border-gray-100 dark:border-gray-700 animate-fadeIn">
                 <div className="p-5 bg-gradient-to-r from-indigo-500 to-blue-600 text-white border-b border-indigo-600">
                   <div className="flex items-center">
                     <div className="bg-white text-indigo-600 rounded-full p-2 mr-3 shadow-lg">
@@ -82,9 +96,9 @@ const AdminHeader = ({ adminInfo, onLogout, mobileMenuOpen, setMobileMenuOpen })
                 
                 <div className="py-2 px-1">
                   
-                  <button 
+                  <button
                     onClick={() => onLogout()}
-                    className="w-full flex items-center p-3 hover:bg-red-50 text-red-600 rounded-lg transition-colors mt-1"
+                    className="w-full flex items-center p-3 hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400 rounded-lg transition-colors mt-1"
                   >
                     <svg className="w-5 h-5 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />

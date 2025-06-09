@@ -34,9 +34,9 @@ const AdminSidebar = ({ activeTab, setActiveTab, mobileMenuOpen, setMobileMenuOp
   return (
     <aside
       ref={sidebarRef}
-      className={`fixed bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 text-white w-72 h-full top-0 left-0 shadow-2xl transition-transform duration-300 transform ${
+      className={`fixed bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 text-white w-72 h-full top-0 left-0 shadow-2xl transition-transform duration-300 transform ${
         mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
-      } md:translate-x-0 z-30 overflow-y-auto overflow-x-hidden scrollbar-hide border-r border-slate-700/50`}
+      } md:translate-x-0 z-30 overflow-y-auto overflow-x-hidden scrollbar-hide border-r border-slate-700/50 dark:border-gray-700/50`}
       style={{
         scrollbarWidth: 'none',
         msOverflowStyle: 'none',
@@ -240,8 +240,8 @@ const AdminSidebar = ({ activeTab, setActiveTab, mobileMenuOpen, setMobileMenuOp
         {/* Footer */}
         <div className="pt-4 pb-3">
           <div className="text-center">
-            <div className="bg-slate-800/30 rounded-lg p-3 border border-slate-600/20">
-              <p className="text-xs text-slate-500 font-medium">v1.0 • © {new Date().getFullYear()}</p>
+            <div className="bg-slate-800/30 dark:bg-slate-700/50 rounded-lg p-3 border border-slate-600/20 dark:border-slate-500/30">
+              <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">v1.0 • © {new Date().getFullYear()}</p>
             </div>
           </div>
         </div>

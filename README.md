@@ -19,6 +19,7 @@ Tayin projesi, kullanıcı dostu arayüz tasarımı ve verimli bileşen kullanı
 - **Tayin Talepleri Takibi:** Kullanıcılar mevcut tayin taleplerini listeleyebilir, durumlarını görebilir ve taleplerini iptal edebilir
 - **Sıkça Sorulan Sorular:** Kategorize edilmiş SSS bölümü ve arama özelliği ile bilgilere hızlı erişim
 - **Şifre Değiştirme:** Kullanıcılar ayarlar menüsü üzerinden güvenli şekilde şifrelerini değiştirebilir
+- **Karanlık Mod:** Kapsamlı karanlık tema desteği ile göz yorgunluğunu azaltan modern arayüz 
 
 ### Admin Panel Özellikleri
 
@@ -31,7 +32,7 @@ Tayin projesi, kullanıcı dostu arayüz tasarımı ve verimli bileşen kullanı
 - **Sistem Testleri:** Hata senaryolarını test etme ve log kayıtlarını kontrol etme
 - **API Dokümantasyonu:** Tüm API endpoint'lerini ve kullanım örneklerini görüntüleme
 - **İstatistikler:** Tayin taleplerine ilişkin istatistikleri görüntüleme
-
+- **Karanlık Mod:** Kapsamlı karanlık tema desteği ile göz yorgunluğunu azaltan modern arayüz
 
 ## Teknolojiler
 
@@ -58,6 +59,7 @@ Tayin projesi, kullanıcı dostu arayüz tasarımı ve verimli bileşen kullanı
 - JWT tabanlı kimlik doğrulama ve yetkilendirme
 - Responsive tasarım (mobil ve tablet uyumlu)
 - Kullanıcı dostu arayüz
+- Kapsamlı karanlık mod desteği
 - RESTful API
 
 ## Kurulum Gereksinimleri
@@ -217,16 +219,21 @@ npm start
 >    - Sicil No: `229301`
 >    - Şifre: `123`
 >    - Ad Soyad: Saffet Çelik
-> 
+>
 > 2. **Mübaşir**
 >    - Sicil No: `229302`
 >    - Şifre: `123`
 >    - Ad Soyad: Zeynep Çelik
-> 
+>
 > 3. **Yazı İşleri Müdürü**
 >    - Sicil No: `229304`
 >    - Şifre: `123`
 >    - Ad Soyad: Ayşe Demir
+>
+> 4. **Mübaşir**
+>    - Sicil No: `229305`
+>    - Şifre: `123`
+>    - Ad Soyad: Ahmet Öztürk
 
 
 

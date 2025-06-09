@@ -297,7 +297,7 @@ const Login = () => {
                     type="text"
                     value={sicilNo}
                     onChange={handleSicilNoChange}
-                    className={`block w-full pl-10 pr-3 py-3 border-0 focus:ring-0 transition-all duration-200 bg-transparent ${sicilNoError ? 'border-red-500 text-red-600' : ''}`}
+                    className={`block w-full pl-10 pr-3 py-3 border-0 focus:ring-0 transition-all duration-200 bg-transparent text-gray-900 ${sicilNoError ? 'border-red-500 text-red-600' : ''}`}
                     placeholder="Sicil numaranızı giriniz (6 haneli)"
                     maxLength={6}
                     required
@@ -329,7 +329,7 @@ const Login = () => {
                     type={showPassword ? "text" : "password"}
                     value={sifre}
                     onChange={(e) => setSifre(e.target.value)}
-                    className="block w-full pl-10 pr-12 py-3 border-0 focus:ring-0 transition-all duration-200 bg-transparent"
+                    className="block w-full pl-10 pr-12 py-3 border-0 focus:ring-0 transition-all duration-200 bg-transparent text-gray-900"
                     placeholder="Şifrenizi giriniz"
                     required
                   />
@@ -392,7 +392,7 @@ const Login = () => {
               </div>
             </form>
           </div>
-          
+
           <div className="px-8 py-4 bg-gray-50 border-t border-gray-100">
             <p className="text-sm text-gray-600 text-center">
               T.C. Adalet Bakanlığı Personel Genel Müdürlüğü © {new Date().getFullYear()}

@@ -231,11 +231,11 @@ const SSSYonetimi = () => {
             <input
               type="text"
               placeholder="Soru veya kategori ara..."
-              className="pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 w-full md:w-80 bg-white shadow-sm"
+              className="pl-12 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 w-full md:w-80 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <Search className="absolute left-4 top-3.5 h-5 w-5 text-gray-400" />
+            <Search className="absolute left-4 top-3.5 h-5 w-5 text-gray-400 dark:text-gray-500" />
           </div>
         </div>
 
@@ -259,13 +259,13 @@ const SSSYonetimi = () => {
       
       {/* Modern Ekleme/Düzenleme Formu */}
       {showForm && (
-        <div className="bg-white rounded-2xl shadow-lg border border-gray-200/50 p-8 animate-fadeIn">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200/50 dark:border-gray-700/50 p-8 animate-fadeIn">
           <form onSubmit={handleSubmit}>
-            <div className="flex items-center mb-6 pb-4 border-b border-gray-200">
-              <div className="bg-primary-100 p-3 rounded-xl mr-4">
-                <Save className="w-6 h-6 text-primary-600" />
+            <div className="flex items-center mb-6 pb-4 border-b border-gray-200 dark:border-gray-700">
+              <div className="bg-primary-100 dark:bg-primary-900/30 p-3 rounded-xl mr-4">
+                <Save className="w-6 h-6 text-primary-600 dark:text-primary-400" />
               </div>
-              <h3 className="text-xl font-bold text-gray-800">
+              <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200">
                 {editMode ? 'Soruyu Düzenle' : 'Yeni Soru Ekle'}
               </h3>
             </div>
@@ -273,7 +273,7 @@ const SSSYonetimi = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-6">
               {/* Soru */}
               <div className="col-span-full">
-                <label htmlFor="soru" className="block text-sm font-semibold text-gray-700 mb-2">Soru</label>
+                <label htmlFor="soru" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Soru</label>
                 <input
                   type="text"
                   id="soru"
@@ -281,14 +281,14 @@ const SSSYonetimi = () => {
                   required
                   value={formData.soru}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-gray-50 focus:bg-white transition-colors shadow-sm"
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-gray-50 dark:bg-gray-700 focus:bg-white dark:focus:bg-gray-600 text-gray-900 dark:text-gray-100 transition-colors shadow-sm"
                   placeholder="Soru metnini giriniz..."
                 />
               </div>
 
               {/* Cevap */}
               <div className="col-span-full">
-                <label htmlFor="cevap" className="block text-sm font-semibold text-gray-700 mb-2">Cevap</label>
+                <label htmlFor="cevap" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Cevap</label>
                 <textarea
                   id="cevap"
                   name="cevap"
@@ -296,21 +296,21 @@ const SSSYonetimi = () => {
                   rows="5"
                   value={formData.cevap}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-gray-50 focus:bg-white transition-colors shadow-sm resize-none"
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-gray-50 dark:bg-gray-700 focus:bg-white dark:focus:bg-gray-600 text-gray-900 dark:text-gray-100 transition-colors shadow-sm resize-none"
                   placeholder="Cevap metnini giriniz..."
                 ></textarea>
               </div>
               
               {/* Kategori */}
               <div>
-                <label htmlFor="kategori" className="block text-sm font-semibold text-gray-700 mb-2">Kategori</label>
+                <label htmlFor="kategori" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Kategori</label>
                 <select
                   id="kategori"
                   name="kategori"
                   required
                   value={formData.kategori}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-gray-50 focus:bg-white transition-colors shadow-sm">
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-gray-50 dark:bg-gray-700 focus:bg-white dark:focus:bg-gray-600 text-gray-900 dark:text-gray-100 transition-colors shadow-sm">
                   <option value="">Kategori Seçin</option>
                   {kategoriler.map((kategori, index) => (
                     <option key={index} value={kategori}>{kategori}</option>
@@ -325,7 +325,7 @@ const SSSYonetimi = () => {
                       placeholder="Yeni kategori adı"
                       value={yeniKategori}
                       onChange={(e) => setYeniKategori(e.target.value)}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-gray-50 focus:bg-white transition-colors shadow-sm"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-gray-50 dark:bg-gray-700 focus:bg-white dark:focus:bg-gray-600 text-gray-900 dark:text-gray-100 transition-colors shadow-sm"
                       required
                     />
                   </div>
@@ -334,7 +334,7 @@ const SSSYonetimi = () => {
 
               {/* Sıra No */}
               <div>
-                <label htmlFor="siraNo" className="block text-sm font-semibold text-gray-700 mb-2">Sıra No</label>
+                <label htmlFor="siraNo" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Sıra No</label>
                 <input
                   type="number"
                   id="siraNo"
@@ -342,23 +342,23 @@ const SSSYonetimi = () => {
                   min="0"
                   value={formData.siraNo}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-gray-50 focus:bg-white transition-colors shadow-sm"
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-gray-50 dark:bg-gray-700 focus:bg-white dark:focus:bg-gray-600 text-gray-900 dark:text-gray-100 transition-colors shadow-sm"
                   placeholder="0"
                 />
               </div>
 
               {/* Aktiflik Durumu */}
               <div className="col-span-full">
-                <div className="flex items-center bg-gray-50 rounded-xl p-4 border border-gray-200">
+                <div className="flex items-center bg-gray-50 dark:bg-gray-700 rounded-xl p-4 border border-gray-200 dark:border-gray-600">
                   <input
                     type="checkbox"
                     id="aktifMi"
                     name="aktifMi"
                     checked={formData.aktifMi}
                     onChange={handleInputChange}
-                    className="w-5 h-5 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
+                    className="w-5 h-5 text-primary-600 border-gray-300 dark:border-gray-600 rounded focus:ring-primary-500"
                   />
-                  <label htmlFor="aktifMi" className="ml-3 text-sm font-medium text-gray-700">
+                  <label htmlFor="aktifMi" className="ml-3 text-sm font-medium text-gray-700 dark:text-gray-300">
                     Aktif (Bu soru kullanıcılara gösterilir)
                   </label>
                 </div>
@@ -369,7 +369,7 @@ const SSSYonetimi = () => {
               <button
                 type="button"
                 onClick={resetForm}
-                className="px-6 py-3 border border-gray-300 rounded-xl text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-200 transition-all duration-200 font-medium">
+                className="px-6 py-3 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200 transition-all duration-200 font-medium">
                 İptal
               </button>
               <button
@@ -385,17 +385,17 @@ const SSSYonetimi = () => {
       )}
       
       {/* Modern SSS Listesi */}
-      <div className="bg-white rounded-2xl overflow-hidden border border-gray-200/50 shadow-lg">
+      <div className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden border border-gray-200/50 dark:border-gray-700/50 shadow-lg">
         {loading && !sorular.length ? (
           <div className="p-8 text-center">
             <div className="inline-block animate-spin rounded-full h-8 w-8 border-2 border-blue-600 border-t-transparent mb-2"></div>
-            <p className="text-gray-600">Sorular yükleniyor...</p>
+            <p className="text-gray-600 dark:text-gray-400">Sorular yükleniyor...</p>
           </div>
         ) : filteredSorular.length === 0 ? (
           <div className="p-8 text-center">
-            <HelpCircle className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-800 mb-1">Soru Bulunamadı</h3>
-            <p className="text-gray-600">
+            <HelpCircle className="h-12 w-12 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-gray-800 dark:text-gray-200 mb-1">Soru Bulunamadı</h3>
+            <p className="text-gray-600 dark:text-gray-400">
               {searchTerm ? 'Arama kriterlerinize uygun soru bulunamadı.' : 'Henüz eklenmiş soru bulunmuyor.'}
             </p>
             {searchTerm && (
@@ -408,38 +408,38 @@ const SSSYonetimi = () => {
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gradient-to-r from-gray-50 to-gray-100">
+            <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+              <thead className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800">
                 <tr>
-                  <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
+                  <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
                     Durum
                   </th>
-                  <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
+                  <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
                     Soru
                   </th>
-                  <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
+                  <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
                     Kategori
                   </th>
-                  <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
+                  <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
                     Sıra No
                   </th>
-                  <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
+                  <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
                     Eklenme Tarihi
                   </th>
-                  <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
+                  <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
                     İşlemler
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-100">
+              <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-100 dark:divide-gray-700">
                 {filteredSorular.map((soru) => (
-                  <tr key={soru.id} className="hover:bg-gray-50/50 transition-colors duration-200">
+                  <tr key={soru.id} className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 transition-colors duration-200">
                     <td className="px-6 py-5 whitespace-nowrap">
                       <button
                         onClick={() => handleToggleStatus(soru.id)}
                         className={`inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-semibold transition-all duration-200 ${soru.aktifMi
-                          ? 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200'
-                          : 'bg-red-100 text-red-800 hover:bg-red-200'
+                          ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-400 hover:bg-emerald-200 dark:hover:bg-emerald-800/40'
+                          : 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-800/40'
                         }`}
                       >
                         {soru.aktifMi ? (
@@ -455,31 +455,31 @@ const SSSYonetimi = () => {
                     </td>
                     <td className="px-6 py-5">
                       <div className="max-w-md">
-                        <div className="font-semibold text-gray-900 truncate text-sm">{soru.soru}</div>
-                        <div className="text-sm text-gray-500 mt-1 line-clamp-2">{soru.cevap}</div>
+                        <div className="font-semibold text-gray-900 dark:text-gray-100 truncate text-sm">{soru.soru}</div>
+                        <div className="text-sm text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">{soru.cevap}</div>
                       </div>
                     </td>
                     <td className="px-6 py-5 whitespace-nowrap">
-                      <span className="px-3 py-1.5 bg-primary-100 text-primary-800 rounded-xl text-xs font-semibold">
+                      <span className="px-3 py-1.5 bg-primary-100 dark:bg-primary-900/30 text-primary-800 dark:text-primary-400 rounded-xl text-xs font-semibold">
                         {soru.kategori}
                       </span>
                     </td>
-                    <td className="px-6 py-5 whitespace-nowrap text-sm font-medium text-gray-600">
+                    <td className="px-6 py-5 whitespace-nowrap text-sm font-medium text-gray-600 dark:text-gray-400">
                       {soru.siraNo}
                     </td>
-                    <td className="px-6 py-5 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-6 py-5 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                       {new Date(soru.eklenmeTarihi).toLocaleDateString('tr-TR')}
                     </td>
                     <td className="px-6 py-5 whitespace-nowrap text-sm font-medium">
                       <div className="flex space-x-3">
                         <button
                           onClick={() => handleEdit(soru)}
-                          className="p-2 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-lg transition-all duration-200">
+                          className="p-2 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-all duration-200">
                           <Edit2 size={18} />
                         </button>
                         <button
                           onClick={() => handleDelete(soru.id)}
-                          className="p-2 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-lg transition-all duration-200">
+                          className="p-2 text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-all duration-200">
                           <Trash2 size={18} />
                         </button>
                       </div>
@@ -492,7 +492,7 @@ const SSSYonetimi = () => {
         )}
         
         {!loading && filteredSorular.length > 0 && (
-          <div className="px-6 py-4 bg-gradient-to-r from-gray-50 to-gray-100 text-sm text-gray-600 border-t border-gray-200 font-medium">
+          <div className="px-6 py-4 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 text-sm text-gray-600 dark:text-gray-400 border-t border-gray-200 dark:border-gray-700 font-medium">
             Toplam {filteredSorular.length} soru {searchTerm && 'filtrelenmiş sonuçlarda'} gösteriliyor
           </div>
         )}

@@ -14,14 +14,12 @@ import {
   ChevronRight
 } from 'lucide-react';
 import { adminService } from '../../../services/api';
-import { toast } from 'react-toastify';
 
 const SistemSagligi = () => {
   const [systemHealth, setSystemHealth] = useState(null);
   const [loading, setLoading] = useState(true);
   const [lastUpdate, setLastUpdate] = useState(null);
-  const [autoRefresh, setAutoRefresh] = useState(false);
-  const [refreshInterval, setRefreshInterval] = useState(null);
+
   const [errorPage, setErrorPage] = useState(1);
   const [hasError, setHasError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -65,30 +63,10 @@ const SistemSagligi = () => {
     }
   };
 
-  // Component mount olduğunda ve otomatik yenileme ayarlandığında
+  // Component mount olduğunda veri getir
   useEffect(() => {
     fetchSystemHealth();
-
-    if (autoRefresh) {
-      const interval = setInterval(fetchSystemHealth, 30000); // 30 saniyede bir yenile
-      setRefreshInterval(interval);
-      return () => clearInterval(interval);
-    } else {
-      if (refreshInterval) {
-        clearInterval(refreshInterval);
-        setRefreshInterval(null);
-      }
-    }
-  }, [autoRefresh, refreshInterval]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  // Component unmount olduğunda interval'i temizle
-  useEffect(() => {
-    return () => {
-      if (refreshInterval) {
-        clearInterval(refreshInterval);
-      }
-    };
-  }, [refreshInterval]);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Durum rengini belirle
   const getStatusColor = (status) => {
@@ -174,17 +152,6 @@ const SistemSagligi = () => {
         </div>
         
         <div className="flex items-center space-x-4 mt-4 sm:mt-0">
-          {/* Otomatik yenileme toggle */}
-          <label className="flex items-center space-x-2 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={autoRefresh}
-              onChange={(e) => setAutoRefresh(e.target.checked)}
-              className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-            />
-            <span className="text-sm text-gray-600 dark:text-gray-400">Otomatik Yenile</span>
-          </label>
-          
           {/* Manuel yenileme butonu */}
           <button
             onClick={fetchSystemHealth}
@@ -209,7 +176,7 @@ const SistemSagligi = () => {
                 Bağlantı Hatası
               </h4>
               <p className="text-sm text-red-600 dark:text-red-300 mt-1">
-                {errorMessage}. Lütfen "Yenile" butonuna tıklayarak tekrar deneyin veya otomatik yenileme özelliğini açın.
+                {errorMessage}. Lütfen "Yenile" butonuna tıklayarak tekrar deneyin.
               </p>
             </div>
             <button

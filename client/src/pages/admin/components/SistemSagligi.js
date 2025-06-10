@@ -20,15 +20,19 @@ const SistemSagligi = () => {
   const [systemHealth, setSystemHealth] = useState(null);
   const [loading, setLoading] = useState(true);
   const [lastUpdate, setLastUpdate] = useState(null);
-  const [autoRefresh, setAutoRefresh] = useState(true);
+  const [autoRefresh, setAutoRefresh] = useState(false);
   const [refreshInterval, setRefreshInterval] = useState(null);
   const [errorPage, setErrorPage] = useState(1);
+  const [hasError, setHasError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const errorsPerPage = 3;
 
   // Sistem sağlığı verilerini getir
   const fetchSystemHealth = async () => {
     try {
       setLoading(true);
+      setHasError(false);
+      setErrorMessage('');
       console.log('Sistem sağlığı verileri getiriliyor...');
       const data = await adminService.getSystemHealth();
       console.log('Sistem sağlığı verileri alındı:', data);
@@ -40,7 +44,10 @@ const SistemSagligi = () => {
     } catch (error) {
       console.error('Sistem sağlığı verileri alınırken hata:', error);
       console.error('Hata detayları:', error.response || error.message || error);
-      toast.error(`Sistem sağlığı verileri alınamadı: ${error.message || 'Bilinmeyen hata'}`);
+
+      // Toast yerine state ile hata yönetimi
+      setHasError(true);
+      setErrorMessage(error.message || 'Sistem sağlığı verileri alınamadı');
 
       // Hata durumunda mock veri göster
       setSystemHealth({
@@ -189,6 +196,33 @@ const SistemSagligi = () => {
           </button>
         </div>
       </div>
+
+      {/* Hata Mesajı */}
+      {hasError && (
+        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700 rounded-lg p-4">
+          <div className="flex items-start space-x-3">
+            <div className="flex-shrink-0">
+              <AlertTriangle className="w-5 h-5 text-red-600 dark:text-red-400 mt-0.5" />
+            </div>
+            <div className="flex-1">
+              <h4 className="text-sm font-medium text-red-800 dark:text-red-200">
+                Bağlantı Hatası
+              </h4>
+              <p className="text-sm text-red-600 dark:text-red-300 mt-1">
+                {errorMessage}. Lütfen "Yenile" butonuna tıklayarak tekrar deneyin veya otomatik yenileme özelliğini açın.
+              </p>
+            </div>
+            <button
+              onClick={() => setHasError(false)}
+              className="flex-shrink-0 text-red-400 hover:text-red-600 dark:hover:text-red-300"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Son güncelleme zamanı */}
       {lastUpdate && (

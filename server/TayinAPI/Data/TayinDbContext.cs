@@ -22,7 +22,7 @@ namespace TayinAPI.Data
             optionsBuilder.ConfigureWarnings(warnings => 
                 warnings.Ignore(RelationalEventId.PendingModelChangesWarning));
                 
-            // Veritabanı komutlarının loglama için yakalanması
+            
             optionsBuilder.LogTo(message => 
             {
                 if (message.Contains("fail") || message.Contains("error") || message.Contains("exception"))
@@ -33,23 +33,23 @@ namespace TayinAPI.Data
             }, LogLevel.Error);
         }
         
-        // Veritabanı hatalarını loglama
+        
         private Task LogDatabaseError(string islemTuru, string hataMesaji)
         {
             try
             {
-                // LogService yerine ILogger kullanarak hataları loglama
+                
                 _logger?.LogError(
                     "Veritabanı hatası: {IslemTuru}, {HataMesaji}", 
                     islemTuru, 
                     hataMesaji);
                 
-                // Konsola da yazalım
+                
                 Console.WriteLine($"Veritabanı hatası: {islemTuru} - {hataMesaji}");
             }
             catch (Exception ex)
             {
-                // Loglama işlemi sırasında hata oluşursa konsola yaz
+                
                 Console.WriteLine($"Veritabanı hatası loglanırken ek hata oluştu: {ex.Message}");
                 Console.WriteLine($"Orijinal hata: {hataMesaji}");
             }
@@ -70,7 +70,7 @@ namespace TayinAPI.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // İlişkileri ve kısıtlamaları tanımlama
+            
             modelBuilder.Entity<Personel>()
                 .HasOne(p => p.MevcutAdliye)
                 .WithMany(a => a.Personeller)

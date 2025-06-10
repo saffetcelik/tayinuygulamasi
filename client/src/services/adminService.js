@@ -2,9 +2,9 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:5000/api';
 
-// Admin API servislerini oluşturuyoruz
+
 const adminService = {
-  // Admin girişi
+  
   login: async (kullaniciAdi, sifre) => {
     try {
       const response = await axios.post(`${API_URL}/Admin/login`, {
@@ -12,7 +12,7 @@ const adminService = {
         sifre
       });
       
-      // JWT tokenı ve admin bilgilerini localStorage'da saklama
+      
       if (response.data.token) {
         localStorage.setItem('adminToken', response.data.token);
         localStorage.setItem('adminInfo', JSON.stringify(response.data.admin));
@@ -24,24 +24,24 @@ const adminService = {
     }
   },
 
-  // Admin çıkışı
+  
   logout: () => {
     localStorage.removeItem('adminToken');
     localStorage.removeItem('adminInfo');
   },
   
-  // Admin tokenı alın
+  
   getToken: () => {
     return localStorage.getItem('adminToken');
   },
   
-  // Admin bilgilerini alın
+  
   getAdminInfo: () => {
     const adminInfo = localStorage.getItem('adminInfo');
     return adminInfo ? JSON.parse(adminInfo) : null;
   },
   
-  // Tayin taleplerini getir
+  
   getTayinTalepleri: async () => {
     try {
       const token = adminService.getToken();
@@ -52,7 +52,7 @@ const adminService = {
         }
       });
       
-      // ReferenceHandler.Preserve kullanıldığında value özelliğinde gelen veriyi kontrol et
+      
       const data = response.data;
       return Array.isArray(data) ? data : 
              (data && data.value && Array.isArray(data.value)) ? data.value : [];
@@ -62,7 +62,7 @@ const adminService = {
     }
   },
   
-  // Tayin talebi durumunu güncelle
+  
   updateTayinDurum: async (id, durum, durumAciklamasi) => {
     try {
       const token = adminService.getToken();
@@ -82,7 +82,7 @@ const adminService = {
     }
   },
   
-  // Personelleri getir
+  
   getPersoneller: async () => {
     try {
       const token = adminService.getToken();
@@ -93,7 +93,7 @@ const adminService = {
         }
       });
       
-      // ReferenceHandler.Preserve kullanıldığında value özelliğinde gelen veriyi kontrol et
+      
       const data = response.data;
       return Array.isArray(data) ? data : 
              (data && data.value && Array.isArray(data.value)) ? data.value : [];
@@ -103,7 +103,7 @@ const adminService = {
     }
   },
   
-  // Personel detaylarını getir
+  
   getPersonelById: async (id) => {
     try {
       const token = adminService.getToken();
@@ -121,7 +121,7 @@ const adminService = {
     }
   },
   
-  // Personel bilgilerini güncelle
+  
   updatePersonel: async (id, personelData) => {
     try {
       const token = adminService.getToken();

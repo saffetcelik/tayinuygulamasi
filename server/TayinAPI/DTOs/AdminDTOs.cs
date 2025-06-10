@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace TayinAPI.DTOs
 {
-    // Admin giriş DTO'su
+    
     public class AdminLoginDTO
     {
         [Required(ErrorMessage = "Kullanıcı adı zorunludur.")]
@@ -13,7 +13,7 @@ namespace TayinAPI.DTOs
         public string Sifre { get; set; } = "";
     }
 
-    // Tayin talebi durum güncelleme DTO'su
+    
     public class TayinTalebiDurumDTO
     {
         [Required(ErrorMessage = "Durum bilgisi zorunludur.")]
@@ -22,7 +22,7 @@ namespace TayinAPI.DTOs
         public string DurumAciklamasi { get; set; } = "";
     }
 
-    // Admin şifre değiştirme DTO'su
+    
     public class AdminSifreDegistirDTO
     {
         [Required(ErrorMessage = "Admin ID zorunludur.")]
@@ -36,7 +36,7 @@ namespace TayinAPI.DTOs
         public string YeniSifre { get; set; } = "";
     }
 
-    // Personel güncelleme DTO'su
+    
     public class PersonelGuncelleDTO
     {
         [Required(ErrorMessage = "Ad alanı zorunludur.")]
@@ -64,7 +64,7 @@ namespace TayinAPI.DTOs
 
         public DateTime? BaslamaTarihi { get; set; }
 
-        // Şifre güncellemek için (isteğe bağlı)
+        
         [MinLength(1, ErrorMessage = "Şifre en az 1 karakter olmalıdır.")]
         public string YeniSifre { get; set; } = "";
     }

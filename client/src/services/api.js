@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-// API temel URL'si
+
 const API_URL = 'http://localhost:5000/api';
 
-// API istekleri için axios instance oluşturma
+
 const api = axios.create({
   baseURL: API_URL,
   headers: {
@@ -11,23 +11,23 @@ const api = axios.create({
   },
 });
 
-// Her istek öncesi token ekleme
+
 api.interceptors.request.use(
   (config) => {
-    // API yoluna göre token seçimi yap
+    
     const isAdminRequest = config.url && (
       config.url.startsWith('/Admin') ||
       config.url.startsWith('/Log')
     );
 
-    // Admin isteği için admin token'ını kullan
+    
     if (isAdminRequest) {
       const adminToken = localStorage.getItem('adminToken');
       if (adminToken) {
         config.headers['Authorization'] = `Bearer ${adminToken}`;
       }
     }
-    // Normal kullanıcı isteği için normal token'ı kullan
+    
     else {
       const token = localStorage.getItem('token');
       if (token) {
@@ -42,11 +42,11 @@ api.interceptors.request.use(
   }
 );
 
-// Hata yakalama interceptor'u
+
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
-    // Hata bilgilerini topla
+    
     const errorData = {
       islemTuru: "Frontend Sistem Hatası",
       detayBilgi: `API isteği başarısız: ${error?.config?.url || 'Bilinmeyen URL'}`,
@@ -64,10 +64,10 @@ api.interceptors.response.use(
       })
     };
 
-    // Sunucu hatası olduğunda loglama yap (5xx hatalar)
+    
     if (error?.response?.status >= 500) {
       try {
-        // Log API'sine direkt axios ile istek yapalım (api instance değil - sonsuz döngüye girmemek için)
+        
         await axios.post(`${API_URL}/Log`, errorData, {
           headers: {
             'Content-Type': 'application/json',
@@ -76,7 +76,7 @@ api.interceptors.response.use(
         });
         console.log('Sistem hatası loglandı:', errorData.detayBilgi);
       } catch (logError) {
-        // Log kaydedilemezse local storage'a kaydet
+        
         console.error('Hata loglanırken ikincil hata oluştu:', logError);
         const clientErrorLogs = JSON.parse(localStorage.getItem('clientErrorLogs') || '[]');
         clientErrorLogs.push({
@@ -84,7 +84,7 @@ api.interceptors.response.use(
           timestamp: new Date().toISOString(),
           logError: logError?.message
         });
-        localStorage.setItem('clientErrorLogs', JSON.stringify(clientErrorLogs.slice(-20))); // Son 20 hatayı sakla
+        localStorage.setItem('clientErrorLogs', JSON.stringify(clientErrorLogs.slice(-20))); 
       }
     }
 
@@ -92,20 +92,20 @@ api.interceptors.response.use(
   }
 );
 
-// Kimlik doğrulama servisleri
+
 const authService = {
-  // Giriş işlemi
+  
   login: async (sicilNo, sifre, beniHatirla = false) => {
     try {
-      // Backend bağlantı hatası kontrolü
+      
       const response = await api.post('/Auth/login', { sicilNo, sifre, beniHatirla });
       if (response.data.token) {
         localStorage.setItem('isAuthenticated', 'true');
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('userSicil', sicilNo);
         
-        // Beni hatırla seçeneği işaretlendiyse sicil numarasını ayrıca sakla
-        // aksi takdirde temizle
+        
+        
         if (beniHatirla) {
           localStorage.setItem('lastLoginSicilNo', sicilNo);
           console.log('Beni hatırla etkinleştirildi ve sicil no kaydedildi:', sicilNo);
@@ -120,14 +120,14 @@ const authService = {
     }
   },
   
-  // Çıkış işlemi
+  
   logout: () => {
     localStorage.removeItem('isAuthenticated');
     localStorage.removeItem('token');
     localStorage.removeItem('userSicil');
   },
   
-  // Şifre değiştirme işlemi
+  
   changePassword: async (mevcutSifre, yeniSifre) => {
     try {
       const sicilNo = localStorage.getItem('userSicil') || '';
@@ -144,14 +144,14 @@ const authService = {
   },
 };
 
-// Personel servisleri
+
 const personelService = {
-  // Personel bilgilerini getir
+  
   getPersonelBilgisi: async () => {
     try {
       const sicilNo = localStorage.getItem('userSicil') || '';
       
-      // Sicil numarasını hem header hem de query string olarak gönder
+      
       const config = {
         headers: {
           'X-Sicil-No': sicilNo
@@ -169,14 +169,14 @@ const personelService = {
   },
 };
 
-// Tayin talebi servisleri
+
 const tayinService = {
-  // Tayin talebi oluştur
+  
   createTayinTalebi: async (talepData) => {
     try {
       const sicilNo = localStorage.getItem('userSicil') || '';
       
-      // Sicil numarasını hem header hem de query string olarak gönder
+      
       const config = {
         headers: {
           'X-Sicil-No': sicilNo
@@ -195,12 +195,12 @@ const tayinService = {
     }
   },
   
-  // Tayin taleplerini listele
+  
   getTayinTalepleri: async () => {
     try {
       const sicilNo = localStorage.getItem('userSicil') || '';
       
-      // Sicil numarasını query parametresi olarak gönder
+      
       const response = await api.get('/tayin/talepler', {
         params: { sicilNo }
       });
@@ -214,25 +214,25 @@ const tayinService = {
     }
   },
   
-  // Adliyeleri listele
+  
   getAdliyeler: async () => {
     try {
       const response = await api.get('/tayin/adliyeler');
       console.log('API yanıtı:', response.data);
-      // API yanıtı farklı formatlarda olabilir, kontrol edelim
+      
       let data = response.data;
       
-      // $values içinde bir dizi varsa onu al
+      
       if (data && data.$values && Array.isArray(data.$values)) {
         return data.$values;
       }
       
-      // value içinde bir dizi varsa onu al
+      
       if (data && data.value && Array.isArray(data.value)) {
         return data.value;
       }
       
-      // Doğrudan dizi ise onu kullan
+      
       if (Array.isArray(data)) {
         return data;
       }
@@ -245,12 +245,12 @@ const tayinService = {
     }
   },
   
-  // Tayin talebini iptal et
+  
   cancelTayinTalebi: async (talepId) => {
     try {
       const sicilNo = localStorage.getItem('userSicil') || '';
       
-      // Sicil numarasını query parametresi olarak gönder
+      
       const response = await api.delete(`/tayin/talepler/${talepId}`, {
         params: { sicilNo }
       });
@@ -263,9 +263,9 @@ const tayinService = {
   },
 };
 
-// Sık Sorulan Sorular (SSS) servisleri
+
 const sssService = {
-  // Tüm SSS'leri getir
+  
   getSikcaSorulanSorular: async () => {
     try {
       const response = await api.get('/SSS');
@@ -278,7 +278,7 @@ const sssService = {
     }
   },
 
-  // Kategori bazlı SSS'leri getir
+  
   getSikcaSorulanSorularByKategori: async (kategori) => {
     try {
       const response = await api.get(`/SSS/kategori/${kategori}`);
@@ -291,7 +291,7 @@ const sssService = {
     }
   },
 
-  // SSS arama
+  
   searchSikcaSorulanSorular: async (aramaMetni) => {
     try {
       if (!aramaMetni || aramaMetni.trim() === '') {
@@ -308,9 +308,9 @@ const sssService = {
   },
 };
 
-// Admin servisleri
+
 const adminService = {
-  // Admin girişi
+  
   adminLogin: async (kullaniciAdi, sifre) => {
     try {
       const response = await api.post('/Admin/login', { KullaniciAdi: kullaniciAdi, Sifre: sifre });
@@ -327,14 +327,14 @@ const adminService = {
     }
   },
   
-  // Admin çıkışı
+  
   adminLogout: () => {
     localStorage.removeItem('isAdminAuthenticated');
     localStorage.removeItem('adminToken');
     localStorage.removeItem('adminKullaniciAdi');
   },
   
-  // Personel listesini getir
+  
   getPersoneller: async () => {
     try {
       const response = await api.get('/Admin/personeller');
@@ -347,7 +347,7 @@ const adminService = {
     }
   },
   
-  // İstatistikleri getir (Admin için)
+  
   getIstatistikler: async () => {
     try {
       const response = await api.get('/Admin/istatistikler');
@@ -360,7 +360,7 @@ const adminService = {
       };
     } catch (error) {
       console.error('İstatistikler alınamadı:', error);
-      // Hata durumunda varsayılan boş istatistik dön
+      
       return {
         toplamKullanici: 0,
         toplamTayinTalebi: 0,
@@ -370,10 +370,10 @@ const adminService = {
     }
   },
   
-  // Tayin taleplerini getir (Admin için)
+  
   getTayinTalepleri: async () => {
     try {
-      // Admin isteği olduğu için farklı bir endpoint kullan
+      
       const response = await api.get('/Admin/tayin-talepleri');
       const data = response.data;
       return Array.isArray(data) ? data : 
@@ -384,7 +384,7 @@ const adminService = {
     }
   },
   
-  // Tayin talebi detayını getir
+  
   getTayinTalebiDetay: async (talepId) => {
     try {
       const response = await api.get(`/Admin/tayin-talebi/${talepId}`);
@@ -395,7 +395,7 @@ const adminService = {
     }
   },
   
-  // Tayin talebinin durumunu güncelle
+  
   updateTayinTalebiDurum: async (talepId, yeniDurum, aciklama = '') => {
     try {
       const response = await api.put(`/Admin/tayin-talebi/${talepId}/durum`, {
@@ -409,7 +409,7 @@ const adminService = {
     }
   },
   
-  // Logları getir
+  
   getLoglar: async (queryParams) => {
     try {
       const response = await api.get('/Log', { params: queryParams });
@@ -422,7 +422,7 @@ const adminService = {
     }
   },
   
-  // Log detayını getir
+  
   getLogDetay: async (logId) => {
     try {
       const response = await api.get(`/Log/${logId}`);
@@ -433,7 +433,7 @@ const adminService = {
     }
   },
   
-  // Log özeti getir
+  
   getLogOzeti: async () => {
     try {
       const response = await api.get('/Log/ozet');
@@ -444,7 +444,7 @@ const adminService = {
     }
   },
 
-  // Tüm logları temizle
+  
   temizleLoglar: async () => {
     try {
       const response = await api.delete('/Log/temizle');
@@ -455,7 +455,7 @@ const adminService = {
     }
   },
   
-  // Personel detaylarını getir
+  
   getPersonelById: async (id) => {
     try {
       const response = await api.get(`/Admin/personel/${id}`);
@@ -466,7 +466,7 @@ const adminService = {
     }
   },
   
-  // Personel bilgilerini güncelle
+  
   updatePersonel: async (id, personelData) => {
     try {
       const response = await api.put(`/Admin/personel/${id}`, personelData);
@@ -477,7 +477,7 @@ const adminService = {
     }
   },
   
-  // Personel sil
+  
   deletePersonel: async (id) => {
     try {
       const response = await api.delete(`/Admin/personel/${id}`);
@@ -488,9 +488,9 @@ const adminService = {
     }
   },
   
-  // Sık Sorulan Sorular yönetimi
   
-  // Tüm sık sorulan soruları getir (aktif/pasif hepsi) - Admin için
+  
+  
   getAllSSS: async () => {
     try {
       const response = await api.get('/Admin/sss');
@@ -503,7 +503,7 @@ const adminService = {
     }
   },
   
-  // SSS kategorilerini getir
+  
   getSSSKategorileri: async () => {
     try {
       const response = await api.get('/Admin/sss/kategoriler');
@@ -516,7 +516,7 @@ const adminService = {
     }
   },
   
-  // SSS detayını getir
+  
   getSSSById: async (id) => {
     try {
       const response = await api.get(`/Admin/sss/${id}`);
@@ -527,7 +527,7 @@ const adminService = {
     }
   },
   
-  // Yeni SSS ekle
+  
   createSSS: async (sssData) => {
     try {
       const response = await api.post('/Admin/sss', sssData);
@@ -538,7 +538,7 @@ const adminService = {
     }
   },
   
-  // SSS güncelle
+  
   updateSSS: async (id, sssData) => {
     try {
       const response = await api.put(`/Admin/sss/${id}`, sssData);
@@ -549,7 +549,7 @@ const adminService = {
     }
   },
   
-  // SSS durumunu değiştir (aktif/pasif)
+  
   toggleSSSStatus: async (id) => {
     try {
       const response = await api.put(`/Admin/sss/${id}/durum`);
@@ -560,7 +560,7 @@ const adminService = {
     }
   },
   
-  // SSS sil
+  
   deleteSSS: async (id) => {
     try {
       const response = await api.delete(`/Admin/sss/${id}`);
@@ -571,7 +571,7 @@ const adminService = {
     }
   },
 
-  // Sistem sağlığı endpoint'leri
+  
   getSystemHealth: async () => {
     try {
       console.log('API çağrısı yapılıyor: /SystemHealth');
@@ -637,7 +637,7 @@ const adminService = {
     }
   },
 
-  // Test hata endpoint'leri
+  
   testHata: async (endpoint) => {
     try {
       const response = await api.get(`/TestHata/${endpoint}`);
